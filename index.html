@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GODMODE++ Playground</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #0d0d0d; color: #00ff99; }
+    input { padding: 10px; width: 300px; margin-bottom: 10px; border-radius: 6px; border: none; }
+    button { padding: 10px 20px; background: #00ff99; border: none; border-radius: 6px; cursor: pointer; }
+    pre { background: #111; color: #0f0; padding: 20px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <h1>GODMODE++ Prediction Playground</h1>
+
+  <input id="token" placeholder="Paste your login token">
+  <br>
+  <input id="nums" placeholder="1,2,3">
+  <br>
+  <button onclick="runPredict()">Predict</button>
+
+  <pre id="out"></pre>
+
+  <script>
+    async function runPredict() {
+      const token = document.getElementById("token").value.trim();
+      const raw = document.getElementById("nums").value;
+      const numbers = raw.split(",").map(x => parseInt(x.trim(), 10));
+
+      const res = await fetch("https://godmode-backend2.onrender.com/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "gm_web_7f3c9b2e4a8d4f0c9e1a",
+          "token": token
+        },
+        body: JSON.stringify({ numbers })
+      });
+
+      const data = await res.json();
+      document.getElementById("out").textContent =
+        JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
