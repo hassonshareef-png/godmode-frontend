@@ -63,12 +63,18 @@ class GodModeAPI {
 const GODMODE = new GodModeAPI(API_BASE_URL);
 
 async function testConnection() {
+async function testConnection() {
+    const output = document.getElementById("output");
+
+    output.innerHTML = "Checking backend…";
+
     try {
         const res = await GODMODE.health();
-        console.log("Backend alive:", res);
+        output.innerHTML = "Backend is alive: " + JSON.stringify(res);
     } catch (err) {
-        console.error("Backend unreachable:", err);
+        output.innerHTML = "Backend unreachable: " + err.message;
     }
+}
 }
 
 testConnection();
