@@ -28,8 +28,8 @@ class GodModeAPI {
             method,
             headers: { "Content-Type": "application/json" }
         };
-<div id="output" style="margin-top:20px; font-size:18px; color:#00ff99;"></div>
- if (body) fetchOptions.body = JSON.stringify(body);
+
+        if (body) fetchOptions.body = JSON.stringify(body);
 
         const response = await fetch(url, fetchOptions);
 
@@ -41,10 +41,7 @@ class GodModeAPI {
     }
 
     login(username, password) {
-        return this.request("/auth/login", "POST", {
-            username,
-            password
-        });
+        return this.request("/auth/login", "POST", { username, password });
     }
 
     checkPremium(userId) {
@@ -63,9 +60,7 @@ class GodModeAPI {
 const GODMODE = new GodModeAPI(API_BASE_URL);
 
 async function testConnection() {
-async function testConnection() {
     const output = document.getElementById("output");
-
     output.innerHTML = "Checking backend…";
 
     try {
@@ -75,6 +70,6 @@ async function testConnection() {
         output.innerHTML = "Backend unreachable: " + err.message;
     }
 }
-}
+
 
 testConnection();
