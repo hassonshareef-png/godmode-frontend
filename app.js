@@ -28,8 +28,8 @@ class GodModeAPI {
             method,
             headers: { "Content-Type": "application/json" }
         };
-
-        if (body) fetchOptions.body = JSON.stringify(body);
+<div id="output" style="margin-top:20px; font-size:18px; color:#00ff99;"></div>
+ if (body) fetchOptions.body = JSON.stringify(body);
 
         const response = await fetch(url, fetchOptions);
 
