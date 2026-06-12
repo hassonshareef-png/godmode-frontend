@@ -264,11 +264,78 @@ function loadModeScreen(mode) {
         </div>
     `;
   } else if (mode === "god") {
-    modeScreen.innerHTML = "<h2>God Mode</h2><p>God Mode engine UI goes here.</p>";
+    modeScreen.innerHTML = `
+        <h2>God Mode</h2>
+        <p>Full engine with prediction, mirrors, flips, and rundown fusion.</p>
+
+        <div class="field">
+            <label>Pick a State</label>
+            <select id="god-state">
+                <option value="">Choose…</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NY">New York</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="CA">California</option>
+                <option value="FL">Florida</option>
+            </select>
+        </div>
+
+        <button onclick="runGodMode()">Run God Mode Engine</button>
+
+        <div class="output-box">
+            <div class="output-title">God Mode Output</div>
+            <pre id="god-output"></pre>
+        </div>
+    `;
+}
+
   } else if (mode === "universe") {
-    modeScreen.innerHTML = "<h2>Universe Mode</h2><p>Universe engine UI goes here.</p>";
+    modeScreen.innerHTML = `
+        <h2>Universe Mode</h2>
+        <p>Cosmic logic, drift profiles, and multi‑state fusion.</p>
+
+        <div class="field">
+            <label>Pick a State</label>
+            <select id="universe-state">
+                <option value="">Choose…</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NY">New York</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="CA">California</option>
+                <option value="FL">Florida</option>
+            </select>
+        </div>
+
+        <button onclick="runUniverseMode()">Run Universe Engine</button>
+
+        <div class="output-box">
+            <div class="output-title">Universe Output</div>
+            <pre id="universe-output"></pre>
+        </div>
+    `;
+}
+
+}
+
   } else if (mode === "director") {
-    modeScreen.innerHTML = "<h2>Director Mode</h2><p>Your private owner dashboard.</p>";
+    modeScreen.innerHTML = `
+        <h2>Director Mode</h2>
+        <p>Owner‑only control panel.</p>
+
+        <div class="field">
+            <label>System Command</label>
+            <input id="director-command" type="text" placeholder="Enter command…">
+        </div>
+
+        <button onclick="runDirectorCommand()">Execute</button>
+
+        <div class="output-box">
+            <div class="output-title">Director Output</div>
+            <pre id="director-output"></pre>
+        </div>
+    `;
+}
+
   }
 }
 
@@ -276,4 +343,19 @@ function runBasic() {
     const state = document.getElementById("basic-state").value;
     document.getElementById("basic-output").textContent =
         state ? `Basic rundown for ${state}…` : "Choose a state first.";
+}
+function runGodMode() {
+    const state = document.getElementById("god-state").value;
+    document.getElementById("god-output").textContent =
+        state ? `God Mode engine running for ${state}…` : "Choose a state first.";
+}
+function runDirectorCommand() {
+    const cmd = document.getElementById("director-command").value.trim();
+    document.getElementById("director-output").textContent =
+        cmd ? `Executing: ${cmd}` : "Enter a command.";
+}
+function runUniverseMode() {
+    const state = document.getElementById("universe-state").value;
+    document.getElementById("universe-output").textContent =
+        state ? `Universe Mode activated for ${state}…` : "Choose a state first.";
 }
