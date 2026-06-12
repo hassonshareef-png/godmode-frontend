@@ -240,7 +240,31 @@ directorUnlockBtn.addEventListener("click", () => {
 
 function loadModeScreen(mode) {
   if (mode === "basic") {
-    modeScreen.innerHTML = "<h2>Basic Mode</h2><p>Basic rundown UI goes here.</p>";
+    modeScreen.innerHTML = `
+        <h2>Basic Mode</h2>
+        <p>This is your quick rundown mode.</p>
+
+        <div class="field">
+            <label>Pick a State</label>
+            <select id="basic-state">
+                <option value="">Choose…</option>
+                <option value="NJ">New Jersey</option>
+                <option value="NY">New York</option>
+                <option value="PA">Pennsylvania</option>
+                <option value="CA">California</option>
+                <option value="FL">Florida</option>
+            </select>
+        </div>
+
+        <button onclick="runBasic()">Run Basic Rundown</button>
+
+        <div class="output-box">
+            <div class="output-title">Basic Output</div>
+            <pre id="basic-output"></pre>
+        </div>
+    `;
+}
+
   } else if (mode === "god") {
     modeScreen.innerHTML = "<h2>God Mode</h2><p>God Mode engine UI goes here.</p>";
   } else if (mode === "universe") {
@@ -248,4 +272,9 @@ function loadModeScreen(mode) {
   } else if (mode === "director") {
     modeScreen.innerHTML = "<h2>Director Mode</h2><p>Your private owner dashboard.</p>";
   }
+}
+function runBasic() {
+    const state = document.getElementById("basic-state").value;
+    document.getElementById("basic-output").textContent =
+        state ? `Basic rundown for ${state}…` : "Choose a state first.";
 }
