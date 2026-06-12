@@ -202,3 +202,50 @@ setInterval(heartbeat, 15000); // every 15 seconds
 // Initial check
 testConnection();
 heartbeat();
+const DIRECTOR_PASSCODE = "8118";
+
+const modeCards = document.querySelectorAll(".mode-card");
+const modeScreen = document.getElementById("mode-screen");
+const directorUnlockBtn = document.getElementById("director-unlock-btn");
+const directorPassInput = document.getElementById("director-passcode");
+const directorStatus = document.getElementById("director-unlock-status");
+
+let directorUnlocked = false;
+
+modeCards.forEach(card => {
+  card.addEventListener("click", () => {
+    const mode = card.dataset.mode;
+
+    if (mode === "director" && !directorUnlocked) {
+      directorStatus.textContent = "Director Mode is locked. Enter passcode.";
+      return;
+    }
+
+    loadModeScreen(mode);
+  });
+});
+
+directorUnlockBtn.addEventListener("click", () => {
+  const value = directorPassInput.value.trim();
+  if (value === DIRECTOR_PASSCODE) {
+    directorUnlocked = true;
+    directorStatus.textContent = "Director Mode unlocked.";
+    const directorCard = document.querySelector('.mode-card[data-mode="director"]');
+    directorCard.classList.remove("mode-locked");
+    directorCard.innerHTML = "<h2>Director Mode ✅</h2><p>Owner‑only control panel.</p>";
+  } else {
+    directorStatus.textContent = "Incorrect passcode.";
+  }
+});
+
+function loadModeScreen(mode) {
+  if (mode === "basic") {
+    modeScreen.innerHTML = "<h2>Basic Mode</h2><p>Basic rundown UI goes here.</p>";
+  } else if (mode === "god") {
+    modeScreen.innerHTML = "<h2>God Mode</h2><p>God Mode engine UI goes here.</p>";
+  } else if (mode === "universe") {
+    modeScreen.innerHTML = "<h2>Universe Mode</h2><p>Universe engine UI goes here.</p>";
+  } else if (mode === "director") {
+    modeScreen.innerHTML = "<h2>Director Mode</h2><p>Your private owner dashboard.</p>";
+  }
+}
