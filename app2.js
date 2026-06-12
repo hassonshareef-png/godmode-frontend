@@ -263,8 +263,6 @@ function loadModeScreen(mode) {
             <pre id="basic-output"></pre>
         </div>
     `;
-}
-
   } else if (mode === "god") {
     modeScreen.innerHTML = "<h2>God Mode</h2><p>God Mode engine UI goes here.</p>";
   } else if (mode === "universe") {
@@ -273,6 +271,7 @@ function loadModeScreen(mode) {
     modeScreen.innerHTML = "<h2>Director Mode</h2><p>Your private owner dashboard.</p>";
   }
 }
+
 function runBasic() {
     const state = document.getElementById("basic-state").value;
     document.getElementById("basic-output").textContent =
