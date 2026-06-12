@@ -1,0 +1,156 @@
+/* ============================
+   GLOBAL THEME
+============================ */
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #0aff0a;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.app-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* ============================
+   HEADER
+============================ */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #0aff0a;
+}
+
+.status-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* ============================
+   STATUS PILLS
+============================ */
+.status-pill {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    border: 1px solid #0aff0a;
+}
+
+.status-pill.ok {
+    background: rgba(0, 255, 0, 0.15);
+    color: #0aff0a;
+}
+
+.status-pill.off {
+    background: rgba(255, 0, 0, 0.15);
+    color: #ff4d4d;
+    border-color: #ff4d4d;
+}
+
+.status-pill.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 4px #0aff0a; }
+    50% { box-shadow: 0 0 12px #0aff0a; }
+    100% { box-shadow: 0 0 4px #0aff0a; }
+}
+
+/* ============================
+   CARDS
+============================ */
+.card {
+    background: #0a0a0a;
+    border: 1px solid #0aff0a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    margin-top: 0;
+    color: #0aff0a;
+}
+
+/* ============================
+   FIELDS
+============================ */
+.field {
+    margin-bottom: 15px;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    background: #000;
+    border: 1px solid #0aff0a;
+    color: #0aff0a;
+    border-radius: 6px;
+}
+
+/* ============================
+   BUTTONS
+============================ */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #0aff0a;
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #11ff11;
+}
+
+/* ============================
+   OUTPUT BOXES
+============================ */
+.output-box {
+    background: #000;
+    border: 1px solid #0aff0a;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.output-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #0aff0a;
+}
+
+/* ============================
+   FOOTER
+============================ */
+.footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #0aff0a;
+    opacity: 0.7;
+}
