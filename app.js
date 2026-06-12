@@ -1,5 +1,6 @@
 const API_BASE_URL = "https://godmode-backend2.onrender.com";
 
+
 const hasAxios = typeof axios !== "undefined";
 
 class GodModeAPI {
