@@ -68,7 +68,38 @@
         </section>
 <!-- MODE SELECTOR STARTS HERE -->
 <section class="card">
-    ... (Basic, God, Universe, Director)
+    <h2>Select Mode</h2>
+
+    <div class="mode-selector">
+      <div class="mode-card" data-mode="basic">
+        <h2>1. Basic Mode</h2>
+        <p>Quick rundown.</p>
+      </div>
+
+      <div class="mode-card" data-mode="god">
+        <h2>2. God Mode</h2>
+        <p>Full engine.</p>
+      </div>
+
+      <div class="mode-card" data-mode="universe">
+        <h2>3. Universe Mode</h2>
+        <p>Cosmic logic.</p>
+      </div>
+
+      <div class="mode-card mode-locked" data-mode="director">
+        <h2>Director Mode 🔒</h2>
+        <p>Owner only.</p>
+      </div>
+    </div>
+
+    <div class="director-unlock">
+      <h3>Unlock Director Mode</h3>
+      <input type="password" id="director-passcode" placeholder="Enter passcode">
+      <button id="director-unlock-btn">Unlock</button>
+      <p id="director-unlock-status"></p>
+    </div>
+
+    <div id="mode-screen"></div>
 </section>
 <!-- MODE SELECTOR ENDS HERE -->
 
