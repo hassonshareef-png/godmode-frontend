@@ -116,4 +116,10 @@ button:hover {
         font-size: 16px;
     }
 }
+/* MAIN APP LAYOUT */
+.app-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
 
