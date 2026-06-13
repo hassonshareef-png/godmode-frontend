@@ -93,3 +93,110 @@ document.getElementById("director-unlock-btn").addEventListener("click", () => {
         status.style.color = "#ff4444";
     }
 });
+// =========================
+// MODE SELECTOR LOGIC
+// =========================
+
+let activeMode = "basic";
+
+document.querySelectorAll(".mode-card").forEach(card => {
+    card.addEventListener("click", () => {
+        const mode = card.dataset.mode;
+
+        // Director mode locked unless unlocked
+        if (mode === "director" && !window.directorUnlocked) {
+            document.getElementById("director-unlock-status").innerText =
+                "Director Mode is locked.";
+            return;
+        }
+
+        activeMode = mode;
+
+        // Highlight active card
+        document.querySelectorAll(".mode-card").forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+
+        // Update mode screen
+        document.getElementById("mode-screen").innerText =
+            `Active Mode: ${mode.toUpperCase()}`;
+    });
+});
+// =========================
+// DIRECTOR MODE UNLOCK
+// =========================
+
+window.directorUnlocked = false;
+
+document.getElementById("director-unlock-btn").addEventListener("click", () => {
+    const pass = document.getElementById("director-passcode").value;
+
+    if (pass === "7777") {   // you can change this
+        window.directorUnlocked = true;
+        document.getElementById("director-unlock-status").innerText =
+            "Director Mode Unlocked!";
+        document.querySelector("[data-mode='director']").classList.remove("mode-locked");
+    } else {
+        document.getElementById("director-unlock-status").innerText =
+            "Incorrect passcode.";
+    }
+});
+// =========================
+// PREMIUM CHECK
+// =========================
+
+function checkPremium() {
+    const user = document.getElementById("username").value;
+
+    if (user.toLowerCase() === "owner") {
+        document.getElementById("premium-status").classList.remove("off");
+        document.getElementById("premium-status").classList.add("ok");
+        document.getElementById("premium-status").innerText = "Premium: Active";
+    } else {
+        document.getElementById("premium-status").innerText = "Premium: Locked";
+    }
+}
+// =========================
+// PREDICTION ENGINE
+// =========================
+
+async function getPrediction() {
+    const state = document.getElementById("state-select").value;
+
+    if (!state) {
+        document.getElementById("prediction-text").innerText =
+            "Please select a state first.";
+        return;
+    }
+
+    document.getElementById("prediction-text").innerText = "Loading...";
+
+    try {
+        const res = await fetch(`https://godmode-backend2.onrender.com/predict/${state}`);
+        const data = await res.json();
+
+        document.getElementById("prediction-text").innerText =
+            `🎯 Prediction (${activeMode.toUpperCase()} Mode)\n\n${data.prediction}`;
+    } catch (err) {
+        document.getElementById("prediction-text").innerText =
+            "Error fetching prediction.";
+    }
+}
+🎯 Prediction (GOD MODE)
+// =========================
+// SYSTEM TOOLS
+// =========================
+
+function testConnection() {
+    document.getElementById("log-text").innerText += "Testing backend...\n";
+}
+
+function manualHeartbeat() {
+    document.getElementById("log-text").innerText += "Heartbeat ping sent.\n";
+}
+
+function clearOutputs() {
+    document.getElementById("log-text").innerText = "";
+    document.getElementById("prediction-text").innerText = "";
+}
+
+12-34-56
