@@ -104,6 +104,7 @@ document.getElementById("director-unlock-btn").addEventListener("click", () => {
 // =========================
 // MODE SELECTOR LOGIC
 // =========================
+document.body.className = `${mode}-mode`;
 
 let activeMode = "basic";
 
