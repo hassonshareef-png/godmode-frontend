@@ -38,6 +38,12 @@ function getPrediction() {
 }
 
 // ---- SYSTEM TOOLS ----
+function appendLog(msg) {
+    const log = document.getElementById("log-text");
+    log.innerText += msg + "\n";
+    log.scrollTop = log.scrollHeight;
+}
+
 function testConnection() {
     const log = document.getElementById("log-text");
     log.textContent += "\n[SYSTEM] Backend ping: OK (mock).";
@@ -54,6 +60,8 @@ function clearOutputs() {
 }
 
 // ---- MODE SELECTOR ----
+document.body.className = `${mode}-mode`;
+
 const modeScreen = document.getElementById("mode-screen");
 const modeCards = document.querySelectorAll(".mode-card");
 
@@ -182,6 +190,7 @@ async function getPrediction() {
     }
 }
 🎯 Prediction (GOD MODE)
+12-34-56
 // =========================
 // SYSTEM TOOLS
 // =========================
@@ -199,12 +208,7 @@ function clearOutputs() {
     document.getElementById("prediction-text").innerText = "";
 }
 
-12-34-56
-function appendLog(msg) {
-    const log = document.getElementById("log-text");
-    log.innerText += msg + "\n";
-    log.scrollTop = log.scrollHeight;
-}
+
 function testConnection() {
     appendLog("Testing backend...");
 }
