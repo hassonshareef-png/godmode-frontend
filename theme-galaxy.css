@@ -1,138 +1,144 @@
-<!-- rebuild999 -->  
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<link rel="stylesheet" href="theme-galaxy.css">
+/* ---------------------------------------------------------
+   🌌 GODMODE++ — DEEP SPACE GALAXY MODE THEME
+   Author: hass + Copilot
+   --------------------------------------------------------- */
 
-   <!-- rebuild3 -->
-  <meta charset="UTF-8">
-    <title>GODMODE++ Playground</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style2.css">
-</head>
-<!-- rebuild2 -->
-<body>
-    <div class="app-container">
+/* GLOBAL RESET */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(circle at 20% 20%, #1a1a2e, #00010a 70%);
+    background-attachment: fixed;
+    color: #E8E8FF;
+    overflow-x: hidden;
+}
 
-        <!-- HEADER -->
-        <header class="header">
-            <h1>GODMODE++</h1>
-            <div class="status-bar">
-                <span id="backend-status" class="status-pill ok">Backend: Alive</span>
-                <span id="heartbeat" class="status-pill pulse">Heartbeat Active</span>
-            </div>
-        </header>
+/* STARFIELD LAYER */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: url('https://i.imgur.com/9aK9Q0R.png'); /* starfield */
+    opacity: 0.25;
+    z-index: -1;
+}
 
-        <!-- LOGIN CARD -->
-        <section class="card">
-            <h2>Access Control</h2>
+/* GLASS PANELS */
+.card, .container, .panel {
+    background: rgba(10, 10, 25, 0.45);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(120, 120, 255, 0.25);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 0 25px rgba(90, 0, 255, 0.35);
+}
 
-            <div class="field">
-                <label>Username</label>
-                <input id="username" type="text" placeholder="enter username">
-            </div>
- 
-            <div class="field">
-                <label>Password</label>
-                <input id="password" type="password" placeholder="enter password">
-            </div>
+/* HEADERS */
+h1, h2, h3 {
+    color: #A88CFF;
+    text-shadow: 0 0 12px #6A00FF;
+    letter-spacing: 1px;
+}
 
-            <button onclick="login()">Login</button>
+/* INPUTS */
+input, select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #6A00FF;
+    background: rgba(0, 0, 20, 0.6);
+    color: #E8E8FF;
+    outline: none;
+    box-shadow: 0 0 10px rgba(106, 0, 255, 0.4);
+}
 
-            <div class="premium-row">
-                <span id="premium-status" class="status-pill off">Premium: Locked</span>
-                <button onclick="checkPremium()">Check Premium</button>
-            </div>
-        </section>
+input:focus, select:focus {
+    border-color: #9D4BFF;
+    box-shadow: 0 0 15px #9D4BFF;
+}
 
-        <!-- PREDICTION CARD -->
-        <section class="card">
-            <h2>Prediction Engine</h2>
+/* BUTTONS */
+button {
+    background: linear-gradient(135deg, #1A2B6D, #6A00FF);
+    border: none;
+    padding: 14px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 0 18px rgba(106, 0, 255, 0.5);
+}
 
-            <div class="field">
-                <label>Select State</label>
-                <select id="state-select">
-                    <option value="">Choose…</option>
-                    <option value="NJ">New Jersey</option>
-                    <option value="NY">New York</option>
-                    <option value="PA">Pennsylvania</option>
-                    <option value="CA">California</option>
-                    <option value="FL">Florida</option>
-                </select>
-            </div>
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(150, 80, 255, 0.9);
+}
 
-            <button onclick="getPrediction()">Get Prediction</button>
+/* MODE BUTTONS */
+.mode-btn {
+    padding: 12px;
+    border-radius: 10px;
+    margin: 6px 0;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
 
-            <div class="output-box">
-                <div class="output-title">Prediction Output</div>
-                <pre id="prediction-text"></pre>
-            </div>
-        </section>
-<!-- MODE SELECTOR STARTS HERE -->
-<section class="card">
-    <h2>Select Mode</h2>
+/* BASIC MODE — Blue Nebula */
+.mode-basic {
+    background: rgba(0, 80, 255, 0.25);
+    border: 1px solid rgba(0, 120, 255, 0.5);
+    box-shadow: 0 0 15px rgba(0, 120, 255, 0.5);
+}
 
-    <div class="mode-selector">
-      <div class="mode-card" data-mode="basic">
-        <h2>1. Basic Mode</h2>
-        <p>Quick rundown.</p>
-      </div>
+/* GOD MODE — Matrix Cosmic Green */
+.mode-god {
+    background: rgba(0, 255, 120, 0.18);
+    border: 1px solid rgba(0, 255, 120, 0.4);
+    box-shadow: 0 0 15px rgba(0, 255, 120, 0.4);
+}
 
-      <div class="mode-card" data-mode="god">
-        <h2>2. God Mode</h2>
-        <p>Full engine.</p>
-      </div>
+/* UNIVERSE MODE — Purple Cosmic Storm */
+.mode-universe {
+    background: rgba(140, 0, 255, 0.25);
+    border: 1px solid rgba(180, 0, 255, 0.5);
+    box-shadow: 0 0 18px rgba(180, 0, 255, 0.6);
+}
 
-      <div class="mode-card" data-mode="universe">
-        <h2>3. Universe Mode</h2>
-        <p>Cosmic logic.</p>
-      </div>
+/* DIRECTOR MODE — Red/Gold Command */
+.mode-director {
+    background: rgba(255, 0, 60, 0.25);
+    border: 1px solid rgba(255, 0, 60, 0.5);
+    box-shadow: 0 0 18px rgba(255, 0, 60, 0.6);
+}
 
-      <div class="mode-card mode-locked" data-mode="director">
-        <h2>Director Mode 🔒</h2>
-        <p>Owner‑only.</p>
-      </div>
-    </div>
+/* LOCKED MODE */
+.locked {
+    opacity: 0.4;
+    filter: grayscale(100%);
+}
 
-    <div class="director-unlock">
-      <h3>Unlock Director Mode</h3>
-      <input type="password" id="director-passcode" placeholder="Enter passcode">
-      <button id="director-unlock-btn">Unlock</button>
-      <p id="director-unlock-status"></p>
-    </div>
+/* PREDICTION OUTPUT */
+#prediction-text, #log-text {
+    background: rgba(10, 10, 30, 0.55);
+    border: 1px solid rgba(120, 120, 255, 0.3);
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(120, 120, 255, 0.4);
+    min-height: 80px;
+    color: #E8E8FF;
+}
 
-    <div id="mode-screen"></div>
-</section>
-<!-- MODE SELECTOR ENDS HERE -->
-
-<!-- SYSTEM TOOLS -->
-<section class="card">
-
-        <!-- SYSTEM TOOLS -->
-        <section class="card">
-            <h2>System Tools</h2>
-
-            <div class="tools-row">
-                <button onclick="testConnection()">Test Backend</button>
-                <button onclick="manualHeartbeat()">Ping Heartbeat</button>
-                <button onclick="clearOutputs()">Clear Output</button>
-            </div>
-
-            <div class="output-box">
-                <div class="output-title">System Log</div>
-                <pre id="log-text"></pre>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="footer">
-            GODMODE++ wired to <code>https://godmode-backend2.onrender.com</code>
-        </footer>
-
-    </div>
-
-    <script src="app2.js"></script>
-</body>
-</html>
+/* FOOTER */
+footer {
+    text-align: center;
+    color: #6666AA;
+    margin-top: 40px;
+    font-size: 14px;
+}
 
 
