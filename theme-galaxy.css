@@ -1,144 +1,119 @@
-/* ---------------------------------------------------------
-   🌌 GODMODE++ — DEEP SPACE GALAXY MODE THEME
-   Author: hass + Copilot
-   --------------------------------------------------------- */
+/* ============================
+   DEEP SPACE GALAXY THEME
+   GODMODE++ FRONTEND
+   ============================ */
 
-/* GLOBAL RESET */
+:root {
+    --bg-main: #02010a;
+    --bg-panel: rgba(255, 255, 255, 0.06);
+    --bg-panel-glow: rgba(0, 255, 255, 0.12);
+    --text-main: #e0eaff;
+    --text-accent: #00eaff;
+    --border-glow: 0 0 12px rgba(0, 255, 255, 0.45);
+    --radius: 14px;
+    --transition: 0.25s ease;
+}
+
+/* GLOBAL */
 body {
+    background: radial-gradient(circle at 20% 20%, #0a0f2d, #000);
+    color: var(--text-main);
+    font-family: "Inter", sans-serif;
     margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif;
-    background: radial-gradient(circle at 20% 20%, #1a1a2e, #00010a 70%);
-    background-attachment: fixed;
-    color: #E8E8FF;
-    overflow-x: hidden;
-}
-
-/* STARFIELD LAYER */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: url('https://i.imgur.com/9aK9Q0R.png'); /* starfield */
-    opacity: 0.25;
-    z-index: -1;
-}
-
-/* GLASS PANELS */
-.card, .container, .panel {
-    background: rgba(10, 10, 25, 0.45);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(120, 120, 255, 0.25);
-    border-radius: 14px;
     padding: 20px;
-    box-shadow: 0 0 25px rgba(90, 0, 255, 0.35);
 }
 
-/* HEADERS */
-h1, h2, h3 {
-    color: #A88CFF;
-    text-shadow: 0 0 12px #6A00FF;
-    letter-spacing: 1px;
+/* PANELS */
+.panel {
+    background: var(--bg-panel);
+    border: 1px solid rgba(0, 255, 255, 0.25);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 18px;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--border-glow);
+    transition: var(--transition);
+}
+
+.panel:hover {
+    background: var(--bg-panel-glow);
 }
 
 /* INPUTS */
 input, select {
     width: 100%;
     padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #6A00FF;
-    background: rgba(0, 0, 20, 0.6);
-    color: #E8E8FF;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(0, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+    font-size: 16px;
     outline: none;
-    box-shadow: 0 0 10px rgba(106, 0, 255, 0.4);
+    transition: var(--transition);
 }
 
 input:focus, select:focus {
-    border-color: #9D4BFF;
-    box-shadow: 0 0 15px #9D4BFF;
+    border-color: var(--text-accent);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.45);
 }
 
 /* BUTTONS */
 button {
-    background: linear-gradient(135deg, #1A2B6D, #6A00FF);
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: var(--radius);
     border: none;
-    padding: 14px 20px;
-    border-radius: 12px;
+    background: linear-gradient(90deg, #003b5c, #00aaff);
     color: white;
+    font-size: 17px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.25s ease;
-    box-shadow: 0 0 18px rgba(106, 0, 255, 0.5);
+    transition: var(--transition);
 }
 
 button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 25px rgba(150, 80, 255, 0.9);
+    background: linear-gradient(90deg, #005f8f, #00cfff);
+    transform: translateY(-2px);
 }
 
-/* MODE BUTTONS */
-.mode-btn {
-    padding: 12px;
-    border-radius: 10px;
-    margin: 6px 0;
-    font-weight: 700;
-    text-align: center;
+/* MODE SELECTOR */
+.mode-card {
+    padding: 14px;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.25);
+    margin-bottom: 12px;
     cursor: pointer;
-    transition: 0.25s ease;
+    transition: var(--transition);
 }
 
-/* BASIC MODE — Blue Nebula */
-.mode-basic {
-    background: rgba(0, 80, 255, 0.25);
-    border: 1px solid rgba(0, 120, 255, 0.5);
-    box-shadow: 0 0 15px rgba(0, 120, 255, 0.5);
+.mode-card:hover {
+    background: rgba(0, 255, 255, 0.12);
+    box-shadow: var(--border-glow);
 }
 
-/* GOD MODE — Matrix Cosmic Green */
-.mode-god {
-    background: rgba(0, 255, 120, 0.18);
-    border: 1px solid rgba(0, 255, 120, 0.4);
-    box-shadow: 0 0 15px rgba(0, 255, 120, 0.4);
-}
-
-/* UNIVERSE MODE — Purple Cosmic Storm */
-.mode-universe {
-    background: rgba(140, 0, 255, 0.25);
-    border: 1px solid rgba(180, 0, 255, 0.5);
-    box-shadow: 0 0 18px rgba(180, 0, 255, 0.6);
-}
-
-/* DIRECTOR MODE — Red/Gold Command */
-.mode-director {
-    background: rgba(255, 0, 60, 0.25);
-    border: 1px solid rgba(255, 0, 60, 0.5);
-    box-shadow: 0 0 18px rgba(255, 0, 60, 0.6);
-}
-
-/* LOCKED MODE */
-.locked {
-    opacity: 0.4;
-    filter: grayscale(100%);
-}
-
-/* PREDICTION OUTPUT */
-#prediction-text, #log-text {
-    background: rgba(10, 10, 30, 0.55);
-    border: 1px solid rgba(120, 120, 255, 0.3);
-    padding: 18px;
-    border-radius: 12px;
-    box-shadow: 0 0 20px rgba(120, 120, 255, 0.4);
+/* OUTPUT BOX */
+#output, #predictionOutput, #systemLog {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.25);
+    padding: 16px;
+    border-radius: var(--radius);
     min-height: 80px;
-    color: #E8E8FF;
-
-
-/* FOOTER */
-footer {
-    text-align: center;
-    color: #6666AA;
-    margin-top: 40px;
-    font-size: 14px;
+    white-space: pre-wrap;
+    font-size: 15px;
+    box-shadow: var(--border-glow);
 }
 
+/* MOBILE */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+    button {
+        font-size: 16px;
+    }
+}
 
