@@ -241,3 +241,14 @@ body.universe-mode {
 body.director-mode {
     --text-accent: #00ff95;
 }
+@media (max-width: 600px) {
+    .panel {
+        padding: 14px;
+    }
+    h1 {
+        font-size: 26px;
+    }
+    button {
+        padding: 12px;
+    }
+}
