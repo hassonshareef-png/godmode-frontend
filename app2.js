@@ -200,3 +200,30 @@ function clearOutputs() {
 }
 
 12-34-56
+function appendLog(msg) {
+    const log = document.getElementById("log-text");
+    log.innerText += msg + "\n";
+    log.scrollTop = log.scrollHeight;
+}
+function testConnection() {
+    appendLog("Testing backend...");
+}
+
+function manualHeartbeat() {
+    appendLog("Heartbeat ping sent.");
+}
+body.basic-mode {
+    --text-accent: #00eaff;
+}
+
+body.god-mode {
+    --text-accent: #ff00ff;
+}
+
+body.universe-mode {
+    --text-accent: #ffae00;
+}
+
+body.director-mode {
+    --text-accent: #00ff95;
+}
