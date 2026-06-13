@@ -153,3 +153,40 @@ button:hover {
     flex-direction: column;
     gap: 12px;
 }
+.mode-card.active {
+    border-color: var(--text-accent);
+    box-shadow: 0 0 18px rgba(0, 255, 255, 0.55);
+    background: rgba(0, 255, 255, 0.10);
+    tra.mode-locked {
+    opacity: 0.4;
+    pointer-events: none;
+}
+nsform: scale(1.02);
+}
+.status-pill.ok {
+    background: rgba(0, 255, 255, 0.25);
+    border: 1px solid var(--text-accent);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.45);
+    transition: 0.3s ease;
+}
+
+.status-pill.off {
+    opacity: 0.5;
+}
+.output-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-accent);
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.45);
+}
+button:active {
+    transform: scale(0.97);
+}
+body {
+    animation: drift 18s infinite alternate ease-in-out;
+}
+
+@keyframes drift {
+    0% { background-position: 20% 20%; }
+    100% { background-position: 80% 80%; }
+}
