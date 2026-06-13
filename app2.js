@@ -133,6 +133,15 @@ document.querySelectorAll(".mode-card").forEach(card => {
 // =========================
 // DIRECTOR MODE UNLOCK
 // =========================
+body.director-mode {
+    background: radial-gradient(circle at 50% 50%, #001f1f, #000);
+    animation: none;
+}
+
+body.director-mode .panel {
+    box-shadow: 0 0 22px rgba(0, 255, 149, 0.55);
+    border-color: rgba(0, 255, 149, 0.55);
+}
 
 window.directorUnlocked = false;
 
