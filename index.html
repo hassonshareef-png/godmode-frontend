@@ -1,182 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>GODMODE++ Playground</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>GODMODE++</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="style2.css">
-    <link rel="stylesheet" href="theme-galaxy.css">
+  <!-- Light theme -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Galaxy theme -->
+  <link rel="stylesheet" href="galaxy.css">
 </head>
 
-<body>
-    <div class="app-container">
+<body class="light">
 
-        <!-- HEADER -->
-        <header class="header">
-            <h1>GODMODE++</h1>
-            <div class="status-bar">
-                <span id="backend-status" class="status-pill ok">Backend: Alive</span>
-                <span id="heartbeat" class="status-pill pulse">Heartbeat Active</span>
-            </div>
-        </header>
+  <!-- LOGIN -->
+  <div id="login-screen" class="screen">
+    <h1 class="title">GODMODE++</h1>
+    <p class="subtitle">Log in to continue</p>
 
-        <!-- LOGIN PANEL -->
-        <section class="panel">
-            <h2>Access Control</h2>
+    <div class="card">
+      <label>Username</label>
+      <input id="user" type="text">
 
-            <div class="field">
-                <label>Username</label>
-                <input id="username" type="text" placeholder="enter username">
-            </div>
+      <label>Password</label>
+      <input id="pass" type="password">
 
-            <div class="field">
-                <label>Password</label>
-                <input id="password" type="password" placeholder="enter password">
-            </div>
-
-            <button onclick="login()">Login</button>
-
-            <div class="premium-row">
-                <span id="premium-status" class="status-pill off">Premium: Locked</span>
-                <button onclick="checkPremium()">Check Premium</button>
-            </div>
-        </section>
-<div class="upgrade-section">
-
-    <div class="upgrade-card">
-        <h2>God Mode</h2>
-        <p class="price">$4.99</p>
-        <ul>
-            <li>Premium predictions</li>
-            <li>Faster rundown</li>
-            <li>Extra filters</li>
-            <li>Better accuracy</li>
-        </ul>
-        <button onclick="window.open('https://buy.stripe.com/4gMfZh8Kr19D3kUdvRc7u03','_blank')">
-            Unlock God Mode
-        </button>
+      <button onclick="login()">Log In</button>
+      <p id="login-error" class="error"></p>
     </div>
+  </div>
 
-    <div class="upgrade-card">
-        <h2>Universe Mode</h2>
-        <p class="price">$9.99</p>
-        <ul>
-            <li>Everything in God Mode</li>
-            <li>Advanced patterns</li>
-            <li>Director-level controls</li>
-            <li>Deep analytics</li>
-        </ul>
-        <button onclick="window.open('https://buy.stripe.com/aFabJ1e4L5pT7Ba8bxc7u04','_blank')">
-            Unlock Universe Mode
-        </button>
-    </div>
+  <!-- HOME -->
+  <div id="home-screen" class="screen hidden">
 
-</div>
+    <header class="top">
+      <span class="logo">GODMODE++</span>
+      <button onclick="toggleGalaxy()">Galaxy Mode</button>
+    </header>
 
-        <!-- PREDICTION PANEL -->
-        <section class="panel">
-            <h2>Prediction Engine</h2>
+    <h2>Modes</h2>
 
-            <div class="field">
-                <label>Select State</label>
-                <select id="state-select">
-                    <option value="">Choose…</option>
-                    <option value="NJ">New Jersey</option>
-                    <option value="NY">New York</option>
-                    <option value="PA">Pennsylvania</option>
-                    <option value="CA">California</option>
-                    <option value="FL">Florida</option>
-                </select>
-            </div>
+    <div class="grid">
 
-            <button onclick="getPrediction()">Get Prediction</button>
+      <div class="mode">
+        <h3>Free Mode</h3>
+        <p>Basic rundown tools.</p>
+        <button>Enter</button>
+      </div>
 
-            <div id="loadingBar" class="loading-bar"></div>
+      <div class="mode locked">
+        <h3>God Mode</h3>
+        <p>Premium predictions.</p>
+        <button onclick="upgrade()">Unlock</button>
+      </div>
 
-            <div class="output-box">
-                <div class="output-title">Prediction Output</div>
-                <pre id="prediction-text"></pre>
-            </div>
-        </section>
+      <div class="mode locked">
+        <h3>Universe Mode</h3>
+        <p>Advanced analytics.</p>
+        <button onclick="upgrade()">Unlock</button>
+      </div>
 
-        <!-- MODE SELECTOR -->
-        <section class="panel">
-            <h2>Select Mode</h2>
-
-            <div class="mode-selector">
-                <div class="mode-card" data-mode="basic">
-                    <h2>1. Basic Mode</h2>
-                    <p>Quick rundown.</p>
-                </div>
-
-                <div class="mode-card" data-mode="god">
-                    <h2>2. God Mode</h2>
-                    <p>Full engine.</p>
-                </div>
-
-                <div class="mode-card" data-mode="universe">
-                    <h2>3. Universe Mode</h2>
-                    <p>Cosmic logic.</p>
-                </div>
-
-                <div class="mode-card mode-locked" data-mode="director">
-                    <h2>Director Mode 🔒</h2>
-                    <p>Owner‑only.</p>
-                </div>
-            </div>
-
-            <div class="director-unlock">
-                <h3>Unlock Director Mode</h3>
-                <input type="password" id="director-passcode" placeholder="Enter passcode">
-                <button id="director-unlock-btn">Unlock</button>
-                <p id="director-unlock-status"></p>
-            </div>
-
-            <div id="mode-screen"></div>
-        </section>
-
-        <!-- SYSTEM TOOLS -->
-        <section class="panel">
-            <h2>System Tools</h2>
-
-            <div class="tools-row">
-                <button onclick="testConnection()">Test Backend</button>
-                <button onclick="manualHeartbeat()">Ping Heartbeat</button>
-                <button onclick="clearOutputs()">Clear Output</button>
-            </div>
-
-            <div class="output-box">
-                <div class="output-title">System Log</div>
-                <pre id="log-text"></pre>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer class="footer">
-            GODMODE++ wired to <code>https://godmode-backend2.onrender.com</code>
-        </footer>
+      <div class="mode">
+        <h3>Director Mode</h3>
+        <p>Protected access.</p>
+        <button onclick="openDirector()">Enter Passcode</button>
+        <p id="director-status" class="status"></p>
+      </div>
 
     </div>
+  </div>
 
-    <!-- JS -->
-    <script src="app2.js"></script>
+  <!-- DIRECTOR PASSCODE -->
+  <div id="director-modal" class="modal hidden">
+    <div class="modal-box">
+      <h2>Director Mode</h2>
+      <input id="director-code" type="password" placeholder="Passcode">
+      <button onclick="unlockDirector()">Unlock</button>
+      <p id="director-error" class="error"></p>
+      <button class="close" onclick="closeDirector()">Close</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
-<div id="upgradeModal" class="modal">
-    <div class="modal-content">
-        <h2>Unlock Premium Access</h2>
-        <p>Get full access to advanced features.</p>
-
-        <button onclick="window.open('https://buy.stripe.com/4gMfZh8Kr19D3kUdvRc7u03','_blank')">
-            Unlock God Mode – $4.99
-        </button>
-
-        <button onclick="window.open('https://buy.stripe.com/aFabJ1e4L5pT7Ba8bxc7u04','_blank')">
-            Unlock Universe Mode – $9.99
-        </button>
-
-        <button class="close-btn" onclick="closeUpgrade()">Close</button>
-    </div>
-</div>
+<body class="galaxy">
+<script src="app.js"></script>
