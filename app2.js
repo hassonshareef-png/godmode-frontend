@@ -26,6 +26,10 @@ function checkPremium() {
 
 // ---- PREDICTION ----
 function getPrediction() {
+   const bar = document.getElementById("loadingBar");
+bar.style.width = "0%";
+setTimeout(() => bar.style.width = "100%", 50);
+
     const state = document.getElementById("state-select").value;
     const out = document.getElementById("prediction-text");
 
