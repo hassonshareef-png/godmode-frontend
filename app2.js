@@ -114,10 +114,14 @@ modeCards.forEach(card => {
 
         // Update active mode
         activeMode = mode;
+document.body.classList.add("mode-anim");
+setTimeout(() => document.body.classList.remove("mode-anim"), 900);
 
         // Highlight selected card
         document.querySelectorAll(".mode-card").forEach(c => c.classList.remove("active"));
         card.classList.add("active");
+document.body.classList.add("mode-anim");
+setTimeout(() => document.body.classList.remove("mode-anim"), 900);
 
         // Update screen text
         modeScreen.textContent = `Active Mode: ${mode.toUpperCase()}`;
