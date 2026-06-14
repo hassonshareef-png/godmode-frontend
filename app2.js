@@ -51,3 +51,23 @@ function unlockDirector() {
 function upgrade() {
   window.open("https://buy.stripe.com/4gMfZh8Kr19D3kUdvRc7u03", "_blank");
 }
+function $(id) {
+  return document.getElementById(id);
+}
+
+function login() {
+  const user = $("login-user").value.trim();
+  const pass = $("login-pass").value.trim();
+
+  if (!user || !pass) {
+    $("login-error").textContent = "Enter username and password.";
+    return;
+  }
+
+  if (user === "admin" && pass === "8118") {
+    $("login-screen").classList.add("hidden");
+    $("home-screen").classList.remove("hidden");
+  } else {
+    $("login-error").textContent = "Incorrect username or password.";
+  }
+}
