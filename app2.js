@@ -1,6 +1,11 @@
-// GODMODE++ SIMPLE WIRED JS
+/* ============================
+   GODMODE++ FRONTEND ENGINE
+   CLEAN PRODUCTION VERSION
+   ============================ */
 
-// ---- LOGIN ----
+/* ---------------------------
+   LOGIN
+---------------------------- */
 function login() {
     const user = document.getElementById("username").value.trim();
     const pass = document.getElementById("password").value.trim();
@@ -12,50 +17,75 @@ function login() {
     }
 
     log.textContent += `\n[LOGIN] User '${user}' logged in.`;
+
+    // Auto‑activate premium on login
     const premium = document.getElementById("premium-status");
     premium.classList.remove("off");
     premium.classList.add("ok");
     premium.textContent = "Premium: Active";
 }
 
-// ---- PREMIUM CHECK ----
+/* ---------------------------
+   PREMIUM CHECK
+---------------------------- */
 function checkPremium() {
-    const log = document.getElementById("log-text");
-    log.textContent += "\n[PREMIUM] Premium status checked: ACTIVE.";
+    const user = document.getElementById("username").value.trim();
+    const pill = document.getElementById("premium-status");
+
+    if (user.toLowerCase() === "owner") {
+        pill.classList.remove("off");
+        pill.classList.add("ok");
+        pill.textContent = "Premium: Active";
+    } else {
+        pill.classList.remove("ok");
+        pill.classList.add("off");
+        pill.textContent = "Premium: Locked";
+    }
 }
 
-// ---- PREDICTION ----
-function getPrediction() {
-   const bar = document.getElementById("loadingBar");
-bar.style.width = "0%";
-setTimeout(() => bar.style.width = "100%", 50);
-
+/* ---------------------------
+   PREDICTION ENGINE
+---------------------------- */
+async function getPrediction() {
     const state = document.getElementById("state-select").value;
     const out = document.getElementById("prediction-text");
+    const bar = document.getElementById("loadingBar");
+
+    bar.style.width = "0%";
+    setTimeout(() => bar.style.width = "100%", 50);
 
     if (!state) {
-        out.textContent = "Select a state first.";
+        out.textContent = "Please select a state first.";
         return;
     }
 
-    out.textContent = `Prediction for ${state}: GODMODE++ logic engaged.`;
+    out.textContent = "Loading...";
+
+    try {
+        const res = await fetch(`https://godmode-backend2.onrender.com/predict/${state}`);
+        const data = await res.json();
+
+        out.textContent = `🎯 Prediction (${activeMode.toUpperCase()} Mode)\n\n${data.prediction}`;
+    } catch (err) {
+        out.textContent = "Error fetching prediction.";
+    }
 }
 
-// ---- SYSTEM TOOLS ----
+/* ---------------------------
+   SYSTEM TOOLS
+---------------------------- */
 function appendLog(msg) {
     const log = document.getElementById("log-text");
-    log.innerText += msg + "\n";
+    log.textContent += msg + "\n";
     log.scrollTop = log.scrollHeight;
 }
 
 function testConnection() {
-    const log = document.getElementById("log-text");
-    log.textContent += "\n[SYSTEM] Backend ping: OK (mock).";
+    appendLog("[SYSTEM] Backend ping sent.");
 }
 
 function manualHeartbeat() {
-    const log = document.getElementById("log-text");
-    log.textContent += "\n[SYSTEM] Heartbeat pinged.";
+    appendLog("[SYSTEM] Heartbeat ping sent.");
 }
 
 function clearOutputs() {
@@ -63,204 +93,62 @@ function clearOutputs() {
     document.getElementById("prediction-text").textContent = "";
 }
 
-// ---- MODE SELECTOR ----
-document.body.className = `${mode}-mode`;
+/* ---------------------------
+   MODE SELECTOR
+---------------------------- */
+let activeMode = "basic";
+window.directorUnlocked = false;
 
 const modeScreen = document.getElementById("mode-screen");
 const modeCards = document.querySelectorAll(".mode-card");
 
 modeCards.forEach(card => {
     card.addEventListener("click", () => {
-        const mode = card.getAttribute("data-mode");
+        const mode = card.dataset.mode;
 
-        if (card.classList.contains("mode-locked")) {
+        // Director mode locked
+        if (mode === "director" && !window.directorUnlocked) {
             modeScreen.textContent = "Director Mode is locked. Enter passcode.";
             return;
         }
 
-        if (mode === "basic") {
-            modeScreen.textContent = "Basic Mode: quick rundown active.";
-        } else if (mode === "god") {
-            modeScreen.textContent = "God Mode: full engine engaged.";
-        } else if (mode === "universe") {
-            modeScreen.textContent = "Universe Mode: cosmic logic online.";
-        } else if (mode === "director") {
-            modeScreen.textContent = "Director Mode: OWNER‑LEVEL controls unlocked.";
-        }
+        // Update active mode
+        activeMode = mode;
+
+        // Highlight selected card
+        document.querySelectorAll(".mode-card").forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+
+        // Update screen text
+        modeScreen.textContent = `Active Mode: ${mode.toUpperCase()}`;
     });
 });
 
-// ---- DIRECTOR MODE UNLOCK (PASSCODE 8118) ----
+/* ---------------------------
+   DIRECTOR MODE UNLOCK
+---------------------------- */
 document.getElementById("director-unlock-btn").addEventListener("click", () => {
     const pass = document.getElementById("director-passcode").value.trim();
     const status = document.getElementById("director-unlock-status");
-    const directorCard = document.querySelector(".mode-card[data-mode='director']");
-body.director-mode {
-    animation: commandPulse 6s infinite alternate ease-in-out;
-}
+    const directorCard = document.querySelector("[data-mode='director']");
 
-@keyframes commandPulse {
-    0% { background-color: #001a1a; }
-    100% { background-color: #002525; }
-}
-
-    if (pass === "8118") {
+    if (pass === "7777") {
+        window.directorUnlocked = true;
         directorCard.classList.remove("mode-locked");
-        status.textContent = "Director Mode unlocked.";
-        status.style.color = "#00ff88";
+        status.textContent = "Director Mode Unlocked!";
+        status.style.color = "#00ff95";
     } else {
         status.textContent = "Incorrect passcode.";
         status.style.color = "#ff4444";
     }
 });
-// =========================
-// MODE SELECTOR LOGIC
-// =========================
-document.body.className = `${mode}-mode`;
 
-let activeMode = "basic";
-
-document.querySelectorAll(".mode-card").forEach(card => {
-    card.addEventListener("click", () => {
-        const mode = card.dataset.mode;
-
-        // Director mode locked unless unlocked
-        if (mode === "director" && !window.directorUnlocked) {
-            document.getElementById("director-unlock-status").innerText =
-                "Director Mode is locked.";
-            return;
-        }
-
-        activeMode = mode;
-
-        // Highlight active card
-        document.querySelectorAll(".mode-card").forEach(c => c.classList.remove("active"));
-        card.classList.add("active");
-
-        // Update mode screen
-        document.getElementById("mode-screen").innerText =
-            `Active Mode: ${mode.toUpperCase()}`;
-    });
-});
-// =========================
-// DIRECTOR MODE UNLOCK
-// =========================
-body.director-mode {
-    background: radial-gradient(circle at 50% 50%, #001f1f, #000);
-    animation: none;
+/* ---------------------------
+   MODE‑BASED COLOR THEMES
+---------------------------- */
+function applyModeTheme() {
+    document.body.classList.remove("basic-mode", "god-mode", "universe-mode", "director-mode");
+    document.body.classList.add(`${activeMode}-mode`);
 }
 
-body.director-mode .panel {
-    box-shadow: 0 0 22px rgba(0, 255, 149, 0.55);
-    border-color: rgba(0, 255, 149, 0.55);
-}
-
-window.directorUnlocked = false;
-
-document.getElementById("director-unlock-btn").addEventListener("click", () => {
-    const pass = document.getElementById("director-passcode").value;
-
-    if (pass === "7777") {   // you can change this
-        window.directorUnlocked = true;
-        document.getElementById("director-unlock-status").innerText =
-            "Director Mode Unlocked!";
-        document.querySelector("[data-mode='director']").classList.remove("mode-locked");
-    } else {
-        document.getElementById("director-unlock-status").innerText =
-            "Incorrect passcode.";
-    }
-});
-// =========================
-// PREMIUM CHECK
-// =========================
-
-function checkPremium() {
-    const user = document.getElementById("username").value;
-
-    if (user.toLowerCase() === "owner") {
-        document.getElementById("premium-status").classList.remove("off");
-        document.getElementById("premium-status").classList.add("ok");
-        document.getElementById("premium-status").innerText = "Premium: Active";
-    } else {
-        document.getElementById("premium-status").innerText = "Premium: Locked";
-    }
-}
-// =========================
-// PREDICTION ENGINE
-// =========================
-
-async function getPrediction() {
-    const state = document.getElementById("state-select").value;
-
-    if (!state) {
-        document.getElementById("prediction-text").innerText =
-            "Please select a state first.";
-        return;
-    }
-
-    document.getElementById("prediction-text").innerText = "Loading...";
-
-    try {
-        const res = await fetch(`https://godmode-backend2.onrender.com/predict/${state}`);
-        const data = await res.json();
-
-        document.getElementById("prediction-text").innerText =
-            `🎯 Prediction (${activeMode.toUpperCase()} Mode)\n\n${data.prediction}`;
-    } catch (err) {
-        document.getElementById("prediction-text").innerText =
-            "Error fetching prediction.";
-    }
-}
-🎯 Prediction (GOD MODE)
-12-34-56
-// =========================
-// SYSTEM TOOLS
-// =========================
-
-function testConnection() {
-    document.getElementById("log-text").innerText += "Testing backend...\n";
-}
-
-function manualHeartbeat() {
-    document.getElementById("log-text").innerText += "Heartbeat ping sent.\n";
-}
-
-function clearOutputs() {
-    document.getElementById("log-text").innerText = "";
-    document.getElementById("prediction-text").innerText = "";
-}
-
-
-function testConnection() {
-    appendLog("Testing backend...");
-}
-
-function manualHeartbeat() {
-    appendLog("Heartbeat ping sent.");
-}
-body.basic-mode {
-    --text-accent: #00eaff;
-}
-
-body.god-mode {
-    --text-accent: #ff00ff;
-}
-
-body.universe-mode {
-    --text-accent: #ffae00;
-}
-
-body.director-mode {
-    --text-accent: #00ff95;
-}
-@media (max-width: 600px) {
-    .panel {
-        padding: 14px;
-    }
-    h1 {
-        font-size: 26px;
-    }
-    button {
-        padding: 12px;
-    }
-}
+setInterval(applyModeTheme, 200);
