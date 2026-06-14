@@ -95,6 +95,14 @@ document.getElementById("director-unlock-btn").addEventListener("click", () => {
     const pass = document.getElementById("director-passcode").value.trim();
     const status = document.getElementById("director-unlock-status");
     const directorCard = document.querySelector(".mode-card[data-mode='director']");
+body.director-mode {
+    animation: commandPulse 6s infinite alternate ease-in-out;
+}
+
+@keyframes commandPulse {
+    0% { background-color: #001a1a; }
+    100% { background-color: #002525; }
+}
 
     if (pass === "8118") {
         directorCard.classList.remove("mode-locked");
