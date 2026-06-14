@@ -1,18 +1,15 @@
-<!-- rebuild999 -->  
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style2.css">
-    <link rel="stylesheet" href="theme-galaxy.css">
-
     <meta charset="UTF-8">
     <title>GODMODE++ Playground</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="theme-galaxy.css">
 </head>
 
-    
-
-<!-- rebuild2 -->
 <body>
     <div class="app-container">
 
@@ -25,16 +22,15 @@
             </div>
         </header>
 
-        <!-- LOGIN CARD -->
+        <!-- LOGIN PANEL -->
         <section class="panel">
-
             <h2>Access Control</h2>
 
             <div class="field">
                 <label>Username</label>
                 <input id="username" type="text" placeholder="enter username">
             </div>
- 
+
             <div class="field">
                 <label>Password</label>
                 <input id="password" type="password" placeholder="enter password">
@@ -48,10 +44,8 @@
             </div>
         </section>
 
-        <!-- PREDICTION CARD -->
-       <div id="loadingBar" class="loading-bar"></div>
-   <section class="panel">
- 
+        <!-- PREDICTION PANEL -->
+        <section class="panel">
             <h2>Prediction Engine</h2>
 
             <div class="field">
@@ -68,56 +62,52 @@
 
             <button onclick="getPrediction()">Get Prediction</button>
 
+            <div id="loadingBar" class="loading-bar"></div>
+
             <div class="output-box">
                 <div class="output-title">Prediction Output</div>
                 <pre id="prediction-text"></pre>
             </div>
         </section>
-<!-- MODE SELECTOR STARTS HERE -->
-<section class="panel">
 
-    <h2>Select Mode</h2>
+        <!-- MODE SELECTOR -->
+        <section class="panel">
+            <h2>Select Mode</h2>
 
-    <div class="mode-selector">
-      <div class="mode-card" data-mode="basic">
-        <h2>1. Basic Mode</h2>
-        <p>Quick rundown.</p>
-      </div>
+            <div class="mode-selector">
+                <div class="mode-card" data-mode="basic">
+                    <h2>1. Basic Mode</h2>
+                    <p>Quick rundown.</p>
+                </div>
 
-      <div class="mode-card" data-mode="god">
-        <h2>2. God Mode</h2>
-        <p>Full engine.</p>
-      </div>
+                <div class="mode-card" data-mode="god">
+                    <h2>2. God Mode</h2>
+                    <p>Full engine.</p>
+                </div>
 
-      <div class="mode-card" data-mode="universe">
-        <h2>3. Universe Mode</h2>
-        <p>Cosmic logic.</p>
-      </div>
+                <div class="mode-card" data-mode="universe">
+                    <h2>3. Universe Mode</h2>
+                    <p>Cosmic logic.</p>
+                </div>
 
-      <div class="mode-card mode-locked" data-mode="director">
-        <h2>Director Mode 🔒</h2>
-        <p>Owner‑only.</p>
-      </div>
-    </div>
+                <div class="mode-card mode-locked" data-mode="director">
+                    <h2>Director Mode 🔒</h2>
+                    <p>Owner‑only.</p>
+                </div>
+            </div>
 
-    <div class="director-unlock">
-      <h3>Unlock Director Mode</h3>
-      <input type="password" id="director-passcode" placeholder="Enter passcode">
-      <button id="director-unlock-btn">Unlock</button>
-      <p id="director-unlock-status"></p>
-    </div>
+            <div class="director-unlock">
+                <h3>Unlock Director Mode</h3>
+                <input type="password" id="director-passcode" placeholder="Enter passcode">
+                <button id="director-unlock-btn">Unlock</button>
+                <p id="director-unlock-status"></p>
+            </div>
 
-    <div id="mode-screen"></div>
-</section>
-<!-- MODE SELECTOR ENDS HERE -->
-
-<!-- SYSTEM TOOLS -->
-<section class="panel">
-
+            <div id="mode-screen"></div>
+        </section>
 
         <!-- SYSTEM TOOLS -->
         <section class="panel">
-
             <h2>System Tools</h2>
 
             <div class="tools-row">
@@ -139,8 +129,7 @@
 
     </div>
 
+    <!-- JS -->
     <script src="app2.js"></script>
 </body>
 </html>
-
-
