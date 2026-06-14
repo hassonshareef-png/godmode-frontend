@@ -468,3 +468,74 @@ body.director-mode .loading-bar {
     50% { opacity: 0.9; }
     100% { opacity: 0.4; }
 }
+/* ============================
+   DIRECTOR MODE — UNLOCK ANIMATION
+   ============================ */
+
+/* Shockwave pulse when Director Mode unlocks */
+body.director-mode.unlock-anim::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background: radial-gradient(circle, rgba(0,255,149,0.45) 0%, transparent 70%);
+    animation: directorShockwave 1.4s ease-out forwards;
+}
+
+/* Panels flash once on unlock */
+body.director-mode.unlock-anim .panel {
+    animation: directorPanelFlash 1.2s ease-out;
+}
+
+/* Hologram distortion effect */
+body.director-mode.unlock-anim #mode-screen,
+body.director-mode.unlock-anim #log-text,
+body.director-mode.unlock-anim #prediction-text {
+    animation: directorHoloDistort 0.9s ease-out;
+}
+
+/* ============================
+   KEYFRAMES
+   ============================ */
+
+@keyframes directorShockwave {
+    0% {
+        opacity: 0.9;
+        transform: scale(0.2);
+        filter: blur(2px);
+    }
+    60% {
+        opacity: 0.5;
+        transform: scale(2.8);
+        filter: blur(6px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(4.5);
+        filter: blur(10px);
+    }
+}
+
+@keyframes directorPanelFlash {
+    0% { box-shadow: 0 0 40px rgba(0,255,149,0.9); }
+    100% { box-shadow: 0 0 22px rgba(0,255,149,0.55); }
+}
+
+@keyframes directorHoloDistort {
+    0% {
+        transform: skewX(12deg) scale(1.03);
+        opacity: 0.4;
+        filter: blur(3px);
+    }
+    40% {
+        transform: skewX(-6deg) scale(1.01);
+        opacity: 0.8;
+        filter: blur(1px);
+    }
+    100% {
+        transform: skewX(0deg) scale(1);
+        opacity: 1;
+        filter: blur(0px);
+    }
+}
