@@ -5,14 +5,12 @@ html, body {
 body {
     min-height: 100vh;
     position: relative;
+}
+
 body.galaxy {
     position: relative;
 }
 
-    
-    body.galaxy {
-    position: relative;
-}
 
 }
 
