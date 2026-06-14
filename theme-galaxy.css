@@ -239,3 +239,12 @@ body {
     50% { box-shadow: 0 0 22px var(--text-accent); }
     100% { box-shadow: 0 0 12px var(--text-accent); }
 }
+@keyframes premiumBurst {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+    100% { transform: scale(1); }
+}
+
+.status-pill.ok {
+    animation: premiumBurst 0.6s ease;
+}
