@@ -92,6 +92,13 @@ function clearOutputs() {
     document.getElementById("log-text").textContent = "";
     document.getElementById("prediction-text").textContent = "";
 }
+function openUpgrade() {
+    document.getElementById("upgradeModal").style.display = "flex";
+}
+
+function closeUpgrade() {
+    document.getElementById("upgradeModal").style.display = "none";
+}
 
 /* ---------------------------
    MODE SELECTOR
@@ -149,6 +156,7 @@ document.getElementById("director-unlock-btn").addEventListener("click", () => {
         status.style.color = "#ff4444";
     }
 });
+openUpgrade();
 
 /* ---------------------------
    MODE‑BASED COLOR THEMES
