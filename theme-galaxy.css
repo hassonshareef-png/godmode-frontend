@@ -539,3 +539,90 @@ body.director-mode.unlock-anim #prediction-text {
         filter: blur(0px);
     }
 }
+/* ============================
+   DIRECTOR MODE — CINEMATIC SYSTEM OVERRIDE
+   ============================ */
+
+/* ACCESS GRANTED hologram overlay */
+body.director-mode.unlock-anim::after {
+    content: "ACCESS GRANTED";
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.6);
+    font-size: 48px;
+    font-weight: 700;
+    color: #00ff95;
+    text-shadow:
+        0 0 12px #00ff95,
+        0 0 22px #00ff95,
+        0 0 40px rgba(0,255,149,0.8);
+    opacity: 0;
+    letter-spacing: 4px;
+    animation: directorAccessHolo 1.4s ease-out forwards;
+    pointer-events: none;
+    z-index: 99999;
+}
+
+/* Scanline sweep */
+body.director-mode.unlock-anim::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0,255,149,0.25) 50%,
+        transparent 100%
+    );
+    opacity: 0;
+    animation: directorScanline 1.2s ease-out forwards;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+/* Terminal text crawl on panels */
+body.director-mode.unlock-anim .panel {
+    animation: directorTerminalCrawl 1.2s ease-out;
+}
+
+/* Border pulse */
+body.director-mode.unlock-anim .panel,
+body.director-mode.unlock-anim #mode-screen,
+body.director-mode.unlock-anim #log-text,
+body.director-mode.unlock-anim #prediction-text {
+    box-shadow: 0 0 26px rgba(0,255,149,0.85) !important;
+}
+
+/* Warp distortion */
+body.director-mode.unlock-anim {
+    animation: directorWarp 1.4s ease-out;
+}
+
+/* ============================
+   KEYFRAMES
+   ============================ */
+
+@keyframes directorAccessHolo {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(1.1); filter: blur(6px); }
+    40% { opacity: 1; transform: translate(-50%, -50%) scale(1.6); filter: blur(0px); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(1.9); filter: blur(8px); }
+}
+
+@keyframes directorScanline {
+    0% { opacity: 0; transform: translateY(-100%); }
+    50% { opacity: 1; transform: translateY(0%); }
+    100% { opacity: 0; transform: translateY(100%); }
+}
+
+@keyframes directorTerminalCrawl {
+    0% { opacity: 0.3; transform: translateY(6px) skewX(8deg); }
+    50% { opacity: 1; transform: translateY(0) skewX(-4deg); }
+    100% { opacity: 1; transform: translateY(0) skewX(0deg); }
+}
+
+@keyframes directorWarp {
+    0% { filter: brightness(1.4) blur(2px); }
+    40% { filter: brightness(1.8) blur(4px); }
+    100% { filter: brightness(1) blur(0px); }
+}
