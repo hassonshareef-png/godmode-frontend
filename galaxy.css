@@ -1,6 +1,6 @@
 /* ============================
    GODMODE++ — DEEP SPACE GALAXY THEME
-   Compatible with simple 4‑file build
+   Clean, optimized, GitHub‑Pages safe
 ============================ */
 
 /* BASE GALAXY MODE */
@@ -46,9 +46,8 @@ body.galaxy::after {
     animation: nebulaPulse 22s ease-in-out infinite;
 }
 
-/* HEAVY FALLING STARS */
+/* CARD + MODE BOXES */
 body.galaxy .mode,
-body.galaxy .card,
 body.galaxy .modal-box {
     background: rgba(10,10,30,0.9);
     border: 1px solid rgba(120,180,255,0.6);
@@ -97,7 +96,6 @@ body.director-mode::after {
 
 /* Director Mode glow */
 body.director-mode .mode,
-body.director-mode .card,
 body.director-mode .modal-box {
     border-color: rgba(0,255,149,0.55);
     box-shadow: 0 0 22px rgba(0,255,149,0.55);
@@ -175,4 +173,3 @@ body.director-mode.unlock-anim::after {
     40% { opacity: 1; transform: translate(-50%, -50%) scale(1.4); }
     100% { opacity: 0; transform: translate(-50%, -50%) scale(1.7); }
 }
-
