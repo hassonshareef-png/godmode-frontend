@@ -220,3 +220,13 @@ body {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
 }
+/* LOADING BAR */
+.loading-bar {
+    height: 4px;
+    width: 0%;
+    background: var(--text-accent);
+    box-shadow: 0 0 10px var(--text-accent);
+    transition: width 0.6s ease;
+    border-radius: 4px;
+    margin-top: 8px;
+}
