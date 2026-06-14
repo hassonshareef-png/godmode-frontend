@@ -740,3 +740,57 @@ body.universe-mode.mode-anim {
     0% { filter: hue-rotate(40deg) blur(3px); }
     100% { filter: hue-rotate(0deg) blur(0); }
 }
+body.galaxy {
+  background: radial-gradient(circle at top, #1b1b3a, #050510 60%, #000);
+  color: #e0e7ff;
+}
+
+/* Heavy stars */
+body.galaxy::before,
+body.galaxy::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body.galaxy::before {
+  background-image:
+    radial-gradient(2px 2px at 10% 20%, #fff 0, transparent 60%),
+    radial-gradient(2px 2px at 80% 30%, #fff 0, transparent 60%),
+    radial-gradient(2px 2px at 30% 70%, #fff 0, transparent 60%),
+    radial-gradient(2px 2px at 60% 90%, #fff 0, transparent 60%),
+    radial-gradient(2px 2px at 40% 40%, #fff 0, transparent 60%);
+  animation: fall 12s linear infinite;
+  opacity: 0.9;
+}
+
+body.galaxy::after {
+  background-image:
+    radial-gradient(3px 3px at 20% 10%, #9cf2ff 0, transparent 60%),
+    radial-gradient(3px 3px at 70% 80%, #ffd1ff 0, transparent 60%),
+    radial-gradient(3px 3px at 50% 50%, #fff7b3 0, transparent 60%);
+  animation: fall 18s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-60px); }
+  100% { transform: translateY(60px); }
+}
+
+/* Glow cards */
+body.galaxy .mode,
+body.galaxy .card,
+body.galaxy .modal-box {
+  background: rgba(10,10,30,0.9);
+  border: 1px solid rgba(120,180,255,0.6);
+  box-shadow: 0 0 18px rgba(120,180,255,0.6);
+}
+
+/* Buttons */
+body.galaxy button {
+  background: linear-gradient(90deg, #00c6ff, #007bff);
+  color: #fff;
+}
