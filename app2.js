@@ -1,52 +1,53 @@
-function $(id) { return document.getElementById(id); }
-
-// Login
-function login() {
-  const u = $("user").value.trim();
-  const p = $("pass").value.trim();
-
-  if (!u || !p) {
-    $("login-error").textContent = "Enter username and password.";
-    return;
-  }
-
-  $("login-screen").classList.add("hidden");
-  $("home-screen").classList.remove("hidden");
+// Simple helper
+function $(id) {
+  return document.getElementById(id);
 }
 
-// Galaxy Mode
+// GALAXY / LIGHT TOGGLE
 function toggleGalaxy() {
   document.body.classList.toggle("galaxy");
   document.body.classList.toggle("light");
 }
 
-// Upgrade buttons
-function upgrade() {
-  window.open("https://buy.stripe.com/4gMfZh8Kr19D3kUdvRc7u03", "_blank");
-}
-
-// Director Mode
+// DIRECTOR MODE MODAL
 function openDirector() {
-  $("director-modal").classList.remove("hidden");
-  $("director-error").textContent = "";
-  $("director-code").value = "";
+  const modal = $("director-modal");
+  if (modal) {
+    modal.classList.remove("hidden");
+  }
 }
 
 function closeDirector() {
-  $("director-modal").classList.add("hidden");
+  const modal = $("director-modal");
+  if (modal) {
+    modal.classList.add("hidden");
+  }
 }
 
+// DIRECTOR MODE UNLOCK
 function unlockDirector() {
-  const code = $("director-code").value.trim();
+  const input = $("director-pass");
+  if (!input) return;
+
+  const code = input.value.trim();
 
   if (code === "8118") {
-    $("director-status").textContent = "Director Mode unlocked.";
-    $("director-modal").classList.add("hidden");
+    // Director unlocked
+    alert("Director Mode unlocked.");
 
-    // Auto-enable galaxy mode
-    document.body.classList.add("galaxy");
-    document.body.classList.remove("light");
+    // Optional: switch body to a special director class
+    document.body.classList.add("director-mode");
+
+    const modal = $("director-modal");
+    if (modal) {
+      modal.classList.add("hidden");
+    }
   } else {
-    $("director-error").textContent = "Incorrect passcode.";
+    alert("Incorrect passcode.");
   }
+}
+
+// UPGRADE BUTTON (if you add one later)
+function upgrade() {
+  window.open("https://buy.stripe.com/4gMfZh8Kr19D3kUdvRc7u03", "_blank");
 }
