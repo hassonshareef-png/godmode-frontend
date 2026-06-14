@@ -1,205 +1,25 @@
 /* ============================
-   BASE UI LAYOUT + STRUCTURE
-   GODMODE++ FRONTEND
-   ============================ */
+   GODMODE++ — CLEAN LIGHT THEME
+   Compatible with simple 4‑file build
+============================ */
 
-/* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* BODY BASE */
-body {
-    font-family: "Inter", sans-serif;
-    color: #e0eaff;
-    background: #000;
-}
-
-/* HEADERS */
-h1, h2, h3 {
-    color: #e0eaff;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-/* FIELDS */
-.field {
-    margin-bottom: 14px;
-}
-
-.field label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 15px;
-    opacity: 0.85;
-}
-
-/* OUTPUT BOXES */
-.output-box {
-    margin-top: 14px;
-}
-
-/* STATUS PILLS */
-.status-pill {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #e0eaff;
-    border: 1px solid rgba(255,255,255,0.25);
-    background: rgba(255,255,255,0.08);
-}
-
-.status-pill.ok {
-    border-color: #00eaff;
-    background: rgba(0, 255, 255, 0.15);
-}
-
-.status-pill.off {
-    opacity: 0.5;
-}
-
-/* TOOLS ROW */
-.tools-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 12px;
-}
-
-/* PREMIUM ROW */
-.premium-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12px;
-}
-
-/* DIRECTOR UNLOCK */
-.director-unlock {
-    margin-top: 16px;
-}
-
-.director-unlock h3 {
-    margin-bottom: 8px;
-}
-
-#director-unlock-status {
-    margin-top: 8px;
-    font-size: 14px;
-}
-
-/* MODE SCREEN */
-#mode-screen {
-    margin-top: 16px;
-    padding: 14px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-    min-height: 60px;
-    border: 1px solid rgba(0,255,255,0.25);
-}
-
-/* FOOTER */
-.footer {
-    margin-top: 30px;
-    text-align: center;
-    opacity: 0.7;
-    font-size: 14px;
-}
-.upgrade-section {
-    width: 100%;
-    max-width: 600px;
-    margin: 30px auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.upgrade-card {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-    border: 1px solid #e6e6e6;
-}
-
-.upgrade-card h2 {
-    margin: 0;
-    font-size: 22px;
-    color: #1a1a1a;
-}
-
-.upgrade-card .price {
-    font-size: 26px;
-    font-weight: bold;
-    color: #007bff;
-    margin: 10px 0;
-}
-
-.upgrade-card ul {
-    padding-left: 20px;
-    margin-bottom: 20px;
-}
-
-.upgrade-card li {
-    margin-bottom: 6px;
-    color: #444;
-}
-
-.upgrade-card button {
-    width: 100%;
-    padding: 12px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.upgrade-card button:hover {
-    background: #005fcc;
-}
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.4);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: white;
-    padding: 25px;
-    border-radius: 14px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-}
-
-.close-btn {
-    margin-top: 10px;
-    background: #ccc;
-}
+/* BASE LIGHT MODE */
 body {
   margin: 0;
-  font-family: system-ui;
+  font-family: system-ui, sans-serif;
   background: #f5f7fb;
   color: #111;
 }
 
 .hidden { display: none; }
 
+/* SCREEN LAYOUT */
 .screen {
   padding: 30px 16px;
   min-height: 100vh;
 }
 
+/* TITLES */
 .title {
   font-size: 32px;
   margin-bottom: 6px;
@@ -210,6 +30,7 @@ body {
   margin-bottom: 20px;
 }
 
+/* LOGIN + CARD BOXES */
 .card {
   background: #fff;
   padding: 20px;
@@ -235,16 +56,22 @@ body {
   border: none;
   background: #007bff;
   color: #fff;
+  cursor: pointer;
 }
 
-.error { color: #d93025; margin-top: 10px; }
+.error {
+  color: #d93025;
+  margin-top: 10px;
+}
 
+/* TOP BAR */
 .top {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
+/* MODE GRID */
 .grid {
   display: grid;
   gap: 16px;
@@ -268,8 +95,10 @@ body {
   border: none;
   background: #007bff;
   color: #fff;
+  cursor: pointer;
 }
 
+/* MODAL */
 .modal {
   position: fixed;
   inset: 0;
@@ -291,4 +120,8 @@ body {
 .close {
   background: #ccc;
   margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
 }
