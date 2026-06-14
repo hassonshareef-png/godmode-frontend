@@ -106,27 +106,30 @@ modeCards.forEach(card => {
     card.addEventListener("click", () => {
         const mode = card.dataset.mode;
 
-        // Director mode locked
+        // Director mode locked unless unlocked
         if (mode === "director" && !window.directorUnlocked) {
-            modeScreen.textContent = "Director Mode is locked. Enter passcode.";
+            document.getElementById("director-unlock-status").innerText =
+                "Director Mode is locked.";
             return;
         }
 
         // Update active mode
         activeMode = mode;
-document.body.classList.add("mode-anim");
-setTimeout(() => document.body.classList.remove("mode-anim"), 900);
 
-        // Highlight selected card
+        // Highlight active card
         document.querySelectorAll(".mode-card").forEach(c => c.classList.remove("active"));
         card.classList.add("active");
-document.body.classList.add("mode-anim");
-setTimeout(() => document.body.classList.remove("mode-anim"), 900);
 
-        // Update screen text
-        modeScreen.textContent = `Active Mode: ${mode.toUpperCase()}`;
+        // ⭐ EXACT SPOT — MODE ACTIVATION ANIMATION ⭐
+        document.body.classList.add("mode-anim");
+        setTimeout(() => document.body.classList.remove("mode-anim"), 900);
+
+        // Update mode screen
+        document.getElementById("mode-screen").innerText =
+            `Active Mode: ${mode.toUpperCase()}`;
     });
 });
+
 
 /* ---------------------------
    DIRECTOR MODE UNLOCK
