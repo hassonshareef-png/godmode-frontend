@@ -8,64 +8,64 @@
   <!-- Light Theme -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Galaxy Theme -->
-  <link rel="stylesheet" href="galaxy.css?v=3">
+  <!-- Galaxy / Universe / Director Themes -->
+  <link rel="stylesheet" href="galaxy.css?v=4">
 </head>
 
 <!-- START IN GALAXY MODE -->
-<body class="universe-mode">
+<body class="galaxy">
+
 <div class="universe-vortex"></div>
 
-  
+<!-- HOME SCREEN -->
+<div id="home-screen" class="screen">
 
- <!-- HOME SCREEN -->
-  <div id="home-screen" class="screen">
-
-    <div class="top">
-      <h1 class="title">GODMODE++</h1>
-      <button onclick="toggleGalaxy()">Galaxy Mode</button>
-    </div>
-
-    <p class="subtitle">Choose your mode</p>
-
-    <div class="grid">
-
-      <div class="mode">
-        <h3>Free Mode</h3>
-        <button>Enter</button>
-      </div>
-
-      <div class="mode locked">
-        <h3>God Mode</h3>
-        <button disabled>Locked</button>
-      </div>
-
-      <div class="mode locked">
-        <h3>Universe Mode</h3>
-        <button disabled>Locked</button>
-      </div>
-
-      <div class="mode">
-        <h3>Director Mode</h3>
-        <button onclick="openDirector()">Enter Passcode</button>
-      </div>
-
-    </div>
+  <div class="top">
+    <h1 class="title">GODMODE++</h1>
+    <button onclick="toggleGalaxy()">Galaxy Mode</button>
   </div>
 
-  <!-- DIRECTOR MODE MODAL -->
-  <div id="director-modal" class="modal hidden">
-    <div class="modal-box">
-      <h2>Director Mode</h2>
-      <p>Enter passcode</p>
+  <p class="subtitle">Choose your mode</p>
 
-      <input id="director-pass" type="password" placeholder="Passcode">
+  <div class="grid">
 
-      <button onclick="unlockDirector()">Unlock</button>
-      <button class="close" onclick="closeDirector()">Close</button>
+    <div class="mode">
+      <h3>Free Mode</h3>
+      <button onclick="enterFree()">Enter</button>
     </div>
-  </div>
 
-  <script src="app.js"></script>
+    <div class="mode locked">
+      <h3>God Mode</h3>
+      <button disabled>Locked</button>
+    </div>
+
+    <div class="mode locked">
+      <h3>Universe Mode</h3>
+      <button disabled>Locked</button>
+    </div>
+
+    <div class="mode">
+      <h3>Director Mode</h3>
+      <button onclick="openDirector()">Enter Passcode</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- DIRECTOR MODE MODAL -->
+<div id="director-modal" class="modal hidden">
+  <div class="modal-box">
+    <h2>Director Mode</h2>
+    <p>Enter passcode</p>
+
+    <input id="director-pass" type="password" placeholder="Passcode">
+
+    <button onclick="unlockDirector()">Unlock</button>
+    <button class="close" onclick="closeDirector()">Close</button>
+  </div>
+</div>
+
+<script src="app.js?v=4"></script>
 </body>
 </html>
+
