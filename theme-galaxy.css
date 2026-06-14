@@ -391,3 +391,80 @@ body.director-mode {
         font-size: 15px;
     }
 }
+/* ============================
+   DIRECTOR MODE — OWNER CONTROL ROOM
+   ============================ */
+
+body.director-mode {
+    --text-accent: #00ff95;
+    background:
+        radial-gradient(circle at 50% 50%, #002a22, #000),
+        radial-gradient(circle at 20% 80%, #003322, transparent),
+        radial-gradient(circle at 80% 20%, #004433, transparent);
+    animation: directorDrift 22s infinite alternate ease-in-out;
+    transition: background 0.6s ease, box-shadow 0.6s ease;
+}
+
+/* Emerald nebula pulse */
+body.director-mode::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(0,255,149,0.18), transparent),
+        radial-gradient(circle at 20% 20%, rgba(0,255,149,0.12), transparent);
+    animation: directorNebula 14s ease-in-out infinite;
+}
+
+/* Panels upgrade */
+body.director-mode .panel {
+    border-color: rgba(0,255,149,0.55);
+    box-shadow:
+        0 0 22px rgba(0,255,149,0.55),
+        0 0 60px rgba(0,0,0,1);
+    background: linear-gradient(
+        135deg,
+        rgba(0, 40, 30, 0.9),
+        rgba(0, 25, 20, 0.9)
+    );
+}
+
+/* Mode card glow */
+body.director-mode .mode-card.active {
+    box-shadow: 0 0 26px rgba(0,255,149,0.85);
+    background: rgba(0,255,149,0.12);
+}
+
+/* Director Mode card special glow */
+body.director-mode .mode-card[data-mode="director"] {
+    border-color: #00ff95;
+    box-shadow: 0 0 26px rgba(0,255,149,0.75);
+}
+
+/* Output boxes */
+body.director-mode #mode-screen,
+body.director-mode #prediction-text,
+body.director-mode #log-text {
+    border-color: rgba(0,255,149,0.45);
+    box-shadow: 0 0 18px rgba(0,255,149,0.45);
+}
+
+/* Loading bar */
+body.director-mode .loading-bar {
+    background: #00ff95;
+    box-shadow: 0 0 12px #00ff95;
+}
+
+/* Director Mode animations */
+@keyframes directorDrift {
+    0% { background-position: 40% 40%; }
+    100% { background-position: 60% 60%; }
+}
+
+@keyframes directorNebula {
+    0% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+    100% { opacity: 0.4; }
+}
