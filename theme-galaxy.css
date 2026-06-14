@@ -626,3 +626,117 @@ body.director-mode.unlock-anim {
     40% { filter: brightness(1.8) blur(4px); }
     100% { filter: brightness(1) blur(0px); }
 }
+/* ============================
+   MODE UPGRADE PACK — BASIC, GOD, UNIVERSE
+   ============================ */
+
+/* -----------------------------------------
+   BASIC MODE — CLEAN BLUE SYSTEM MODE
+------------------------------------------ */
+body.basic-mode {
+    --text-accent: #00eaff;
+    background:
+        radial-gradient(circle at 50% 50%, #001a2a, #000),
+        radial-gradient(circle at 80% 20%, #003344, transparent);
+    animation: basicDrift 18s infinite alternate ease-in-out;
+}
+
+body.basic-mode .panel {
+    border-color: rgba(0,200,255,0.45);
+    box-shadow: 0 0 18px rgba(0,200,255,0.45);
+}
+
+body.basic-mode .mode-card.active {
+    background: rgba(0,200,255,0.12);
+    box-shadow: 0 0 22px rgba(0,200,255,0.65);
+}
+
+@keyframes basicDrift {
+    0% { background-position: 30% 30%; }
+    100% { background-position: 70% 70%; }
+}
+
+/* -----------------------------------------
+   GOD MODE — MAGENTA ENERGY CORE
+------------------------------------------ */
+body.god-mode {
+    --text-accent: #ff00ff;
+    background:
+        radial-gradient(circle at 50% 50%, #2a002a, #000),
+        radial-gradient(circle at 20% 80%, #440044, transparent);
+    animation: godPulse 16s infinite alternate ease-in-out;
+}
+
+body.god-mode .panel {
+    border-color: rgba(255,0,255,0.55);
+    box-shadow: 0 0 22px rgba(255,0,255,0.55);
+}
+
+body.god-mode .mode-card.active {
+    background: rgba(255,0,255,0.12);
+    box-shadow: 0 0 26px rgba(255,0,255,0.75);
+}
+
+@keyframes godPulse {
+    0% { filter: brightness(1); }
+    50% { filter: brightness(1.25); }
+    100% { filter: brightness(1); }
+}
+
+/* -----------------------------------------
+   UNIVERSE MODE — GOLDEN COSMIC FIELD
+------------------------------------------ */
+body.universe-mode {
+    --text-accent: #ffae00;
+    background:
+        radial-gradient(circle at 50% 50%, #2a1a00, #000),
+        radial-gradient(circle at 80% 20%, #443300, transparent);
+    animation: universeWarp 20s infinite alternate ease-in-out;
+}
+
+body.universe-mode .panel {
+    border-color: rgba(255,174,0,0.55);
+    box-shadow: 0 0 22px rgba(255,174,0,0.55);
+}
+
+body.universe-mode .mode-card.active {
+    background: rgba(255,174,0,0.12);
+    box-shadow: 0 0 26px rgba(255,174,0,0.75);
+}
+
+@keyframes universeWarp {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.015); }
+    100% { transform: scale(1); }
+}
+
+/* -----------------------------------------
+   MODE ACTIVATION ANIMATIONS
+------------------------------------------ */
+
+/* Basic Mode activation */
+body.basic-mode.mode-anim {
+    animation: basicActivate 0.8s ease-out;
+}
+@keyframes basicActivate {
+    0% { filter: brightness(1.4) blur(2px); }
+    100% { filter: brightness(1) blur(0); }
+}
+
+/* God Mode activation */
+body.god-mode.mode-anim {
+    animation: godActivate 1s ease-out;
+}
+@keyframes godActivate {
+    0% { transform: scale(0.98); filter: brightness(1.6); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* Universe Mode activation */
+body.universe-mode.mode-anim {
+    animation: universeActivate 1.2s ease-out;
+}
+@keyframes universeActivate {
+    0% { filter: hue-rotate(40deg) blur(3px); }
+    100% { filter: hue-rotate(0deg) blur(0); }
+}
