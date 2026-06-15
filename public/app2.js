@@ -1,5 +1,6 @@
-[PASTE START]
-
+// ===============================
+// DOM HELPER
+// ===============================
 function $(id) {
   return document.getElementById(id);
 }
@@ -14,19 +15,17 @@ function showMode(id) {
 // LOGIN — MASTER UNLOCK
 // ===============================
 function login() {
-  const user = $("login-user").value.trim();
-  const pass = $("login-pass").value.trim();
+  const user = $("login-user")?.value.trim() || "";
+  const pass = $("login-pass")?.value.trim() || "";
 
   if (!user || !pass) {
-    $("login-error").textContent = "Enter username and password.";
+    if ($("login-error")) $("login-error").textContent = "Enter username and password.";
     return;
   }
 
-  // MASTER LOGIN
   if (user === "admin" && pass === "8118") {
-    $("login-error").textContent = "";
+    if ($("login-error")) $("login-error").textContent = "";
 
-    // ⭐ UNLOCK EVERYTHING ⭐
     document.querySelectorAll(".locked").forEach(el => {
       el.classList.remove("locked");
       const btn = el.querySelector("button");
@@ -35,7 +34,7 @@ function login() {
 
     showMode("home-screen");
   } else {
-    $("login-error").textContent = "Incorrect username or password.";
+    if ($("login-error")) $("login-error").textContent = "Incorrect username or password.";
   }
 }
 
@@ -52,76 +51,39 @@ function toggleGalaxy() {
 // ===============================
 function enterFree() {
   showMode("free-mode-screen");
+  loadQuickPick();
 }
 
-function generateQuickPick() {
-  const picks = [];
-  while (picks.length < 5) {
-    const n = Math.floor(Math.random() * 39) + 1;
-    if (!picks.includes(n)) picks.push(n);
+async function loadQuickPick() {
+  try {
+    const data = await apiQuickPick();
+    if ($("free-output")) {
+      $("free-output").textContent = `Quick Pick (6→9) → [${data.numbers.join(", ")}]`;
+    }
+  } catch (e) {
+    console.error(e);
+    if ($("free-output")) $("free-output").textContent = "Quick Pick error.";
   }
-
-  if (picks.includes(6) && !picks.includes(9)) {
-    let idx = Math.floor(Math.random() * picks.length);
-    if (picks[idx] === 6) idx = (idx + 1) % picks.length;
-    picks[idx] = 9;
-  }
-
-  picks.sort((a, b) => a - b);
-  alert("Generated (6→9): " + picks.join(", "));
 }
 
 // ===============================
 // GOD MODE
 // ===============================
-const GOD_LAST_DRAW = [7, 14, 22, 31, 36];
-
 function enterGod() {
   showMode("god-mode-screen");
+  runGodRundown();
 }
 
-function digitRoot(n) {
-  const s = n.toString().split("").reduce((a, d) => a + Number(d), 0);
-  return s % 10;
-}
-
-function mirrorNumber(n) {
-  return 40 - n;
-}
-
-function applySixBringsNine(list) {
-  if (list.includes(6) && !list.includes(9)) list.push(9);
-  return list;
-}
-
-function runGodRundown() {
-  const breakdown = [];
-
-  GOD_LAST_DRAW.forEach(n => {
-    const mirror = mirrorNumber(n);
-    const root = digitRoot(n);
-    let specials = [root];
-    specials = applySixBringsNine(specials);
-
-    const anchors = [];
-    if (specials.includes(0)) anchors.push(0);
-    if (specials.includes(5)) anchors.push(5);
-
-    breakdown.push({
-      base: n,
-      mirror,
-      root,
-      specials: [...new Set(specials)].sort((a, b) => a - b),
-      anchors
-    });
-  });
-
-  const lines = breakdown.map(item => {
-    return `#${item.base} → mirror ${item.mirror}, root ${item.root}, specials [${item.specials.join(", ")}], anchors [${item.anchors.length ? item.anchors.join(", ") : "none"}]`;
-  });
-
-  const out = $("god-rundown-output");
-  if (out) out.textContent = lines.join(" | ");
+async function runGodRundown() {
+  try {
+    const data = await apiGodRundown();
+    if ($("god-rundown-output")) {
+      $("god-rundown-output").textContent = data.output || "No rundown data.";
+    }
+  } catch (e) {
+    console.error(e);
+    if ($("god-rundown-output")) $("god-rundown-output").textContent = "Rundown error.";
+  }
 }
 
 // ===============================
@@ -130,14 +92,7 @@ function runGodRundown() {
 function enterUniverse() {
   showMode("universe-mode-screen");
   document.body.classList.add("universe-mode");
-
-  universeCosmicDrift();
-  universeCosmicMirror();
-  universeCosmicVibration();
-  universeCosmicPrediction();
-  universeCosmicRundown();
-  universeCosmicGenerator();
-  universeFX();
+  runUniverseEngine();
 }
 
 function exitUniverse() {
@@ -145,23 +100,16 @@ function exitUniverse() {
   showMode("home-screen");
 }
 
-function universeCosmicDrift() { console.log("🌌 Cosmic Drift: ACTIVE"); }
-function universeCosmicMirror() { console.log("🪞 Cosmic Mirror: ACTIVE"); }
-function universeCosmicVibration() { console.log("🔢 Cosmic Digit Vibration: MEDIUM"); }
-function universeCosmicPrediction() { console.log("🔮 Cosmic Prediction Engine: ACTIVE"); }
-
-function universeCosmicRundown() {
-  console.log("📊 Cosmic Rundown (using God Mode rundown).");
-  runGodRundown();
-}
-
-function universeCosmicGenerator() {
-  console.log("🎲 Cosmic Generator (using 6→9 logic).");
-  generateQuickPick();
-}
-
-function universeFX() {
-  console.log("🌌 Universe FX: warp visuals.");
+async function runUniverseEngine() {
+  try {
+    const data = await apiUniverse();
+    if ($("universe-output")) {
+      $("universe-output").textContent = data.output || "Universe engine ready.";
+    }
+  } catch (e) {
+    console.error(e);
+    if ($("universe-output")) $("universe-output").textContent = "Universe error.";
+  }
 }
 
 // ===============================
@@ -175,18 +123,18 @@ const directorState = {
 };
 
 function openDirector() {
-  $("director-modal").classList.remove("hidden");
+  $("director-modal")?.classList.remove("hidden");
 }
 
 function closeDirector() {
-  $("director-modal").classList.add("hidden");
+  $("director-modal")?.classList.add("hidden");
 }
 
 function unlockDirector() {
-  const code = $("director-pass").value.trim();
+  const code = $("director-pass")?.value.trim() || "";
 
   if (code === "8118") {
-    $("director-modal").classList.add("hidden");
+    $("director-modal")?.classList.add("hidden");
     document.body.classList.add("director-mode", "unlock-anim");
     enterDirectorMode();
     setTimeout(() => {
@@ -199,7 +147,9 @@ function unlockDirector() {
 
 function enterDirectorMode() {
   showMode("director-mode-screen");
-  directorAutoEngine();
+  directorConsoleBoot();
+  updateDirectorOverrides();
+  compileDirectorPrediction();
 }
 
 function updateDirectorOverrides() {
@@ -218,85 +168,38 @@ function updateDirectorOverrides() {
   if (seedInput) directorState.seed = seedInput.value.trim() || null;
 }
 
-function directorAutoEngine() {
-  updateDirectorOverrides();
-  earthRotationEngine();
-  earthTimingPredictionOutput();
-  earthDriftEngine();
-  earthMirrorEngine();
-  earthPressureEngine();
-  earthSumEngine();
-  earthDigitVibration();
-  runGodRundown();
-  generateQuickPick();
-  universeFX();
-  directorConsoleBoot();
-}
-
-function earthRotationEngine() { console.log("🌍 Earth Rotation Engine: ACTIVE"); }
-function earthDriftEngine() { console.log("📈 Earth Drift Engine: ACTIVE"); }
-function earthMirrorEngine() { console.log("🪞 Earth Mirror Window: ACTIVE"); }
-function earthPressureEngine() { console.log("⚡ Earth Pressure: DOUBLE RELEASE ACTIVE"); }
-function earthSumEngine() { console.log("➕ Earth Sum Drift: +1 ASCENDING"); }
-function earthDigitVibration() { console.log("🔢 Earth Digit Vibration: HIGH FREQUENCY"); }
-
-function getEarthPhase() {
-  const phases = ["Opening", "Rising", "Peak", "Falling", "Reset"];
-  return phases[Math.floor(Math.random() * phases.length)];
-}
-
-function getEarthRotationDrift() {
-  const drift = [-2, -1, 0, +1, +2];
-  return drift[Math.floor(Math.random() * drift.length)];
-}
-
-function earthTimingPredictionOutput() {
-  const phase = getEarthPhase();
-  const drift = getEarthRotationDrift();
-  const out = $("director-earth-output");
-
-  let text = `Phase: ${phase}, Drift: ${drift}`;
-  if (directorState.overrideEarth) text += " | Earth override: ACTIVE";
-
-  if (out) out.textContent = text;
-}
-
-function compileDirectorPrediction() {
+async function compileDirectorPrediction() {
   updateDirectorOverrides();
 
-  const phase = getEarthPhase();
-  const drift = getEarthRotationDrift();
-  let base = [...GOD_LAST_DRAW];
+  const payload = {
+    overrideEarth: directorState.overrideEarth,
+    overrideUniverse: directorState.overrideUniverse,
+    probabilityWeight: directorState.probabilityWeight,
+    seed: directorState.seed
+  };
 
-  base = base.map(n => n + drift);
-
-  if (directorState.seed) {
-    const seedNum = Number(directorState.seed) || 0;
-    base = base.map(n => n + (seedNum % 10));
-  }
-
-  const weight = directorState.probabilityWeight / 100;
-  base = base.map(n => Math.round(n * weight));
-
-  base = base.map(n => {
-    if (n < 1) return 1;
-    if (n > 39) return 39;
-    return n;
-  });
-
-  if (base.includes(6) && !base.includes(9)) base.push(9);
-
-  base = [...new Set(base)].sort((a, b) => a - b);
-
-  const out = $("director-prediction-output");
-  if (out) {
-    out.textContent =
-      `Compiled Prediction → [${base.join(", ")}] | Phase: ${phase}, Drift: ${drift}, Weight: ${directorState.probabilityWeight}%, Seed: ${directorState.seed || "none"}`;
+  try {
+    const data = await apiDirector(payload);
+    if ($("director-prediction-output")) {
+      $("director-prediction-output").textContent =
+        data.output ||
+        `Compiled Prediction → [${(data.numbers || []).join(", ")}]`;
+    }
+    if ($("director-earth-output") && data.earthPhase && data.earthDrift !== undefined) {
+      $("director-earth-output").textContent =
+        `Phase: ${data.earthPhase}, Drift: ${data.earthDrift}` +
+        (directorState.overrideEarth ? " | Earth override: ACTIVE" : "");
+    }
+  } catch (e) {
+    console.error(e);
+    if ($("director-prediction-output")) {
+      $("director-prediction-output").textContent = "Director prediction error.";
+    }
   }
 }
 
 function directorConsoleBoot() {
-  console.log("🎛️ Director Console Booted");
+  console.log("🎛️ Director Console Booted (backend-driven)");
 }
 
 // ===============================
@@ -307,11 +210,11 @@ function upgrade() {
 }
 
 // ===============================
-// PICK 3 + PICK 4 ENGINE
+// PICK 3 + PICK 4 ENGINE (BACKEND-ONLY)
 // ===============================
 const pickHistory = [];
 
-function addResult(mode) {
+async function addResult(mode) {
   const input = $("pick-input");
   if (!input) return;
 
@@ -321,143 +224,121 @@ function addResult(mode) {
     return;
   }
 
-  const digits = raw.split("").map(Number);
-  const type = digits.length === 3 ? "P3" : "P4";
+  const type = raw.length === 3 ? "P3" : "P4";
+  pickHistory.push({ type, digits: raw, mode });
 
-  pickHistory.push({ type, digits, mode });
+  try {
+    const data =
+      type === "P3" ? await apiPick3(raw, mode) : await apiPick4(raw, mode);
 
-  runUnifiedEngine(mode, digits, type);
-}
-
-function runUnifiedEngine(mode, digits, type) {
-  const grids = buildUnifiedGrids(digits, type);
-  runUnifiedStrategies(mode, grids, digits, type);
-  updateUnifiedUI(grids, digits, type, mode);
-}
-
-function buildUnifiedGrids(digits, type) {
-  const sum = digits.reduce((a, d) => a + d, 0);
-  const root = sum % 10;
-
-  return {
-    grid9: { level: 9, digits, sum, root },
-    grid8: {
-      level: 8,
-      pairs:
-        type === "P4"
-          ? [digits[0] + digits[1], digits[2] + digits[3]]
-          : [digits[0] + digits[1], digits[1] + digits[2]]
-    },
-    grid7: { level: 7, mirrors: digits.map(d => 9 - d) },
-    grid6: { level: 6, drift: digits.map(d => d + 1) },
-    grid5: {
-      level: 5,
-      anchors:
-        type === "P4" ? [digits[0], digits[3]] : [digits[0], digits[2]]
-    },
-    grid4: {
-      level: 4,
-      ticTacToe: buildUnifiedTicTacToeGrid(digits, type)
-    },
-    grid3: {
-      level: 3,
-      mini:
-        type === "P4" ? [digits[1], digits[2]] : [digits[0], digits[1]]
-    },
-    grid2: {
-      level: 2,
-      finalPair:
-        type === "P4" ? [digits[2], digits[3]] : [digits[1], digits[2]]
+    if ($("pick-strategy-output")) {
+      $("pick-strategy-output").textContent =
+        data.strategyText ||
+        `${type === "P3" ? "Pick 3" : "Pick 4"} Strategies → ${data.strategies?.join(" | ") || "No strategies."}`;
     }
-  };
-}
 
-function buildUnifiedTicTacToeGrid(digits, type) {
-  const base = type === "P4" ? digits.slice(0, 3) : digits;
-  const plus3 = base.map(d => (d + 3) % 10);
-  const plus6 = base.map(d => (d + 6) % 10);
+    if ($("grid9-output") && data.grid9) {
+      $("grid9-output").textContent =
+        `${type === "P3" ? "Pick 3" : "Pick 4"} 9-Grid → sum ${data.grid9.sum}, root ${data.grid9.root}`;
+    }
 
-  return [
-    [base[0], plus3[0], plus6[0]],
-    [base[1], plus3[1], plus6[1]],
-    [base[2], plus3[2], plus6[2]]
-  ];
-}
+    if ($("grid8-output") && data.grid8) {
+      $("grid8-output").textContent =
+        `${type === "P3" ? "Pick 3" : "Pick 4"} 8-Grid → pairs [${data.grid8.pairs.join(", ")}]`;
+    }
 
-function runUnifiedStrategies(mode, grids, digits, type) {
-  const sum = grids.grid9.sum;
+    if ($("grid7-output") && data.grid7) {
+      $("grid7-output").textContent =
+        `${type === "P3" ? "Pick 3" : "Pick 4"} 7-Grid → mirrors [${data.grid7.mirrors.join(", ")}]`;
+    }
 
-  const isHighSum = sum >= (type === "P4" ? 20 : 15);
-  const isLowSum = sum <= (type === "P4" ? 10 : 7);
+    if ($("grid6-output") && data.grid6) {
+      $("grid6-output").textContent =
+        `${type === "P3" ? "Pick 3" : "Pick 4"} 6-Grid → drift [${data.grid6.drift.join(", ")}]`;
+    }
 
-  const consecutive =
-    Math.abs(digits[1] - digits[0]) === 1 ||
-    Math.abs(digits[digits.length - 1] - digits[digits.length - 2]) === 1;
+    if ($("grid5-output") && data.grid5) {
+      $("grid5-output").textContent =
+        `${type === "P3" ? "Pick 3" : "Pick 4"} 5-Grid → anchors [${data.grid5.anchors.join(", ")}]`;
+    }
 
-  const repeats =
-    new Set(digits).size !== digits.length;
+    if ($("grid4-output") && data.grid4) {
+      $("grid4-output").textContent =
+        `${type === "P3" ? "Pick 3" : "Pick 4"} 4-Grid (Tic Tac Toe) → ${data.grid4.ticTacToeRows.join(" | ")}`;
+    }
 
-  const strategyList = [];
+    if ($("grid3-output") && data.grid3) {
+      $("grid3-output").textContent =
+        `${type === "P3" ? "Pick 3" : "Pick 4"} 3-Grid → mini [${data.grid3.mini.join(", ")}]`;
+    }
 
-  if (isHighSum) strategyList.push("Use +9 Workout");
-  if (isLowSum) strategyList.push("Use +3 Workout");
-  if (!isHighSum && !isLowSum) strategyList.push("Use +6 Workout");
-
-  if (consecutive) strategyList.push("1-Ups / 1-Downs");
-  if (repeats) strategyList.push("Traveling Numbers");
-
-  strategyList.push("9-Grid Scan");
-  strategyList.push("8-Grid Compression");
-  strategyList.push("7-Grid Mirror");
-  strategyList.push("6-Grid Drift");
-  strategyList.push("5-Grid Anchors");
-  strategyList.push("4-Grid Tic Tac Toe");
-  strategyList.push("3-Grid Micro Pattern");
-  strategyList.push("2-Grid Final Pair");
-
-  const out = $("pick-strategy-output");
-  if (out) {
-    out.textContent =
-      `${type === "P3" ? "Pick 3" : "Pick 4"} Strategies → ${strategyList.join(" | ")}`;
+    if ($("grid2-output") && data.grid2) {
+      $("grid2-output").textContent =
+        `${type === "P3" ? "Pick 3" : "Pick 4"} 2-Grid → final pair [${data.grid2.finalPair.join(", ")}]`;
+    }
+  } catch (e) {
+    console.error(e);
+    if ($("pick-strategy-output")) {
+      $("pick-strategy-output").textContent = "Pick engine error.";
+    }
   }
 }
 
-function updateUnifiedUI(grids, digits, type, mode) {
-  const label = type === "P3" ? "Pick 3" : "Pick 4";
+// ===============================
+// BACKEND API HELPERS (OPTION C)
+// ===============================
+const API_BASE = "https://godmode-backend2.onrender.com";
 
-  if ($("grid9-output"))
-    $("grid9-output").textContent =
-      `${label} 9-Grid → sum ${grids.grid9.sum}, root ${grids.grid9.root}`;
-
-  if ($("grid8-output"))
-    $("grid8-output").textContent =
-      `${label} 8-Grid → pairs [${grids.grid8.pairs.join(", ")}]`;
-
-  if ($("grid7-output"))
-    $("grid7-output").textContent =
-      `${label} 7-Grid → mirrors [${grids.grid7.mirrors.join(", ")}]`;
-
-  if ($("grid6-output"))
-    $("grid6-output").textContent =
-      `${label} 6-Grid → drift [${grids.grid6.drift.join(", ")}]`;
-
-  if ($("grid5-output"))
-    $("grid5-output").textContent =
-      `${label} 5-Grid → anchors [${grids.grid5.anchors.join(", ")}]`;
-
-  if ($("grid4-output")) {
-    const ttt = grids.grid4.ticTacToe.map(r => r.join(" ")).join(" | ");
-    $("grid4-output").textContent =
-      `${label} 4-Grid (Tic Tac Toe) → ${ttt}`;
-  }
-
-  if ($("grid3-output"))
-    $("grid3-output").textContent =
-      `${label} 3-Grid → mini [${grids.grid3.mini.join(", ")}]`;
-
-  if ($("grid2-output"))
-    $("grid2-output").textContent =
-      `${label} 2-Grid → final pair [${grids.grid2.finalPair.join(", ")}]`;
+async function apiPick3(digits, mode) {
+  const res = await fetch(`${API_BASE}/api/pick3`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ digits, mode })
+  });
+  if (!res.ok) throw new Error("Pick3 API error");
+  return await res.json();
 }
 
-[PASTE END]
+async function apiPick4(digits, mode) {
+  const res = await fetch(`${API_BASE}/api/pick4`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ digits, mode })
+  });
+  if (!res.ok) throw new Error("Pick4 API error");
+  return await res.json();
+}
+
+async function apiGodRundown() {
+  const res = await fetch(`${API_BASE}/api/god-rundown`, {
+    method: "GET"
+  });
+  if (!res.ok) throw new Error("God Rundown API error");
+  return await res.json();
+}
+
+async function apiUniverse() {
+  const res = await fetch(`${API_BASE}/api/universe`, {
+    method: "GET"
+  });
+  if (!res.ok) throw new Error("Universe API error");
+  return await res.json();
+}
+
+async function apiDirector(payload) {
+  const res = await fetch(`${API_BASE}/api/director`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) throw new Error("Director API error");
+  return await res.json();
+}
+
+async function apiQuickPick() {
+  const res = await fetch(`${API_BASE}/api/quickpick`, {
+    method: "GET"
+  });
+  if (!res.ok) throw new Error("QuickPick API error");
+  return await res.json();
+}
