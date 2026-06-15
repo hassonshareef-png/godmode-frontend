@@ -1,6 +1,5 @@
-// ===============================
-// CORE HELPERS
-// ===============================
+[PASTE START]
+
 function $(id) {
   return document.getElementById(id);
 }
@@ -12,7 +11,7 @@ function showMode(id) {
 }
 
 // ===============================
-// LOGIN
+// LOGIN — MASTER UNLOCK
 // ===============================
 function login() {
   const user = $("login-user").value.trim();
@@ -23,8 +22,17 @@ function login() {
     return;
   }
 
+  // MASTER LOGIN
   if (user === "admin" && pass === "8118") {
     $("login-error").textContent = "";
+
+    // ⭐ UNLOCK EVERYTHING ⭐
+    document.querySelectorAll(".locked").forEach(el => {
+      el.classList.remove("locked");
+      const btn = el.querySelector("button");
+      if (btn) btn.disabled = false;
+    });
+
     showMode("home-screen");
   } else {
     $("login-error").textContent = "Incorrect username or password.";
@@ -40,13 +48,12 @@ function toggleGalaxy() {
 }
 
 // ===============================
-// FREE MODE (LOWEST LEVEL, MANUAL)
+// FREE MODE
 // ===============================
 function enterFree() {
   showMode("free-mode-screen");
 }
 
-// Generator with your 6→9 rule
 function generateQuickPick() {
   const picks = [];
   while (picks.length < 5) {
@@ -65,7 +72,7 @@ function generateQuickPick() {
 }
 
 // ===============================
-// GOD MODE (MID LEVEL, SEMI-AUTO)
+// GOD MODE
 // ===============================
 const GOD_LAST_DRAW = [7, 14, 22, 31, 36];
 
@@ -118,7 +125,7 @@ function runGodRundown() {
 }
 
 // ===============================
-// UNIVERSE MODE (AUTO COSMIC)
+// UNIVERSE MODE
 // ===============================
 function enterUniverse() {
   showMode("universe-mode-screen");
@@ -138,21 +145,10 @@ function exitUniverse() {
   showMode("home-screen");
 }
 
-function universeCosmicDrift() {
-  console.log("🌌 Cosmic Drift: ACTIVE");
-}
-
-function universeCosmicMirror() {
-  console.log("🪞 Cosmic Mirror: ACTIVE");
-}
-
-function universeCosmicVibration() {
-  console.log("🔢 Cosmic Digit Vibration: MEDIUM");
-}
-
-function universeCosmicPrediction() {
-  console.log("🔮 Cosmic Prediction Engine: ACTIVE");
-}
+function universeCosmicDrift() { console.log("🌌 Cosmic Drift: ACTIVE"); }
+function universeCosmicMirror() { console.log("🪞 Cosmic Mirror: ACTIVE"); }
+function universeCosmicVibration() { console.log("🔢 Cosmic Digit Vibration: MEDIUM"); }
+function universeCosmicPrediction() { console.log("🔮 Cosmic Prediction Engine: ACTIVE"); }
 
 function universeCosmicRundown() {
   console.log("📊 Cosmic Rundown (using God Mode rundown).");
@@ -169,7 +165,7 @@ function universeFX() {
 }
 
 // ===============================
-// DIRECTOR MODE (TOP LEVEL)
+// DIRECTOR MODE
 // ===============================
 const directorState = {
   overrideEarth: false,
@@ -237,29 +233,12 @@ function directorAutoEngine() {
   directorConsoleBoot();
 }
 
-function earthRotationEngine() {
-  console.log("🌍 Earth Rotation Engine: ACTIVE");
-}
-
-function earthDriftEngine() {
-  console.log("📈 Earth Drift Engine: ACTIVE");
-}
-
-function earthMirrorEngine() {
-  console.log("🪞 Earth Mirror Window: ACTIVE");
-}
-
-function earthPressureEngine() {
-  console.log("⚡ Earth Pressure: DOUBLE RELEASE ACTIVE");
-}
-
-function earthSumEngine() {
-  console.log("➕ Earth Sum Drift: +1 ASCENDING");
-}
-
-function earthDigitVibration() {
-  console.log("🔢 Earth Digit Vibration: HIGH FREQUENCY");
-}
+function earthRotationEngine() { console.log("🌍 Earth Rotation Engine: ACTIVE"); }
+function earthDriftEngine() { console.log("📈 Earth Drift Engine: ACTIVE"); }
+function earthMirrorEngine() { console.log("🪞 Earth Mirror Window: ACTIVE"); }
+function earthPressureEngine() { console.log("⚡ Earth Pressure: DOUBLE RELEASE ACTIVE"); }
+function earthSumEngine() { console.log("➕ Earth Sum Drift: +1 ASCENDING"); }
+function earthDigitVibration() { console.log("🔢 Earth Digit Vibration: HIGH FREQUENCY"); }
 
 function getEarthPhase() {
   const phases = ["Opening", "Rising", "Peak", "Falling", "Reset"];
@@ -327,16 +306,11 @@ function upgrade() {
   window.open("https://buy.stripe.com/4gMfZh8Kr19D3kUdvRc7u03", "_blank");
 }
 
-// ======================================================================
-// ======================================================================
-// UNIFIED PICK 3 + PICK 4 ENGINE (ADD-ON AT BOTTOM — OPTION A)
-// ======================================================================
-// ======================================================================
-
-// Store history of results (both Pick 3 and Pick 4)
+// ===============================
+// PICK 3 + PICK 4 ENGINE
+// ===============================
 const pickHistory = [];
 
-// Shared result input trigger
 function addResult(mode) {
   const input = $("pick-input");
   if (!input) return;
@@ -355,14 +329,12 @@ function addResult(mode) {
   runUnifiedEngine(mode, digits, type);
 }
 
-// Main unified engine dispatcher
 function runUnifiedEngine(mode, digits, type) {
   const grids = buildUnifiedGrids(digits, type);
   runUnifiedStrategies(mode, grids, digits, type);
   updateUnifiedUI(grids, digits, type, mode);
 }
 
-// Build 9-Grid → 2-Grid structures
 function buildUnifiedGrids(digits, type) {
   const sum = digits.reduce((a, d) => a + d, 0);
   const root = sum % 10;
@@ -400,7 +372,6 @@ function buildUnifiedGrids(digits, type) {
   };
 }
 
-// Tic Tac Toe grid
 function buildUnifiedTicTacToeGrid(digits, type) {
   const base = type === "P4" ? digits.slice(0, 3) : digits;
   const plus3 = base.map(d => (d + 3) % 10);
@@ -413,7 +384,6 @@ function buildUnifiedTicTacToeGrid(digits, type) {
   ];
 }
 
-// Strategy engine
 function runUnifiedStrategies(mode, grids, digits, type) {
   const sum = grids.grid9.sum;
 
@@ -452,7 +422,6 @@ function runUnifiedStrategies(mode, grids, digits, type) {
   }
 }
 
-// UI updater
 function updateUnifiedUI(grids, digits, type, mode) {
   const label = type === "P3" ? "Pick 3" : "Pick 4";
 
@@ -490,3 +459,5 @@ function updateUnifiedUI(grids, digits, type, mode) {
     $("grid2-output").textContent =
       `${label} 2-Grid → final pair [${grids.grid2.finalPair.join(", ")}]`;
 }
+
+[PASTE END]
