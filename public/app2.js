@@ -210,7 +210,7 @@ function upgrade() {
 }
 
 // ===============================
-// PICK 3 + PICK 4 ENGINE (BACKEND-ONLY)
+// PICK 3 + PICK 4 ENGINE
 // ===============================
 const pickHistory = [];
 
@@ -285,7 +285,7 @@ async function addResult(mode) {
 }
 
 // ===============================
-// BACKEND API HELPERS (OPTION C)
+// BACKEND API HELPERS
 // ===============================
 const API_BASE = "https://godmode-backend2.onrender.com";
 
@@ -310,17 +310,13 @@ async function apiPick4(digits, mode) {
 }
 
 async function apiGodRundown() {
-  const res = await fetch(`${API_BASE}/api/god-rundown`, {
-    method: "GET"
-  });
+  const res = await fetch(`${API_BASE}/api/god-rundown`);
   if (!res.ok) throw new Error("God Rundown API error");
   return await res.json();
 }
 
 async function apiUniverse() {
-  const res = await fetch(`${API_BASE}/api/universe`, {
-    method: "GET"
-  });
+  const res = await fetch(`${API_BASE}/api/universe`);
   if (!res.ok) throw new Error("Universe API error");
   return await res.json();
 }
@@ -336,9 +332,7 @@ async function apiDirector(payload) {
 }
 
 async function apiQuickPick() {
-  const res = await fetch(`${API_BASE}/api/quickpick`, {
-    method: "GET"
-  });
+  const res = await fetch(`${API_BASE}/api/quickpick`);
   if (!res.ok) throw new Error("QuickPick API error");
   return await res.json();
 }
