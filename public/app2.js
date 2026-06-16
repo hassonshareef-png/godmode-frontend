@@ -335,4 +335,4 @@ async function apiQuickPick() {
   const res = await fetch(`${API_BASE}/api/quickpick`);
   if (!res.ok) throw new Error("QuickPick API error");
   return await res.json();
-}
+
