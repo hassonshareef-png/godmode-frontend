@@ -57,12 +57,12 @@
 
     <div class="mode">
       <h3>Pick 3 Engine</h3>
-      <button onclick="enterPick3()">Enter</button>
+      <button onclick="showMode('pick3-screen')">Enter</button>
     </div>
 
     <div class="mode">
       <h3>Pick 4 Engine</h3>
-      <button onclick="enterPick4()">Enter</button>
+      <button onclick="showMode('pick4-screen')">Enter</button>
     </div>
 
   </div>
@@ -75,8 +75,8 @@
 
   <div class="mode">
     <h3>Quick Pick Generator</h3>
-    <button onclick="runQuickPick()">Generate</button>
-    <p id="quickpick-output"></p>
+    <button onclick="loadQuickPick()">Generate</button>
+    <p id="free-output"></p>
   </div>
 
   <button class="back-btn" onclick="showMode('home-screen')">Back</button>
@@ -87,8 +87,8 @@
   <h2>GOD MODE</h2>
   <p class="subtitle">Advanced Rundown Engine</p>
 
-  <button onclick="runGod()">Generate Rundown</button>
-  <pre id="god-output" class="output-box"></pre>
+  <button onclick="runGodRundown()">Generate Rundown</button>
+  <pre id="god-rundown-output" class="output-box"></pre>
 
   <button class="back-btn" onclick="showMode('home-screen')">Back</button>
 </div>
@@ -98,10 +98,10 @@
   <h2>UNIVERSE MODE</h2>
   <p class="subtitle">Cosmic Engine</p>
 
-  <button onclick="runUniverse()">Activate Universe Engine</button>
+  <button onclick="runUniverseEngine()">Activate Universe Engine</button>
   <pre id="universe-output" class="output-box"></pre>
 
-  <button class="back-btn" onclick="showMode('home-screen')">Back</button>
+  <button class="back-btn" onclick="exitUniverse()">Back</button>
 </div>
 
 <!-- DIRECTOR MODE -->
@@ -113,17 +113,19 @@
   <input id="director-seed" type="text">
 
   <label>Probability:</label>
-  <input id="director-prob" type="range" min="1" max="100" value="50">
+  <input id="probability-slider" type="range" min="1" max="100" value="50">
+  <span id="probability-value">50%</span>
 
   <label>Earth Override:</label>
-  <input id="earth-override" type="checkbox">
+  <input id="override-earth" type="checkbox">
 
   <label>Universe Override:</label>
-  <input id="universe-override" type="checkbox">
+  <input id="override-universe" type="checkbox">
 
-  <button onclick="runDirector()">Compile</button>
+  <button onclick="compileDirectorPrediction()">Compile</button>
 
-  <pre id="director-output" class="output-box"></pre>
+  <pre id="director-prediction-output" class="output-box"></pre>
+  <pre id="director-earth-output" class="output-box"></pre>
 
   <button class="back-btn" onclick="showMode('home-screen')">Back</button>
 </div>
@@ -132,8 +134,8 @@
 <div id="pick3-screen" class="screen hidden">
   <h2>PICK 3 ENGINE</h2>
 
-  <input id="pick3-input" type="text" placeholder="Enter 3 digits">
-  <button onclick="runPick3()">Submit</button>
+  <input id="pick-input" type="text" placeholder="Enter 3 digits">
+  <button onclick="addResult('P3')">Submit</button>
 
   <pre id="pick-strategy-output"></pre>
   <pre id="grid9-output"></pre>
@@ -152,8 +154,8 @@
 <div id="pick4-screen" class="screen hidden">
   <h2>PICK 4 ENGINE</h2>
 
-  <input id="pick4-input" type="text" placeholder="Enter 4 digits">
-  <button onclick="runPick4()">Submit</button>
+  <input id="pick-input" type="text" placeholder="Enter 4 digits">
+  <button onclick="addResult('P4')">Submit</button>
 
   <pre id="pick-strategy-output"></pre>
   <pre id="grid9-output"></pre>
@@ -183,9 +185,6 @@
 
 <!-- SCRIPT -->
 <script src="app2.js"></script>
-
-</body>
-</html>
 
 </body>
 </html>
