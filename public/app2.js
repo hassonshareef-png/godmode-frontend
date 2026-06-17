@@ -57,7 +57,7 @@ const UI = {
   },
 
   async backendPrediction(outputId, premiumTarget = null) {
-    // premiumTarget: "universe" or null (Free/God)
+    // premiumTarget: "universe" or null
     if (premiumTarget === "universe" && !premiumUnlockedUniverse) {
       UI.openPremium("universe");
       return;
@@ -95,7 +95,6 @@ const UI = {
   },
 
   director() {
-    // Director mode itself is gated by 6→9 unlock
     if (!premiumUnlockedDirector) {
       UI.openPremium("director");
       return;
@@ -122,7 +121,6 @@ const UI = {
   },
 
   openPremium(target) {
-    // target: "universe" or "director"
     pendingPremiumTarget = target;
     const overlay = document.getElementById("premium-overlay");
     overlay.classList.remove("hidden");
@@ -150,12 +148,10 @@ const UI = {
       idx9 > idx6; // 6 brings 9, 9 follows 6
 
     if (!valid) {
-      // fail: no unlock
       sfx.error.play().catch(() => {});
       return;
     }
 
-    // success: unlock based on target
     if (pendingPremiumTarget === "universe") {
       premiumUnlockedUniverse = true;
     } else if (pendingPremiumTarget === "director") {
@@ -175,4 +171,3 @@ const UI = {
 
 // initial state
 UI.show("login");
-
