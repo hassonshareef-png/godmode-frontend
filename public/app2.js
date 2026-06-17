@@ -1,13 +1,13 @@
-// ===============================
-// GODMODE FRONTEND API CONNECTOR
+// =======================================
+// GODMODE FRONTEND → BACKEND CONNECTOR
 // Full Remove + Replace Version
-// ===============================
+// =======================================
 
 const API_BASE = "https://godmode-backend2.onrender.com";
 
-// -------------------------------
+// ---------------------------------------
 // Backend Status Check
-// -------------------------------
+// ---------------------------------------
 async function checkBackend() {
     const statusEl = document.getElementById("status");
 
@@ -24,9 +24,9 @@ async function checkBackend() {
     }
 }
 
-// -------------------------------
+// ---------------------------------------
 // AUTH: Login
-// -------------------------------
+// ---------------------------------------
 async function login(username, password) {
     try {
         const res = await fetch(`${API_BASE}/login`, {
@@ -42,9 +42,9 @@ async function login(username, password) {
     }
 }
 
-// -------------------------------
-// PREDICTION: Get Numbers
-// -------------------------------
+// ---------------------------------------
+// PREDICTION: Standard Mode
+// ---------------------------------------
 async function getPrediction() {
     try {
         const res = await fetch(`${API_BASE}/predict`);
@@ -55,9 +55,9 @@ async function getPrediction() {
     }
 }
 
-// -------------------------------
+// ---------------------------------------
 // PREMIUM: GODMODE++
-// -------------------------------
+// ---------------------------------------
 async function getPremiumPrediction() {
     try {
         const res = await fetch(`${API_BASE}/premium/predict`);
@@ -68,9 +68,20 @@ async function getPremiumPrediction() {
     }
 }
 
-// -------------------------------
+// ---------------------------------------
+// EXPORT FUNCTIONS TO WINDOW
+// (so HTML buttons can call them)
+// ---------------------------------------
+window.GODMODE = {
+    login,
+    getPrediction,
+    getPremiumPrediction
+};
+
+// ---------------------------------------
 // AUTO‑RUN ON PAGE LOAD
-// -------------------------------
+// ---------------------------------------
 window.onload = () => {
     checkBackend();
 };
+
