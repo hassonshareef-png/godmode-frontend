@@ -1,21 +1,24 @@
 body.galaxy {
-  background: radial-gradient(circle at center, #000010, #000000);
+  background: radial-gradient(circle at center, #020218, #000000);
   overflow-x: hidden;
 }
 
 .universe-vortex {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: -50vh;
+  left: -50vw;
   width: 200vw;
   height: 200vh;
-  background: radial-gradient(circle, rgba(0,0,50,0.4), transparent);
-  animation: spin 40s linear infinite;
+  background:
+    radial-gradient(circle, rgba(0, 150, 255, 0.15), transparent),
+    radial-gradient(circle, rgba(255, 0, 150, 0.1), transparent);
+  animation: galaxy-spin 60s linear infinite;
   pointer-events: none;
-  opacity: 0.3;
+  opacity: 0.35;
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes galaxy-spin {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(360deg) scale(1.05); }
 }
+
