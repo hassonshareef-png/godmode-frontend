@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GODMODE++</title>
 
-  <!-- Styles -->
   <link rel="stylesheet" href="style2.css">
   <link rel="stylesheet" href="galaxy.css">
 </head>
@@ -14,195 +13,83 @@
 
 <div class="universe-vortex"></div>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="login-screen" class="screen">
   <h2>Login</h2>
   <input id="login-user" type="text" placeholder="Username">
   <input id="login-pass" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <p id="login-error" style="color:red;"></p>
+  <button onclick="UI.login()">Login</button>
+  <p id="login-error" class="error"></p>
 </div>
 
-<!-- HOME SCREEN -->
+<!-- HOME -->
 <div id="home-screen" class="screen hidden">
-  <div class="top">
-    <h1 class="title">GODMODE++</h1>
-    <p class="disclaimer">⚠️ Nothing is guaranteed. For entertainment purposes only.</p>
-    <button onclick="toggleGalaxy()">Galaxy Mode</button>
-  </div>
-
-  <p class="subtitle">Choose your mode</p>
+  <h1 class="title">GODMODE++</h1>
+  <p class="disclaimer">⚠️ Entertainment only.</p>
 
   <div class="grid">
-
-    <div class="mode">
-      <h3>Free Mode</h3>
-      <button onclick="enterFree()">Enter</button>
-    </div>
-
-    <div class="mode">
-      <h3>God Mode</h3>
-      <button onclick="enterGod()">Enter</button>
-    </div>
-
-    <div class="mode">
-      <h3>Universe Mode</h3>
-      <button onclick="enterUniverse()">Enter</button>
-    </div>
-
-    <div class="mode">
-      <h3>Director Mode</h3>
-      <button onclick="openDirector()">Enter Passcode</button>
-    </div>
-
-    <div class="mode">
-      <h3>Pick 3 Engine</h3>
-      <button onclick="showMode('pick3-screen')">Enter</button>
-    </div>
-
-    <div class="mode">
-      <h3>Pick 4 Engine</h3>
-      <button onclick="showMode('pick4-screen')">Enter</button>
-    </div>
-
+    <button onclick="UI.show('free')">Free Mode</button>
+    <button onclick="UI.show('god')">God Mode</button>
+    <button onclick="UI.show('universe')">Universe Mode</button>
+    <button onclick="UI.show('director')">Director Mode</button>
+    <button onclick="UI.show('pick3')">Pick 3 Engine</button>
+    <button onclick="UI.show('pick4')">Pick 4 Engine</button>
   </div>
 </div>
 
 <!-- FREE MODE -->
-<div id="free-mode-screen" class="screen hidden">
+<div id="free-screen" class="screen hidden">
   <h2>FREE MODE</h2>
-  <p class="subtitle">QuickPick + basic tools</p>
-
-  <div class="mode">
-    <h3>Quick Pick Generator</h3>
-    <button onclick="loadQuickPick()">Generate</button>
-
-    <!-- BACKEND PREDICTION BUTTON -->
-    <button onclick="GODMODE.getPrediction().then(r => freeOutput.innerText = JSON.stringify(r, null, 2))">
-      Backend Prediction
-    </button>
-
-    <pre id="free-output"></pre>
-  </div>
-
-  <button class="back-btn" onclick="showMode('home-screen')">Back</button>
+  <button onclick="UI.quickPick()">Quick Pick</button>
+  <button onclick="UI.backendPrediction('free-output')">Backend Prediction</button>
+  <pre id="free-output" class="output"></pre>
+  <button class="back" onclick="UI.show('home')">Back</button>
 </div>
 
 <!-- GOD MODE -->
-<div id="god-mode-screen" class="screen hidden">
+<div id="god-screen" class="screen hidden">
   <h2>GOD MODE</h2>
-  <p class="subtitle">Advanced Rundown Engine</p>
-
-  <button onclick="runGodRundown()">Generate Rundown</button>
-
-  <!-- BACKEND PREDICTION BUTTON -->
-  <button onclick="GODMODE.getPrediction().then(r => godRundownOutput.innerText = JSON.stringify(r, null, 2))">
-    Backend Prediction
-  </button>
-
-  <pre id="god-rundown-output" class="output-box"></pre>
-
-  <button class="back-btn" onclick="showMode('home-screen')">Back</button>
+  <button onclick="UI.backendPrediction('god-output')">Backend Prediction</button>
+  <pre id="god-output" class="output"></pre>
+  <button class="back" onclick="UI.show('home')">Back</button>
 </div>
 
 <!-- UNIVERSE MODE -->
-<div id="universe-mode-screen" class="screen hidden">
+<div id="universe-screen" class="screen hidden">
   <h2>UNIVERSE MODE</h2>
-  <p class="subtitle">Cosmic Engine</p>
-
-  <button onclick="runUniverseEngine()">Activate Universe Engine</button>
-
-  <!-- BACKEND PREDICTION BUTTON -->
-  <button onclick="GODMODE.getPrediction().then(r => universeOutput.innerText = JSON.stringify(r, null, 2))">
-    Backend Prediction
-  </button>
-
-  <pre id="universe-output" class="output-box"></pre>
-
-  <button class="back-btn" onclick="exitUniverse()">Back</button>
+  <button onclick="UI.backendPrediction('universe-output')">Backend Prediction</button>
+  <pre id="universe-output" class="output"></pre>
+  <button class="back" onclick="UI.show('home')">Back</button>
 </div>
 
-<!-- DIRECTOR MODE -->
-<div id="director-mode-screen" class="screen hidden">
+<!-- DIRECTOR -->
+<div id="director-screen" class="screen hidden">
   <h2>DIRECTOR MODE</h2>
-  <p class="subtitle">Private Tools</p>
-
-  <label>Seed:</label>
-  <input id="director-seed" type="text">
-
-  <label>Probability:</label>
-  <input id="probability-slider" type="range" min="1" max="100" value="50">
-  <span id="probability-value">50%</span>
-
-  <label>Earth Override:</label>
-  <input id="override-earth" type="checkbox">
-
-  <label>Universe Override:</label>
-  <input id="override-universe" type="checkbox">
-
-  <button onclick="compileDirectorPrediction()">Compile</button>
-
-  <pre id="director-prediction-output" class="output-box"></pre>
-  <pre id="director-earth-output" class="output-box"></pre>
-
-  <button class="back-btn" onclick="showMode('home-screen')">Back</button>
+  <input id="director-seed" placeholder="Seed">
+  <button onclick="UI.director()">Compile</button>
+  <pre id="director-output" class="output"></pre>
+  <button class="back" onclick="UI.show('home')">Back</button>
 </div>
 
-<!-- PICK 3 ENGINE -->
+<!-- PICK 3 -->
 <div id="pick3-screen" class="screen hidden">
   <h2>PICK 3 ENGINE</h2>
-
-  <input id="pick-input" type="text" placeholder="Enter 3 digits">
-  <button onclick="addResult('P3')">Submit</button>
-
-  <pre id="pick-strategy-output"></pre>
-  <pre id="grid9-output"></pre>
-  <pre id="grid8-output"></pre>
-  <pre id="grid7-output"></pre>
-  <pre id="grid6-output"></pre>
-  <pre id="grid5-output"></pre>
-  <pre id="grid4-output"></pre>
-  <pre id="grid3-output"></pre>
-  <pre id="grid2-output"></pre>
-
-  <button class="back-btn" onclick="showMode('home-screen')">Back</button>
+  <input id="pick3-input" placeholder="Enter 3 digits">
+  <button onclick="UI.pick3()">Submit</button>
+  <pre id="pick3-output" class="output"></pre>
+  <button class="back" onclick="UI.show('home')">Back</button>
 </div>
 
-<!-- PICK 4 ENGINE -->
+<!-- PICK 4 -->
 <div id="pick4-screen" class="screen hidden">
   <h2>PICK 4 ENGINE</h2>
-
-  <input id="pick-input" type="text" placeholder="Enter 4 digits">
-  <button onclick="addResult('P4')">Submit</button>
-
-  <pre id="pick-strategy-output"></pre>
-  <pre id="grid9-output"></pre>
-  <pre id="grid8-output"></pre>
-  <pre id="grid7-output"></pre>
-  <pre id="grid6-output"></pre>
-  <pre id="grid5-output"></pre>
-  <pre id="grid4-output"></pre>
-  <pre id="grid3-output"></pre>
-  <pre id="grid2-output"></pre>
-
-  <button class="back-btn" onclick="showMode('home-screen')">Back</button>
+  <input id="pick4-input" placeholder="Enter 4 digits">
+  <button onclick="UI.pick4()">Submit</button>
+  <pre id="pick4-output" class="output"></pre>
+  <button class="back" onclick="UI.show('home')">Back</button>
 </div>
 
-<!-- DIRECTOR PASSCODE MODAL -->
-<div id="director-modal" class="modal hidden">
-  <div class="modal-box">
-    <h2>Director Mode</h2>
-    <p>Enter passcode</p>
-
-    <input id="director-pass" type="password" placeholder="Passcode">
-
-    <button onclick="unlockDirector()">Unlock</button>
-    <button class="close" onclick="closeDirector()">Close</button>
-  </div>
-</div>
-
-<!-- SCRIPT -->
 <script src="app2.js"></script>
-
 </body>
 </html>
+
