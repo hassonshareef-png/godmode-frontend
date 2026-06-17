@@ -1,87 +1,56 @@
-// =======================================
-// GODMODE FRONTEND → BACKEND CONNECTOR
-// Full Remove + Replace Version
-// =======================================
+const API = "https://godmode-backend2.onrender.com";
 
-const API_BASE = "https://godmode-backend2.onrender.com";
+const UI = {
+  show(id) {
+    document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+    document.getElementById(id + "-screen").classList.remove("hidden");
+  },
 
-// ---------------------------------------
-// Backend Status Check
-// ---------------------------------------
-async function checkBackend() {
-    const statusEl = document.getElementById("status");
+  async login() {
+    const user = login-user.value;
+    const pass = login-pass.value;
 
-    try {
-        const res = await fetch(`${API_BASE}/`);
-        const data = await res.json();
+    const res = await fetch(`${API}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: user, password: pass })
+    });
 
-        console.log("Backend Response:", data);
+    const data = await res.json();
 
-        if (statusEl) statusEl.innerText = "Backend is LIVE";
-    } catch (err) {
-        console.error("Backend Error:", err);
-        if (statusEl) statusEl.innerText = "Backend is DOWN";
+    if (data.error) {
+      login-error.innerText = data.error;
+    } else {
+      UI.show("home");
     }
-}
+  },
 
-// ---------------------------------------
-// AUTH: Login
-// ---------------------------------------
-async function login(username, password) {
-    try {
-        const res = await fetch(`${API_BASE}/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
+  async backendPrediction(outputId) {
+    const res = await fetch(`${API}/predict`);
+    const data = await res.json();
+    document.getElementById(outputId).innerText = JSON.stringify(data, null, 2);
+  },
 
-        return await res.json();
-    } catch (err) {
-        console.error("Login Error:", err);
-        return { error: "Login failed" };
-    }
-}
+  quickPick() {
+    const nums = Array.from({ length: 3 }, () => Math.floor(Math.random() * 10)).join("");
+    free-output.innerText = nums;
+  },
 
-// ---------------------------------------
-// PREDICTION: Standard Mode
-// ---------------------------------------
-async function getPrediction() {
-    try {
-        const res = await fetch(`${API_BASE}/predict`);
-        return await res.json();
-    } catch (err) {
-        console.error("Prediction Error:", err);
-        return { error: "Prediction failed" };
-    }
-}
+  director() {
+    const seed = director-seed.value;
+    director-output.innerText = `Director Seed Processed: ${seed}`;
+  },
 
-// ---------------------------------------
-// PREMIUM: GODMODE++
-// ---------------------------------------
-async function getPremiumPrediction() {
-    try {
-        const res = await fetch(`${API_BASE}/premium/predict`);
-        return await res.json();
-    } catch (err) {
-        console.error("Premium Error:", err);
-        return { error: "Premium prediction failed" };
-    }
-}
+  pick3() {
+    const v = pick3-input.value;
+    pick3-output.innerText = `Pick 3 processed: ${v}`;
+  },
 
-// ---------------------------------------
-// EXPORT FUNCTIONS TO WINDOW
-// (so HTML buttons can call them)
-// ---------------------------------------
-window.GODMODE = {
-    login,
-    getPrediction,
-    getPremiumPrediction
+  pick4() {
+    const v = pick4-input.value;
+    pick4-output.innerText = `Pick 4 processed: ${v}`;
+  }
 };
 
-// ---------------------------------------
-// AUTO‑RUN ON PAGE LOAD
-// ---------------------------------------
-window.onload = () => {
-    checkBackend();
 };
 
