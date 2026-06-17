@@ -76,7 +76,13 @@
   <div class="mode">
     <h3>Quick Pick Generator</h3>
     <button onclick="loadQuickPick()">Generate</button>
-    <p id="free-output"></p>
+
+    <!-- BACKEND PREDICTION BUTTON -->
+    <button onclick="GODMODE.getPrediction().then(r => freeOutput.innerText = JSON.stringify(r, null, 2))">
+      Backend Prediction
+    </button>
+
+    <pre id="free-output"></pre>
   </div>
 
   <button class="back-btn" onclick="showMode('home-screen')">Back</button>
@@ -88,6 +94,12 @@
   <p class="subtitle">Advanced Rundown Engine</p>
 
   <button onclick="runGodRundown()">Generate Rundown</button>
+
+  <!-- BACKEND PREDICTION BUTTON -->
+  <button onclick="GODMODE.getPrediction().then(r => godRundownOutput.innerText = JSON.stringify(r, null, 2))">
+    Backend Prediction
+  </button>
+
   <pre id="god-rundown-output" class="output-box"></pre>
 
   <button class="back-btn" onclick="showMode('home-screen')">Back</button>
@@ -99,6 +111,12 @@
   <p class="subtitle">Cosmic Engine</p>
 
   <button onclick="runUniverseEngine()">Activate Universe Engine</button>
+
+  <!-- BACKEND PREDICTION BUTTON -->
+  <button onclick="GODMODE.getPrediction().then(r => universeOutput.innerText = JSON.stringify(r, null, 2))">
+    Backend Prediction
+  </button>
+
   <pre id="universe-output" class="output-box"></pre>
 
   <button class="back-btn" onclick="exitUniverse()">Back</button>
