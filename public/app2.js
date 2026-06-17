@@ -1,6 +1,7 @@
 /* ============================
    GODMODE++ FRONTEND LOGIC
-   CLEAN VERSION – NO 6→9 RULE
+   CLEAN VERSION – DIRECTOR MODE PASSWORD RESTORED
+   NO 6→9 RULE ANYWHERE
    NOTHING ELSE REMOVED
    ============================ */
 
@@ -63,13 +64,20 @@ document.getElementById("godModeBtn").addEventListener("click", () => {
     UI.showScreen("godModeScreen");
 });
 
-// UNIVERSE MODE (NO 6→9 RULE)
+// UNIVERSE MODE (NO LOCK)
 document.getElementById("universeModeBtn").addEventListener("click", () => {
     UI.showScreen("universeModeScreen");
 });
 
-// DIRECTOR MODE (NO 6→9 RULE)
+// DIRECTOR MODE (PASSWORD RESTORED)
 document.getElementById("directorModeBtn").addEventListener("click", () => {
+    const pass = prompt("Enter Director Password:");
+
+    if (pass !== "8118") {
+        alert("Incorrect Director Password");
+        return;
+    }
+
     UI.showScreen("directorModeScreen");
 });
 
@@ -85,5 +93,8 @@ document.getElementById("pick4Btn").addEventListener("click", () => {
 
 // BACK BUTTONS
 document.querySelectorAll(".backHome").forEach(btn => {
+    btn.addEventListener("click", () => UI.showScreen("homeScreen"));
+});
+l(".backHome").forEach(btn => {
     btn.addEventListener("click", () => UI.showScreen("homeScreen"));
 });
