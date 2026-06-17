@@ -6,8 +6,9 @@ const sfx = {
   error: new Audio("https://actions.google.com/sounds/v1/cartoon/boing.ogg")
 };
 
-let premiumUnlocked = false;
-let pendingPremiumTarget = null;
+let premiumUnlockedUniverse = false;
+let premiumUnlockedDirector = false;
+let pendingPremiumTarget = null; // "universe" or "director"
 
 const UI = {
   show(id) {
@@ -55,9 +56,10 @@ const UI = {
     }
   },
 
-  async backendPrediction(outputId, premium = false) {
-    if (premium && !premiumUnlocked) {
-      UI.openPremium(null);
+  async backendPrediction(outputId, premiumTarget = null) {
+    // premiumTarget: "universe" or null (Free/God)
+    if (premiumTarget === "universe" && !premiumUnlockedUniverse) {
+      UI.openPremium("universe");
       return;
     }
 
@@ -68,7 +70,11 @@ const UI = {
     out.innerText = "";
 
     try {
-      const endpoint = premium ? `${API}/premium/predict` : `${API}/predict`;
+      const endpoint =
+        premiumTarget === "universe"
+          ? `${API}/premium/predict`
+          : `${API}/predict`;
+
       const res = await fetch(endpoint);
       const data = await res.json();
       out.innerText = JSON.stringify(data, null, 2);
@@ -89,6 +95,12 @@ const UI = {
   },
 
   director() {
+    // Director mode itself is gated by 6→9 unlock
+    if (!premiumUnlockedDirector) {
+      UI.openPremium("director");
+      return;
+    }
+
     const seed = document.getElementById("director-seed").value;
     const out = document.getElementById("director-output");
     out.innerText = `Director Seed Processed: ${seed}`;
@@ -110,6 +122,7 @@ const UI = {
   },
 
   openPremium(target) {
+    // target: "universe" or "director"
     pendingPremiumTarget = target;
     const overlay = document.getElementById("premium-overlay");
     overlay.classList.remove("hidden");
@@ -123,17 +136,39 @@ const UI = {
     sfx.click.play().catch(() => {});
   },
 
+  // 6→9 logic: key must contain '6' and '9', and '9' must come AFTER '6'
   unlockPremium() {
     const key = document.getElementById("premium-key").value.trim();
     if (!key) return;
 
-    // Simple placeholder logic: any non-empty key unlocks
-    premiumUnlocked = true;
+    const idx6 = key.indexOf("6");
+    const idx9 = key.indexOf("9");
+
+    const valid =
+      idx6 !== -1 &&
+      idx9 !== -1 &&
+      idx9 > idx6; // 6 brings 9, 9 follows 6
+
+    if (!valid) {
+      // fail: no unlock
+      sfx.error.play().catch(() => {});
+      return;
+    }
+
+    // success: unlock based on target
+    if (pendingPremiumTarget === "universe") {
+      premiumUnlockedUniverse = true;
+    } else if (pendingPremiumTarget === "director") {
+      premiumUnlockedDirector = true;
+    }
+
     UI.closePremium();
     sfx.success.play().catch(() => {});
 
-    if (pendingPremiumTarget) {
-      UI.show(pendingPremiumTarget);
+    if (pendingPremiumTarget === "universe") {
+      UI.show("universe");
+    } else if (pendingPremiumTarget === "director") {
+      UI.show("director");
     }
   }
 };
