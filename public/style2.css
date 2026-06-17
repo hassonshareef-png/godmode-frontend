@@ -1,127 +1,56 @@
-/* ============================
-   GODMODE++ — CLEAN LIGHT THEME
-   Compatible with simple 4‑file build
-============================ */
-
-/* BASE LIGHT MODE */
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
-  background: #f5f7fb;
-  color: #111;
-}
-
-.hidden { display: none; }
-
-/* SCREEN LAYOUT */
-.screen {
-  padding: 30px 16px;
-  min-height: 100vh;
-}
-
-/* TITLES */
-.title {
-  font-size: 32px;
-  margin-bottom: 6px;
-}
-
-.subtitle {
-  color: #555;
-  margin-bottom: 20px;
-}
-
-/* LOGIN + CARD BOXES */
-.card {
-  background: #fff;
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-  max-width: 360px;
-  margin: auto;
-}
-
-.card input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-.card button {
-  width: 100%;
-  margin-top: 16px;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #007bff;
-  color: #fff;
-  cursor: pointer;
-}
-
-.error {
-  color: #d93025;
-  margin-top: 10px;
-}
-
-/* TOP BAR */
-.top {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-/* MODE GRID */
-.grid {
-  display: grid;
-  gap: 16px;
-}
-
-.mode {
-  background: #fff;
-  padding: 16px;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-}
-
-.mode.locked {
-  border: 1px dashed #ff9800;
-}
-
-.mode button {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background: #007bff;
-  color: #fff;
-  cursor: pointer;
-}
-
-/* MODAL */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 14px;
-  width: 90%;
-  max-width: 350px;
+  font-family: Arial, sans-serif;
+  color: white;
   text-align: center;
 }
 
-.close {
-  background: #ccc;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 10px;
+.screen {
+  display: none;
+  padding: 20px;
+}
+
+.screen:not(.hidden) {
+  display: block;
+}
+
+.title {
+  font-size: 32px;
+  margin-top: 20px;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 12px;
   border: none;
-  cursor: pointer;
+  border-radius: 8px;
+  background: #444;
+  color: white;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #666;
+}
+
+.output {
+  background: rgba(0,0,0,0.4);
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  white-space: pre-wrap;
+}
+
+.back {
+  margin-top: 20px;
+  background: #222;
+}
+
+.error {
+  color: red;
 }
