@@ -1,10 +1,10 @@
 /* ============================
    GODMODE++ FRONTEND – FINAL VERSION
-   Matches your HTML exactly
-   Premium badges + PWA install + Engines
+   Fully synced with backend:
+   https://godmode-backend.onrender.com
    ============================ */
 
-const API = "https://godmode-backend2.onrender.com";
+const API = "https://godmode-backend.onrender.com";
 
 let session = {
   loggedIn: false,
@@ -232,3 +232,4 @@ window.addEventListener("load", () => {
     document.getElementById("iosInstall").style.display = "block";
   }
 });
+
