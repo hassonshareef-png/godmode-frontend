@@ -5,116 +5,126 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GODMODE++</title>
 
+  <!-- THEME FILES -->
   <link rel="stylesheet" href="style2.css">
   <link rel="stylesheet" href="galaxy.css">
 </head>
 
-<body class="galaxy">
+<body class="galaxy mode-basic">
 
-<div class="universe-vortex"></div>
-
-<!-- GLOBAL LOADER -->
-<div id="global-loader" class="loader hidden">
-  <div class="loader-ring"></div>
-  <p>Contacting engine...</p>
-</div>
-
-<!-- PREMIUM OVERLAY -->
-<div id="premium-overlay" class="overlay hidden">
-  <div class="overlay-box">
-    <h2>Premium Mode</h2>
-    <p>Unlock GOD / UNIVERSE with your director key.</p>
-    <input id="premium-key" placeholder="Enter key">
-    <button onclick="UI.unlockPremium()">Unlock</button>
-    <button onclick="UI.closePremium()">Close</button>
+  <!-- GALAXY BACKGROUND -->
+  <div class="galaxy-bg">
+    <div class="stars-layer"></div>
+    <div class="silhouettes-layer"></div>
   </div>
-</div>
 
-<!-- LOGIN -->
-<div id="login-screen" class="screen active">
-  <h2 class="fade-in">Login</h2>
-  <input id="login-user" type="text" placeholder="Username">
-  <input id="login-pass" type="password" placeholder="Password">
-  <button onclick="UI.login()">Login</button>
-  <p id="login-error" class="error"></p>
-</div>
+  <!-- APP UI WRAPPER -->
+  <div class="app-ui">
 
-<!-- HOME -->
-<div id="home-screen" class="screen">
-  <h1 class="title slide-down">GODMODE++</h1>
-  <p class="disclaimer">⚠️ Entertainment only.</p>
+    <!-- GLOBAL LOADER -->
+    <div id="global-loader" class="loader hidden">
+      <div class="loader-ring"></div>
+      <p>Contacting engine...</p>
+    </div>
 
-  <div class="grid">
-    <button onclick="UI.show('free')">Free Mode</button>
+    <!-- PREMIUM OVERLAY -->
+    <div id="premium-overlay" class="overlay hidden">
+      <div class="overlay-box">
+        <h2>Premium Mode</h2>
+        <p>Unlock GOD / UNIVERSE with your director key.</p>
+        <input id="premium-key" placeholder="Enter key">
+        <button onclick="UI.unlockPremium()">Unlock</button>
+        <button onclick="UI.closePremium()">Close</button>
+      </div>
+    </div>
 
-    <!-- GOD MODE STRIPE BUTTON -->
-    <a href="https://buy.stripe.com/aFabJ1e4L5pT7Ba8bxc7u04" target="_blank">
-      <button>God Mode 🔒</button>
-    </a>
+    <!-- LOGIN -->
+    <div id="login-screen" class="screen active">
+      <h2 class="fade-in">Login</h2>
+      <input id="login-user" type="text" placeholder="Username">
+      <input id="login-pass" type="password" placeholder="Password">
+      <button onclick="UI.login()">Login</button>
+      <p id="login-error" class="error"></p>
+    </div>
 
-    <!-- UNIVERSE MODE STRIPE BUTTON -->
-    <a href="https://buy.stripe.com/4gMfZh8Kr19D3kUdvRc7u03" target="_blank">
-      <button>Universe Mode 🔒</button>
-    </a>
+    <!-- HOME -->
+    <div id="home-screen" class="screen">
+      <h1 class="title slide-down">GODMODE++</h1>
+      <p class="disclaimer">⚠️ Entertainment only.</p>
 
-    <button onclick="UI.show('director')">Director Mode</button>
-    <button onclick="UI.show('pick3')">Pick 3 Engine</button>
-    <button onclick="UI.show('pick4')">Pick 4 Engine</button>
-  </div>
-</div>
+      <div class="grid">
+        <button onclick="UI.show('free')">Free Mode</button>
 
-<!-- FREE MODE -->
-<div id="free-screen" class="screen">
-  <h2 class="fade-in">FREE MODE</h2>
-  <button onclick="UI.quickPick()">Quick Pick</button>
-  <button onclick="UI.backendPrediction('free-output')">Backend Prediction</button>
-  <pre id="free-output" class="output"></pre>
-  <button class="back" onclick="UI.show('home')">Back</button>
-</div>
+        <!-- GOD MODE STRIPE BUTTON -->
+        <a href="https://buy.stripe.com/aFabJ1e4L5pT7Ba8bxc7u04" target="_blank">
+          <button>God Mode 🔒</button>
+        </a>
 
-<!-- GOD MODE -->
-<div id="god-screen" class="screen">
-  <h2 class="fade-in">GOD MODE</h2>
-  <button onclick="UI.backendPrediction('god-output', true)">Premium Prediction</button>
-  <pre id="god-output" class="output"></pre>
-  <button class="back" onclick="UI.show('home')">Back</button>
-</div>
+        <!-- UNIVERSE MODE STRIPE BUTTON -->
+        <a href="https://buy.stripe.com/4gMfZh8Kr19D3kUdvRc7u03" target="_blank">
+          <button>Universe Mode 🔒</button>
+        </a>
 
-<!-- UNIVERSE MODE -->
-<div id="universe-screen" class="screen">
-  <h2 class="fade-in">UNIVERSE MODE</h2>
-  <button onclick="UI.backendPrediction('universe-output', true)">Premium Prediction</button>
-  <pre id="universe-output" class="output"></pre>
-  <button class="back" onclick="UI.show('home')">Back</button>
-</div>
+        <button onclick="UI.show('director')">Director Mode</button>
+        <button onclick="UI.show('pick3')">Pick 3 Engine</button>
+        <button onclick="UI.show('pick4')">Pick 4 Engine</button>
+      </div>
+    </div>
 
-<!-- DIRECTOR -->
-<div id="director-screen" class="screen">
-  <h2 class="fade-in">DIRECTOR MODE</h2>
-  <input id="director-seed" placeholder="Seed">
-  <button onclick="UI.director()">Compile</button>
-  <pre id="director-output" class="output"></pre>
-  <button class="back" onclick="UI.show('home')">Back</button>
-</div>
+    <!-- FREE MODE -->
+    <div id="free-screen" class="screen">
+      <h2 class="fade-in">FREE MODE</h2>
+      <button onclick="UI.quickPick()">Quick Pick</button>
+      <button onclick="UI.backendPrediction('free-output')">Backend Prediction</button>
+      <pre id="free-output" class="output"></pre>
+      <button class="back" onclick="UI.show('home')">Back</button>
+    </div>
 
-<!-- PICK 3 -->
-<div id="pick3-screen" class="screen">
-  <h2 class="fade-in">PICK 3 ENGINE</h2>
-  <input id="pick3-input" placeholder="Enter 3 digits">
-  <button onclick="UI.pick3()">Submit</button>
-  <pre id="pick3-output" class="output"></pre>
-  <button class="back" onclick="UI.show('home')">Back</button>
-</div>
+    <!-- GOD MODE -->
+    <div id="god-screen" class="screen">
+      <h2 class="fade-in">GOD MODE</h2>
+      <button onclick="UI.backendPrediction('god-output', true)">Premium Prediction</button>
+      <pre id="god-output" class="output"></pre>
+      <button class="back" onclick="UI.show('home')">Back</button>
+    </div>
 
-<!-- PICK 4 -->
-<div id="pick4-screen" class="screen">
-  <h2 class="fade-in">PICK 4 ENGINE</h2>
-  <input id="pick4-input" placeholder="Enter 4 digits">
-  <button onclick="UI.pick4()">Submit</button>
-  <pre id="pick4-output" class="output"></pre>
-  <button class="back" onclick="UI.show('home')">Back</button>
-</div>
+    <!-- UNIVERSE MODE -->
+    <div id="universe-screen" class="screen">
+      <h2 class="fade-in">UNIVERSE MODE</h2>
+      <button onclick="UI.backendPrediction('universe-output', true)">Premium Prediction</button>
+      <pre id="universe-output" class="output"></pre>
+      <button class="back" onclick="UI.show('home')">Back</button>
+    </div>
 
-<script src="app2.js"></script>
+    <!-- DIRECTOR -->
+    <div id="director-screen" class="screen">
+      <h2 class="fade-in">DIRECTOR MODE</h2>
+      <input id="director-seed" placeholder="Seed">
+      <button onclick="UI.director()">Compile</button>
+      <pre id="director-output" class="output"></pre>
+      <button class="back" onclick="UI.show('home')">Back</button>
+    </div>
+
+    <!-- PICK 3 -->
+    <div id="pick3-screen" class="screen">
+      <h2 class="fade-in">PICK 3 ENGINE</h2>
+      <input id="pick3-input" placeholder="Enter 3 digits">
+      <button onclick="UI.pick3()">Submit</button>
+      <pre id="pick3-output" class="output"></pre>
+      <button class="back" onclick="UI.show('home')">Back</button>
+    </div>
+
+    <!-- PICK 4 -->
+    <div id="pick4-screen" class="screen">
+      <h2 class="fade-in">PICK 4 ENGINE</h2>
+      <input id="pick4-input" placeholder="Enter 4 digits">
+      <button onclick="UI.pick4()">Submit</button>
+      <pre id="pick4-output" class="output"></pre>
+      <button class="back" onclick="UI.show('home')">Back</button>
+    </div>
+
+  </div> <!-- END APP UI -->
+
+  <script src="app2.js"></script>
 </body>
 </html>
