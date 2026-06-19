@@ -20,33 +20,72 @@ input, button {
   border-radius: 8px;
   border: none;
   font-size: 16px;
+  outline: none;
 }
 
+/* ===========================
+   BUTTONS
+=========================== */
 button {
   background: rgba(255,255,255,0.15);
   color: #fff;
   border: 1px solid rgba(255,255,255,0.3);
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.25s ease;
+  text-shadow: 0 0 6px #000;
 }
 
 button:hover {
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.32);
+  transform: scale(1.03);
 }
 
+/* MOBILE BUTTON */
+.mobile-btn {
+  width: 85%;
+  max-width: 320px;
+  padding: 14px;
+  margin: 22px auto;
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  text-shadow: 0 0 6px #000;
+  box-shadow: 0 0 12px rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.mobile-btn:hover {
+  background: rgba(255,255,255,0.32);
+  transform: scale(1.03);
+}
+
+/* ===========================
+   ERROR TEXT
+=========================== */
 .error {
   color: #ff6b6b;
   font-size: 14px;
+  text-shadow: 0 0 6px #000;
 }
 
+/* ===========================
+   OUTPUT BOX
+=========================== */
 .output {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.55);
   padding: 12px;
   border-radius: 8px;
   width: 90%;
   margin: 10px auto;
   color: #fff;
   text-shadow: 0 0 6px #000;
+  white-space: pre-wrap;
 }
 
 /* ===========================
