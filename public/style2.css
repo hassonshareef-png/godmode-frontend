@@ -1,140 +1,82 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  color: white;
-  text-align: center;
-}
-
+/* ===========================
+   GLOBAL UI
+=========================== */
 .screen {
   display: none;
+  text-align: center;
   padding: 20px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .screen.active {
   display: block;
-  opacity: 1;
-  transform: translateY(0);
 }
 
-.title {
-  font-size: 32px;
-  margin-top: 20px;
-}
-
-.grid {
-  display: grid;
-  gap: 12px;
-  margin-top: 20px;
+input, button {
+  width: 80%;
+  max-width: 300px;
+  padding: 12px;
+  margin: 10px auto;
+  display: block;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
 }
 
 button {
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #444;
-  color: white;
-  font-size: 16px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.2s ease;
+  transition: 0.2s;
 }
 
 button:hover {
-  background: #666;
-  transform: translateY(-1px);
-}
-
-.output {
-  background: rgba(0,0,0,0.4);
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 15px;
-  white-space: pre-wrap;
-}
-
-.back {
-  margin-top: 20px;
-  background: #222;
+  background: rgba(255,255,255,0.3);
 }
 
 .error {
-  color: #ff5555;
+  color: #ff6b6b;
+  font-size: 14px;
 }
 
-/* Loader */
-.loader {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.6);
-  z-index: 50;
-}
-
-.loader.hidden {
-  display: none;
-}
-
-.loader-ring {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 6px solid rgba(255,255,255,0.2);
-  border-top-color: #00ffff;
-  animation: spin 0.8s linear infinite;
-}
-
-/* Overlay (premium lock) */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 60;
-}
-
-.overlay.hidden {
-  display: none;
-}
-
-.overlay-box {
-  background: #111;
-  padding: 20px;
-  border-radius: 12px;
+.output {
+  background: rgba(0,0,0,0.5);
+  padding: 12px;
+  border-radius: 8px;
   width: 90%;
-  max-width: 320px;
-  box-shadow: 0 0 20px rgba(0,255,255,0.4);
+  margin: 10px auto;
+  color: #fff;
+  text-shadow: 0 0 6px #000;
 }
 
-/* Simple text animations */
+/* ===========================
+   GRID BUTTONS
+=========================== */
+.grid {
+  display: grid;
+  gap: 12px;
+  width: 90%;
+  max-width: 350px;
+  margin: 20px auto;
+}
+
+/* ===========================
+   ANIMATIONS
+=========================== */
 .fade-in {
-  animation: fadeIn 0.6s ease forwards;
+  animation: fadeIn 1.2s ease;
 }
 
 .slide-down {
-  animation: slideDown 0.6s ease forwards;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  animation: slideDown 1.2s ease;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-  color: red;
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
