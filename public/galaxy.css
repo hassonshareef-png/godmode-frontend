@@ -1,24 +1,110 @@
-body.galaxy {
-  background: radial-gradient(circle at center, #020218, #000000);
-  overflow-x: hidden;
+/* ===========================
+   BASE + READABILITY
+=========================== */
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
 }
 
-.universe-vortex {
+.app-ui,
+.app-ui * {
+  position: relative;
+  z-index: 10;
+  color: #fff;
+  text-shadow: 0 0 8px rgba(0,0,0,0.9);
+}
+
+/* ===========================
+   GALAXY BACKGROUND
+=========================== */
+.galaxy-bg {
   position: fixed;
-  top: -50vh;
-  left: -50vw;
-  width: 200vw;
-  height: 200vh;
+  inset: 0;
+  z-index: 0;
   background:
-    radial-gradient(circle, rgba(0, 150, 255, 0.15), transparent),
-    radial-gradient(circle, rgba(255, 0, 150, 0.1), transparent);
-  animation: galaxy-spin 60s linear infinite;
-  pointer-events: none;
-  opacity: 0.35;
+    radial-gradient(circle at 20% 20%, #4b3b8f 0, transparent 40%),
+    radial-gradient(circle at 80% 30%, #7c2b9f 0, transparent 45%),
+    radial-gradient(circle at 50% 80%, #1b4b7f 0, transparent 50%),
+    #000;
 }
 
-@keyframes galaxy-spin {
-  from { transform: rotate(0deg) scale(1); }
-  to { transform: rotate(360deg) scale(1.05); }
+/* ===========================
+   STARFIELD (FAST)
+=========================== */
+.stars-layer {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(2px 2px at 10% 20%, #ffffff 0, transparent 60%),
+    radial-gradient(2px 2px at 30% 80%, #c0e8ff 0, transparent 60%),
+    radial-gradient(2px 2px at 70% 40%, #ffffff 0, transparent 60%),
+    radial-gradient(1px 1px at 90% 10%, #c0e8ff 0, transparent 60%);
+  animation: stars-drift 30s linear infinite;
+  opacity: 0.9;
+}
+
+@keyframes stars-drift {
+  0% { transform: translate3d(0,0,0); }
+  100% { transform: translate3d(-80px,-120px,0); }
+}
+
+/* ===========================
+   SILHOUETTES (UNIVERSE + DIRECTOR)
+=========================== */
+.silhouettes-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+
+body.mode-universe .silhouettes-layer,
+body.mode-director .silhouettes-layer {
+  opacity: 0.55;
+}
+
+.silhouettes-layer::before,
+.silhouettes-layer::after {
+  content: "";
+  position: absolute;
+  width: 40%;
+  height: 55%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08) 0, transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(255,0,80,0.15) 0, transparent 70%);
+  filter: blur(10px);
+  animation: silhouette-drift 40s ease-in-out infinite alternate;
+}
+
+.silhouettes-layer::before { top: 10%; left: 5%; }
+.silhouettes-layer::after { bottom: 5%; right: 0%; }
+
+@keyframes silhouette-drift {
+  0%   { transform: translate3d(0,0,0) scale(1); opacity: 0.4; }
+  50%  { transform: translate3d(20px,-30px,0) scale(1.1); opacity: 0.7; }
+  100% { transform: translate3d(-40px,40px,0) scale(0.95); opacity: 0.3; }
+}
+
+/* ===========================
+   MODE COLOR SHIFTS
+=========================== */
+body.mode-basic .galaxy-bg {
+  filter: hue-rotate(200deg) saturate(1.2);
+}
+
+body.mode-god .galaxy-bg {
+  filter: hue-rotate(120deg) saturate(1.4);
+}
+
+body.mode-universe .galaxy-bg {
+  filter: hue-rotate(280deg) saturate(1.5);
+}
+
+body.mode-director .galaxy-bg {
+  filter: hue-rotate(340deg) saturate(1.6) brightness(1.1);
 }
 
