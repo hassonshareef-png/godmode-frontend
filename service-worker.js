@@ -49,10 +49,12 @@ self.addEventListener("fetch", (e) => {
         }
         return response;
       }).catch(() => {
-        // Offline fallback: serve index.html for navigation requests
+        // Offline fallback for navigation requests
         if (e.request.mode === "navigate") {
           return caches.match("/index.html");
         }
+        // For other requests (scripts, styles, images) return a simple offline response
+        return new Response("", { status: 503, statusText: "Service Unavailable" });
       });
     })
   );
