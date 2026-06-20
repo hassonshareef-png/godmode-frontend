@@ -432,7 +432,7 @@ h2 {
 }
 
 @keyframes gravity-breathe {
-  from { transform: scale(1)     translateY(0px); }
+  from { transform: scale(1)     translateY(0); }
   to   { transform: scale(0.984) translateY(5px); }
 }
 
@@ -457,7 +457,7 @@ h2 {
 }
 
 @keyframes bh-title-glow {
-  from { filter: drop-shadow(0 0 10px rgba(100,  0, 255, 0.5)); }
+  from { filter: drop-shadow(0 0 10px rgba(100, 0, 255, 0.5)); }
   to   { filter: drop-shadow(0 0 28px rgba(180, 80, 255, 0.95)); }
 }
 

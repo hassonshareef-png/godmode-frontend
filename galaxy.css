@@ -435,7 +435,10 @@ body.mode-director .galaxy-bg {
   left: 50%;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 1 !important;
+}
+
+#home-screen .orbit-ring {
+  z-index: 1;
 }
 
 .orbit-ring-outer {
