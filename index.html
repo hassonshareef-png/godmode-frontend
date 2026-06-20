@@ -13,37 +13,6 @@
 
 <body class="galaxy mode-basic">
 
-  <!-- 🔒 MASTER LOCK SCREEN -->
-  <div id="masterLockScreen" style="
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(20,10,40,0.95));
-      color: white;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 999999;
-      backdrop-filter: blur(5px);
-  ">
-      <h2 style="font-size: 40px; margin-bottom: 15px; text-shadow: 0 0 20px rgba(0,255,255,0.5); letter-spacing: 2px;">🔐 ACCESS LOCKED</h2>
-      <p style="font-size: 13px; color: rgba(255,255,255,0.6); margin: 0 0 20px 0;">Enter Master Password to Continue</p>
-
-      <input id="masterPasswordInput" 
-             type="password" 
-             placeholder="••••••••"
-             style="padding: 14px 16px; font-size: 18px; width: 220px; text-align: center; border-radius: 8px; letter-spacing: 3px;">
-
-      <button onclick="unlockMaster()" 
-              style="margin-top: 25px; padding: 14px 40px; font-size: 18px; border-radius: 8px; background: rgba(0,255,150,0.2); color: #00ff96; border: 1px solid rgba(0,255,150,0.4); font-weight: 600; cursor: pointer;">
-          🔓 UNLOCK
-      </button>
-
-      <p id="wrongPass" style="color: #ff6b6b; margin-top: 20px; display: none; font-weight: 600; text-shadow: 0 0 6px rgba(0,0,0,0.8);">❌ Incorrect Password</p>
-  </div>
-  <!-- END MASTER LOCK -->
-
   <!-- GALAXY BACKGROUND -->
   <div class="galaxy-bg">
     <div class="stars-layer"></div>
@@ -62,56 +31,93 @@
     <!-- PREMIUM OVERLAY -->
     <div id="premium-overlay" class="overlay hidden">
       <div class="overlay-box">
-        <h2>🌟 Premium Mode</h2>
-        <p style="color: rgba(255,255,255,0.8); font-size: 14px;">Unlock GOD / UNIVERSE with your director key.</p>
-        <input id="premium-key" placeholder="Enter activation key">
-        <button onclick="UI.unlockPremium()" style="background: rgba(0,200,255,0.2); border-color: rgba(0,200,255,0.4);">Activate</button>
+        <h2 id="premium-overlay-title">🌟 Premium Required</h2>
+        <p style="color: rgba(255,255,255,0.8); font-size: 14px;">Upgrade your account to unlock this mode.</p>
+        <a id="premium-stripe-link" href="#" target="_blank" rel="noopener noreferrer" style="display:block; margin: 10px auto; width:80%; max-width:300px;">
+          <button style="background: rgba(0,200,255,0.2); border-color: rgba(0,200,255,0.4); width:100%; max-width:none;">Unlock Now</button>
+        </a>
         <button onclick="UI.closePremium()" class="back">Close</button>
       </div>
     </div>
 
-    <!-- LOGIN -->
-    <div id="login-screen" class="screen active">
+    <!-- ── LOGIN ──────────────────────────────────────────────────────── -->
+    <div id="login-screen" class="screen">
       <h2 class="fade-in">🔑 Login to GODMODE++</h2>
       <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Enter your credentials</p>
-      <input id="login-user" type="text" placeholder="Username" autocomplete="off">
-      <input id="login-pass" type="password" placeholder="Password" autocomplete="off">
+      <input id="login-user" type="text"     placeholder="Username or Email" autocomplete="username">
+      <input id="login-pass" type="password" placeholder="Password"          autocomplete="current-password">
       <button onclick="UI.login()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">→ Login</button>
       <p id="login-error" class="error"></p>
-      <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); width: 80%; max-width: 300px; margin: 20px auto;">
-      <p style="margin: 15px 0; font-size: 12px; color: rgba(200,200,100,0.8); text-shadow: 0 0 4px rgba(0,0,0,0.8);">
-        📝 <strong style="color: #ffff00;">Demo Account:</strong><br>
-        User: <strong style="color: #ffff00;">admin</strong><br>
-        Pass: <strong style="color: #ffff00;">8118</strong>
+      <p class="auth-links">
+        <button class="link-btn" onclick="UI.show('forgot-password')">Forgot password?</button>
+        &nbsp;·&nbsp;
+        <button class="link-btn" onclick="UI.show('signup')">Create account</button>
       </p>
     </div>
 
-    <!-- HOME -->
+    <!-- ── SIGNUP ─────────────────────────────────────────────────────── -->
+    <div id="signup-screen" class="screen">
+      <h2 class="fade-in">📝 Create Account</h2>
+      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Join GODMODE++</p>
+      <input id="signup-username" type="text"     placeholder="Username (3–20 chars)"    autocomplete="username">
+      <input id="signup-email"    type="email"    placeholder="Email address"             autocomplete="email">
+      <input id="signup-pass"     type="password" placeholder="Password (8+ chars)"       autocomplete="new-password">
+      <input id="signup-confirm"  type="password" placeholder="Confirm Password"          autocomplete="new-password">
+      <button onclick="UI.signup()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">🚀 Sign Up</button>
+      <p id="signup-error" class="error"></p>
+      <p class="auth-links">
+        <button class="link-btn" onclick="UI.show('login')">Already have an account? Log in</button>
+      </p>
+    </div>
+
+    <!-- ── FORGOT PASSWORD ────────────────────────────────────────────── -->
+    <div id="forgot-password-screen" class="screen">
+      <h2 class="fade-in">🔓 Forgot Password</h2>
+      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">We'll send you a reset link</p>
+      <input id="forgot-email" type="email" placeholder="Your email address" autocomplete="email">
+      <button onclick="UI.forgotPassword()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">📧 Send Reset Link</button>
+      <p id="forgot-error"   class="error"></p>
+      <p id="forgot-success" class="success"></p>
+      <p class="auth-links">
+        <button class="link-btn" onclick="UI.show('login')">← Back to Login</button>
+        &nbsp;·&nbsp;
+        <button class="link-btn" onclick="UI.show('reset-password')">I have a reset token →</button>
+      </p>
+    </div>
+
+    <!-- ── RESET PASSWORD ─────────────────────────────────────────────── -->
+    <div id="reset-password-screen" class="screen">
+      <h2 class="fade-in">🔒 Reset Password</h2>
+      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Enter your reset token and new password</p>
+      <input id="reset-token"   type="text"     placeholder="Reset token"           autocomplete="off">
+      <input id="reset-pass"    type="password" placeholder="New password (8+ chars)" autocomplete="new-password">
+      <input id="reset-confirm" type="password" placeholder="Confirm new password"   autocomplete="new-password">
+      <button onclick="UI.resetPassword()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">✅ Reset Password</button>
+      <p id="reset-error" class="error"></p>
+      <p class="auth-links">
+        <button class="link-btn" onclick="UI.show('login')">← Back to Login</button>
+      </p>
+    </div>
+
+    <!-- ── HOME ──────────────────────────────────────────────────────── -->
     <div id="home-screen" class="screen">
       <h1 class="title slide-down">GODMODE++</h1>
       <p class="disclaimer">✨ Entertainment prediction engine ✨</p>
+      <p id="home-welcome" style="font-size: 13px; color: rgba(200,200,255,0.8); margin: 4px 0 12px;"></p>
 
       <div class="grid">
-        <button onclick="UI.show('free')" style="background: rgba(100,255,150,0.12); border-color: rgba(100,255,150,0.3);">🎮 Free Mode</button>
-
-        <!-- GOD MODE STRIPE BUTTON -->
-        <a href="https://buy.stripe.com/aFabJ1e4L5pT7Ba8bxc7u04" target="_blank" style="text-decoration: none; width: 100%; max-width: 300px;">
-          <button style="background: rgba(255,200,0,0.15); border-color: rgba(255,200,0,0.4); color: #ffd700; width: 100%; max-width: none;">⚡ God Mode 🔒</button>
-        </a>
-
-        <!-- UNIVERSE MODE STRIPE BUTTON -->
-        <a href="https://buy.stripe.com/4gMfZh8Kr19D3kUdvRc7u03" target="_blank" style="text-decoration: none; width: 100%; max-width: 300px;">
-          <button style="background: rgba(200,100,255,0.15); border-color: rgba(200,100,255,0.4); color: #da70d6; width: 100%; max-width: none;">🌌 Universe Mode 🔒</button>
-        </a>
-
+        <button onclick="UI.show('free')"     style="background: rgba(100,255,150,0.12); border-color: rgba(100,255,150,0.3);">🎮 Free Mode</button>
+        <button id="god-mode-btn"      onclick="UI.showPremiumGate('god')"      style="background: rgba(255,200,0,0.1); border-color: rgba(255,200,0,0.25); color: #ffd700;">⚡ God Mode 🔒</button>
+        <button id="universe-mode-btn" onclick="UI.showPremiumGate('universe')" style="background: rgba(200,100,255,0.1); border-color: rgba(200,100,255,0.25); color: #da70d6;">🌌 Universe Mode 🔒</button>
         <button onclick="UI.show('director')" style="background: rgba(255,100,100,0.12); border-color: rgba(255,100,100,0.3);">🎬 Director Mode</button>
-        <button onclick="UI.show('pick3')" style="background: rgba(100,150,255,0.12); border-color: rgba(100,150,255,0.3);">🎲 Pick 3 Engine</button>
-        <button onclick="UI.show('pick4')" style="background: rgba(255,100,200,0.12); border-color: rgba(255,100,200,0.3);">🎰 Pick 4 Engine</button>
-        <button onclick="UI.logout()" style="background: rgba(255,100,100,0.1); border-color: rgba(255,100,100,0.25); margin-top: 10px;">🚪 Logout</button>
+        <button onclick="UI.show('pick3')"    style="background: rgba(100,150,255,0.12); border-color: rgba(100,150,255,0.3);">🎲 Pick 3 Engine</button>
+        <button onclick="UI.show('pick4')"    style="background: rgba(255,100,200,0.12); border-color: rgba(255,100,200,0.3);">🎰 Pick 4 Engine</button>
+        <button onclick="UI.showProfile()"   style="background: rgba(100,200,255,0.1); border-color: rgba(100,200,255,0.25);">👤 My Profile</button>
+        <button onclick="UI.logout()"        style="background: rgba(255,100,100,0.1); border-color: rgba(255,100,100,0.25);">🚪 Logout</button>
       </div>
     </div>
 
-    <!-- FREE MODE -->
+    <!-- ── FREE MODE ──────────────────────────────────────────────────── -->
     <div id="free-screen" class="screen">
       <h2 class="fade-in">🎮 FREE MODE</h2>
       <p style="font-size: 12px; color: rgba(255,255,255,0.6);">Quick random generation</p>
@@ -121,7 +127,7 @@
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- GOD MODE -->
+    <!-- ── GOD MODE ───────────────────────────────────────────────────── -->
     <div id="god-screen" class="screen">
       <h2 class="fade-in">⚡ GOD MODE</h2>
       <p style="font-size: 12px; color: rgba(255,200,0,0.7);">Premium prediction engine</p>
@@ -130,7 +136,7 @@
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- UNIVERSE MODE -->
+    <!-- ── UNIVERSE MODE ─────────────────────────────────────────────── -->
     <div id="universe-screen" class="screen">
       <h2 class="fade-in">🌌 UNIVERSE MODE</h2>
       <p style="font-size: 12px; color: rgba(200,100,255,0.7);">Infinite possibilities</p>
@@ -139,7 +145,7 @@
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- DIRECTOR -->
+    <!-- ── DIRECTOR ───────────────────────────────────────────────────── -->
     <div id="director-screen" class="screen">
       <h2 class="fade-in">🎬 DIRECTOR MODE</h2>
       <p style="font-size: 12px; color: rgba(255,100,100,0.7);">Compile predictions with custom seed</p>
@@ -149,7 +155,7 @@
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- PICK 3 -->
+    <!-- ── PICK 3 ─────────────────────────────────────────────────────── -->
     <div id="pick3-screen" class="screen">
       <h2 class="fade-in">🎲 PICK 3 ENGINE</h2>
       <p style="font-size: 12px; color: rgba(100,150,255,0.7);">Enter exactly 3 digits (0-9)</p>
@@ -159,7 +165,7 @@
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- PICK 4 -->
+    <!-- ── PICK 4 ─────────────────────────────────────────────────────── -->
     <div id="pick4-screen" class="screen">
       <h2 class="fade-in">🎰 PICK 4 ENGINE</h2>
       <p style="font-size: 12px; color: rgba(255,100,200,0.7);">Enter exactly 4 digits (0-9)</p>
@@ -169,45 +175,40 @@
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
+    <!-- ── PROFILE ────────────────────────────────────────────────────── -->
+    <div id="profile-screen" class="screen">
+      <h2 class="fade-in">👤 My Profile</h2>
+      <div class="profile-card">
+        <div class="profile-row"><span class="profile-label">Username</span><span id="profile-username" class="profile-value">—</span></div>
+        <div class="profile-row"><span class="profile-label">Email</span><span id="profile-email" class="profile-value">—</span></div>
+        <div class="profile-row"><span class="profile-label">Tier</span><span id="profile-tier" class="profile-value">FREE</span></div>
+      </div>
+      <button onclick="UI.logout()" style="background: rgba(255,100,100,0.1); border-color: rgba(255,100,100,0.25); margin-top: 10px;">🚪 Logout</button>
+      <button class="back" onclick="UI.show('home')">← Back to Home</button>
+    </div>
+
   </div> <!-- END APP UI -->
 
-  <!-- 🔓 MASTER LOCK SCRIPT -->
+  <!-- keyboard shortcuts for auth screens -->
   <script>
-      const MASTER_PASSWORD = "8118";
-
-      function unlockMaster() {
-          const input = document.getElementById("masterPasswordInput").value;
-          const wrongPassEl = document.getElementById("wrongPass");
-
-          if (input === MASTER_PASSWORD) {
-              document.getElementById("masterLockScreen").style.display = "none";
-              wrongPassEl.style.display = "none";
-          } else {
-              wrongPassEl.style.display = "block";
-              document.getElementById("masterPasswordInput").value = "";
-              document.getElementById("masterPasswordInput").focus();
-          }
-      }
-
-      // Allow Enter key to unlock
-      document.getElementById("masterPasswordInput").addEventListener("keypress", function(e) {
-          if (e.key === "Enter") {
-              e.preventDefault();
-              unlockMaster();
-          }
-      });
-
-      // Allow Enter key for login
-      document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("login-pass").addEventListener("keypress", function(e) {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                UI.login();
-            }
+    document.addEventListener("DOMContentLoaded", function () {
+      function addEnter(id, fn) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") { e.preventDefault(); fn(); }
         });
-      });
+      }
+      addEnter("login-pass",     function () { UI.login(); });
+      addEnter("signup-confirm", function () { UI.signup(); });
+      addEnter("forgot-email",   function () { UI.forgotPassword(); });
+      addEnter("reset-confirm",  function () { UI.resetPassword(); });
+    });
   </script>
 
+  <!-- API base override: uncomment and set your production backend URL -->
+  <!-- <script>window.GODMODE_API_BASE = "https://your-godmode-backend.com";</script> -->
+
+  <script src="auth-utils.js"></script>
   <script src="app2.js"></script>
 </body>
 </html>
