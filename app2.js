@@ -1,7 +1,18 @@
 // ── API Configuration ──────────────────────────────────────────────────────
 // To use a different backend, set window.GODMODE_API_BASE before this script
 // loads (e.g. via a <script> tag or your deployment platform config).
-const API_BASE = (window.GODMODE_API_BASE) || "http://localhost:8000";
+const API_BASE = window.GODMODE_API_BASE || "http://localhost:8000";
+
+// Warn if using plaintext HTTP outside of localhost (tokens would be exposed)
+if (typeof window !== "undefined" && API_BASE.startsWith("http://") &&
+    !API_BASE.includes("localhost") && !API_BASE.includes("127.0.0.1")) {
+  console.warn("⚠️ GODMODE++ is connecting to an HTTP (non-HTTPS) backend. " +
+               "Tokens and credentials will be transmitted in plaintext. " +
+               "Use HTTPS in production.");
+}
+
+// How often to check whether the access token is about to expire (ms)
+const TOKEN_REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 
 // Internal state
 let _refreshInterval = null;
@@ -179,11 +190,6 @@ const UI = {
       UI._setMsg(successEl, "✅ If that email exists, a reset link has been sent.", "success");
       document.getElementById("forgot-email").value = "";
 
-      // Dev mode: backend may return the token directly
-      if (data.reset_token) {
-        document.getElementById("reset-token").value = data.reset_token;
-      }
-
     } catch (err) {
       successEl.textContent = "";
       const msg = !navigator.onLine ? "❌ No internet connection"
@@ -256,7 +262,7 @@ const UI = {
       if (response.ok) {
         const user = await response.json();
         AuthUtils.setUserInfo(user);
-        // Backward-compat legacy keys
+        // Backward-compat legacy keys (deprecated – use AuthUtils.getUserInfo().tier instead)
         localStorage.setItem("god",      String(user.tier === "god" || user.tier === "universe"));
         localStorage.setItem("universe", String(user.tier === "universe"));
         return user;
@@ -302,7 +308,7 @@ const UI = {
         const refreshed = await UI._refreshToken();
         if (!refreshed) UI._forceLogout();
       }
-    }, 5 * 60 * 1000);
+    }, TOKEN_REFRESH_INTERVAL_MS);
   },
 
   _forceLogout() {
@@ -531,15 +537,15 @@ const UI = {
       token = AuthUtils.getToken();
     }
 
-    const headers = Object.assign({}, AuthUtils.getAuthHeaders(), options.headers || {});
-    const response = await fetch(url, Object.assign({}, options, { headers }));
+    const headers = { ...AuthUtils.getAuthHeaders(), ...(options.headers || {}) };
+    const response = await fetch(url, { ...options, headers });
 
     // Retry once after token refresh on 401
     if (response.status === 401) {
       const refreshed = await this._refreshToken();
       if (refreshed) {
-        const retryHeaders = Object.assign({}, AuthUtils.getAuthHeaders(), options.headers || {});
-        return fetch(url, Object.assign({}, options, { headers: retryHeaders }));
+        const retryHeaders = { ...AuthUtils.getAuthHeaders(), ...(options.headers || {}) };
+        return fetch(url, { ...options, headers: retryHeaders });
       }
       this._forceLogout();
       return null;

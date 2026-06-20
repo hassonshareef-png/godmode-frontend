@@ -104,7 +104,9 @@ const AuthUtils = {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   },
 
-  // Returns an error string, or null if valid
+  // Returns an error string, or null if valid.
+  // Supported special characters: ! @ # $ % ^ & * ( ) , . ? " : { } | < > - _ + = ~ ` [ ] \ ; ' /
+  // Ensure your backend accepts the same set when updating this list.
   validatePassword(password) {
     if (password.length < 8) return 'Password must be at least 8 characters';
     if (!/[!@#$%^&*(),.?":{}|<>\-_+=~`[\]\\;'/]/.test(password)) {
