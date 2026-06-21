@@ -63,6 +63,7 @@ input::placeholder {
 button {
   width: 80%;
   max-width: 300px;
+  min-height: 44px;
   padding: 14px 20px;
   margin: 12px auto;
   display: block;

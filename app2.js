@@ -618,11 +618,12 @@ window.addEventListener("load", async () => {
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("✅ Service worker registered"))
       .catch(err => {
         console.warn("⚠️ Service worker registration failed:", err.message);
         const installBtn = document.getElementById("install-app-btn");
         if (installBtn) {
-          installBtn.textContent = "⚠️ Install unavailable on this browser";
+          installBtn.textContent = "⚠️ Install unavailable right now";
           installBtn.disabled = true;
           installBtn.classList.remove("hidden");
         }
