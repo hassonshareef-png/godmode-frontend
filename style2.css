@@ -494,6 +494,179 @@ h2 {
 }
 
 /* ===========================
+   MOBILE GOD MODE HERO BUTTON
+=========================== */
+.god-mode-hero-wrap {
+  width: 90%;
+  max-width: 350px;
+  margin: 0 auto 16px;
+  position: relative;
+  z-index: 10;
+}
+
+.god-mode-hero-btn {
+  width: 100%;
+  max-width: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  margin: 0;
+  background: linear-gradient(135deg,
+    rgba(255, 180, 0, 0.18) 0%,
+    rgba(255, 140, 0, 0.12) 50%,
+    rgba(220, 100, 0, 0.16) 100%
+  );
+  border: 1.5px solid rgba(255, 200, 0, 0.5);
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  box-shadow:
+    0 0 24px rgba(255, 180, 0, 0.2),
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  animation: god-btn-pulse 3s ease-in-out infinite;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+@keyframes god-btn-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 24px rgba(255, 180, 0, 0.2),
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+  50% {
+    box-shadow:
+      0 0 42px rgba(255, 200, 0, 0.45),
+      0 6px 28px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+}
+
+.god-mode-hero-btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 48px rgba(255, 200, 0, 0.5),
+    0 8px 28px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.god-mode-hero-btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow:
+    0 0 20px rgba(255, 180, 0, 0.3),
+    0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Unlocked state */
+.god-mode-hero-btn.unlocked {
+  background: linear-gradient(135deg,
+    rgba(255, 200, 0, 0.22) 0%,
+    rgba(255, 160, 0, 0.15) 50%,
+    rgba(255, 100, 0, 0.18) 100%
+  );
+  border-color: rgba(255, 215, 0, 0.7);
+  animation: god-btn-pulse-unlocked 2.5s ease-in-out infinite;
+}
+
+@keyframes god-btn-pulse-unlocked {
+  0%, 100% {
+    box-shadow:
+      0 0 30px rgba(255, 200, 0, 0.3),
+      0 4px 20px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  50% {
+    box-shadow:
+      0 0 55px rgba(255, 215, 0, 0.6),
+      0 6px 28px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  }
+}
+
+.god-btn-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 8px rgba(255, 200, 0, 0.8));
+  animation: god-icon-zap 2s ease-in-out infinite;
+}
+
+@keyframes god-icon-zap {
+  0%, 80%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(255, 200, 0, 0.8)); }
+  90%            { transform: scale(1.15); filter: drop-shadow(0 0 14px rgba(255, 230, 0, 1)); }
+}
+
+.god-btn-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.god-btn-title {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 200, 0, 0.7), 0 0 20px rgba(255, 150, 0, 0.4);
+  display: block;
+  white-space: nowrap;
+}
+
+.god-btn-sub {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: rgba(255, 200, 100, 0.75);
+  text-shadow: none;
+  display: block;
+}
+
+.god-btn-arrow {
+  font-size: 18px;
+  flex-shrink: 0;
+  opacity: 0.85;
+  transition: transform 0.2s ease;
+}
+
+.god-mode-hero-btn:hover .god-btn-arrow {
+  transform: translateX(3px);
+}
+
+.god-mode-hero-btn.unlocked .god-btn-arrow {
+  filter: drop-shadow(0 0 6px rgba(255, 200, 0, 0.9));
+}
+
+@media (max-width: 480px) {
+  .god-mode-hero-btn {
+    padding: 16px 16px;
+    border-radius: 14px;
+    gap: 12px;
+  }
+  .god-btn-title {
+    font-size: 16px;
+    letter-spacing: 1.5px;
+  }
+  .god-btn-icon {
+    font-size: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .god-mode-hero-btn,
+  .god-mode-hero-btn.unlocked,
+  .god-btn-icon {
+    animation: none !important;
+  }
+}
+
+/* ===========================
    AUTO TASK CARD
 =========================== */
 .auto-task-card {
