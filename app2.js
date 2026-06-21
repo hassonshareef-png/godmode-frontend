@@ -81,6 +81,24 @@ const UI = {
     _deferredInstallPrompt = null;
   },
 
+  _markInstallUnavailable(reason) {
+    _installUnavailable = true;
+    _deferredInstallPrompt = null;
+
+    const installBtn = document.getElementById("install-app-btn");
+    if (!installBtn) return;
+
+    const insecureOrigin = window.location.protocol !== "https:" &&
+      window.location.hostname !== "localhost" &&
+      window.location.hostname !== "127.0.0.1";
+
+    installBtn.textContent = insecureOrigin
+      ? "⚠️ Install requires HTTPS"
+      : "⚠️ " + (reason || "Install unavailable right now");
+    installBtn.disabled = true;
+    installBtn.classList.remove("hidden");
+  },
+
   // ── Login ───────────────────────────────────────────────────────────────
 
   async login() {
@@ -622,15 +640,8 @@ window.addEventListener("load", async () => {
     navigator.serviceWorker.register("/service-worker.js")
       .then(() => console.log("✅ Service worker registered"))
       .catch(err => {
-        _installUnavailable = true;
-        _deferredInstallPrompt = null;
         console.warn("⚠️ Service worker registration failed:", err.message);
-        const installBtn = document.getElementById("install-app-btn");
-        if (installBtn) {
-          installBtn.textContent = "⚠️ Install unavailable right now";
-          installBtn.disabled = true;
-          installBtn.classList.remove("hidden");
-        }
+        UI._markInstallUnavailable("Install not supported right now");
       });
   }
   UI.initMobileInstall();
