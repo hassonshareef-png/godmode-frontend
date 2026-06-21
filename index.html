@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="GODMODE++ - Entertainment Prediction Engine">
+  <meta name="theme-color" content="#000000">
   <title>GODMODE++ | Prediction Engine</title>
 
   <!-- THEME FILES -->
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style2.css">
   <link rel="stylesheet" href="galaxy.css">
 </head>
@@ -219,6 +221,13 @@
   <!-- API base override: uncomment and set your production backend URL -->
   <!-- <script>window.GODMODE_API_BASE = "https://your-godmode-backend.com";</script> -->
 
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/service-worker.js").catch(function () {});
+      });
+    }
+  </script>
   <script src="auth-utils.js"></script>
   <script src="app2.js"></script>
 </body>
