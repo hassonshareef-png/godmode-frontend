@@ -5,7 +5,7 @@ Static vanilla-JS frontend for GODMODE++.
 ## Production setup
 
 1. Set your backend URL in `index.html` by uncommenting:
-   - `window.GODMODE_API_BASE = "https://your-backend-domain.com"`
+   - `window.GODMODE_API_BASE = 'https://your-backend-domain.com'`
 2. Serve this repository over HTTPS.
 3. Ensure `service-worker.js`, `manifest.json`, and `/icons/*` are deployed at the site root.
 4. Confirm backend CORS allows your frontend domain.
