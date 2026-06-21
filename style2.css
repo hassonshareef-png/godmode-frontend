@@ -494,6 +494,120 @@ h2 {
 }
 
 /* ===========================
+   AUTO TASK CARD
+=========================== */
+.auto-task-card {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 200, 255, 0.3);
+  border-radius: 12px;
+  padding: 16px 18px;
+  width: 90%;
+  max-width: 350px;
+  margin: 0 auto 18px;
+  box-shadow: 0 0 18px rgba(0, 200, 255, 0.12), inset 0 0 10px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(6px);
+  animation: task-card-appear 0.5s ease;
+}
+
+@keyframes task-card-appear {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.auto-task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.auto-task-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(0, 200, 255, 0.85);
+  text-shadow: 0 0 6px rgba(0, 200, 255, 0.5);
+}
+
+.auto-task-refresh {
+  width: auto;
+  max-width: none;
+  padding: 4px 8px;
+  margin: 0;
+  background: rgba(0, 200, 255, 0.1);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 6px;
+  font-size: 14px;
+  color: rgba(0, 200, 255, 0.85);
+  cursor: pointer;
+  box-shadow: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.auto-task-refresh:hover {
+  background: rgba(0, 200, 255, 0.2);
+  border-color: rgba(0, 200, 255, 0.5);
+  transform: rotate(180deg);
+  box-shadow: 0 0 8px rgba(0, 200, 255, 0.3);
+}
+
+.auto-task-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  min-height: 36px;
+}
+
+.auto-task-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.88);
+  text-align: left;
+  line-height: 1.45;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.15s ease;
+}
+
+.auto-task-emoji {
+  font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+
+.auto-task-action {
+  width: 100%;
+  max-width: none;
+  padding: 10px;
+  margin: 0;
+  background: rgba(0, 200, 255, 0.12);
+  border: 1px solid rgba(0, 200, 255, 0.3);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(0, 220, 255, 0.9);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+  box-shadow: none;
+  text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);
+}
+
+.auto-task-action:hover {
+  background: rgba(0, 200, 255, 0.22);
+  border-color: rgba(0, 200, 255, 0.55);
+  box-shadow: 0 0 12px rgba(0, 200, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.auto-task-action:active {
+  transform: translateY(0);
+}
+
+/* ===========================
    SCROLLBAR STYLING
 =========================== */
 ::-webkit-scrollbar {

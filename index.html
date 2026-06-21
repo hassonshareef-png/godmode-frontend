@@ -116,6 +116,19 @@
       <p class="disclaimer">✨ Entertainment prediction engine ✨</p>
       <p id="home-welcome" style="font-size: 13px; color: rgba(200,200,255,0.8); margin: 4px 0 12px;"></p>
 
+      <!-- AUTO TASK CARD -->
+      <div class="auto-task-card" id="auto-task-card">
+        <div class="auto-task-header">
+          <span class="auto-task-label">⚡ Auto Task</span>
+          <button class="auto-task-refresh" onclick="UI.refreshAutoTask()" title="Generate new task">🔄</button>
+        </div>
+        <div id="auto-task-content" class="auto-task-content">
+          <span id="auto-task-emoji" class="auto-task-emoji"></span>
+          <span id="auto-task-text" class="auto-task-text"></span>
+        </div>
+        <button class="auto-task-action" id="auto-task-action-btn" onclick="UI.runAutoTask()">▶ Run Task</button>
+      </div>
+
       <div class="grid">
         <button onclick="UI.show('free')"     style="background: rgba(100,255,150,0.12); border-color: rgba(100,255,150,0.3);">🎮 Free Mode</button>
         <button id="god-mode-btn"      onclick="UI.showPremiumGate('god')"      style="background: rgba(255,200,0,0.1); border-color: rgba(255,200,0,0.25); color: #ffd700;">⚡ God Mode 🔒</button>
