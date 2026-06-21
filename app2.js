@@ -337,6 +337,9 @@ const UI = {
   _updatePremiumButtons(tier) {
     const godBtn      = document.getElementById("god-mode-btn");
     const universeBtn = document.getElementById("universe-mode-btn");
+    const heroBtn     = document.getElementById("god-mode-hero-btn");
+    const heroBtnSub  = document.getElementById("god-btn-sub");
+    const heroBtnArrow = document.getElementById("god-btn-arrow");
 
     const hasGod      = (tier === "god" || tier === "universe");
     const hasUniverse = (tier === "universe");
@@ -354,6 +357,20 @@ const UI = {
         godBtn.style.background   = "rgba(255,200,0,0.1)";
         godBtn.style.borderColor  = "rgba(255,200,0,0.25)";
         godBtn.style.color        = "#ffd700";
+      }
+    }
+
+    if (heroBtn) {
+      if (hasGod) {
+        heroBtn.classList.add("unlocked");
+        heroBtn.onclick = () => UI.show("god");
+        if (heroBtnSub)   heroBtnSub.textContent   = "Tap to activate premium engine";
+        if (heroBtnArrow) heroBtnArrow.textContent  = "▶";
+      } else {
+        heroBtn.classList.remove("unlocked");
+        heroBtn.onclick = () => UI.showPremiumGate("god");
+        if (heroBtnSub)   heroBtnSub.textContent   = "Upgrade to unlock";
+        if (heroBtnArrow) heroBtnArrow.textContent  = "🔒";
       }
     }
 
