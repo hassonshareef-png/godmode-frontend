@@ -94,7 +94,7 @@ const UI = {
 
     installBtn.textContent = insecureOrigin
       ? "⚠️ Install requires HTTPS"
-      : "⚠️ " + (reason || "Install unavailable right now");
+      : "⚠️ " + (reason || "Install not supported on this device");
     installBtn.disabled = true;
     installBtn.classList.remove("hidden");
   },
