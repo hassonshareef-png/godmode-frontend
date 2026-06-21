@@ -225,7 +225,7 @@
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
         navigator.serviceWorker.register("/service-worker.js").catch(function (err) {
-          window.__godmodePwaDisabled = true;
+          window.godmodePwaDisabled = true;
           console.warn("Service worker registration failed:", err);
         });
       });
