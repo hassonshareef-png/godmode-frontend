@@ -71,7 +71,7 @@ const UI = {
     const installBtn = document.getElementById("install-app-btn");
     if (!_deferredInstallPrompt || !installBtn) return;
 
-    _deferredInstallPrompt.prompt();
+    await _deferredInstallPrompt.prompt();
     const choiceResult = await _deferredInstallPrompt.userChoice;
     if (choiceResult.outcome === "accepted") {
       installBtn.classList.add("hidden");
@@ -618,7 +618,15 @@ window.addEventListener("load", async () => {
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js")
-      .catch(err => console.warn("⚠️ Service worker registration failed:", err.message));
+      .catch(err => {
+        console.warn("⚠️ Service worker registration failed:", err.message);
+        const installBtn = document.getElementById("install-app-btn");
+        if (installBtn) {
+          installBtn.textContent = "⚠️ Install unavailable on this browser";
+          installBtn.disabled = true;
+          installBtn.classList.remove("hidden");
+        }
+      });
   }
   UI.initMobileInstall();
 
