@@ -224,10 +224,15 @@
   <script>
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
-        navigator.serviceWorker.register("/service-worker.js").catch(function (err) {
-          window.godmodePwaDisabled = true;
-          console.warn("Service worker registration failed:", err);
-        });
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then(function (registration) {
+            window.godmodeServiceWorkerReg = registration;
+          })
+          .catch(function (err) {
+            window.godmodePwaDisabled = true;
+            console.warn("Service worker registration failed:", err);
+          });
       });
     }
   </script>
