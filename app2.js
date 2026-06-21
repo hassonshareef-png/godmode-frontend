@@ -16,6 +16,7 @@ const TOKEN_REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 
 // Internal state
 let _refreshInterval = null;
+let _deferredInstallPrompt = null;
 
 // ── UI Object ──────────────────────────────────────────────────────────────
 const UI = {
@@ -42,6 +43,40 @@ const UI = {
 
   hideLoader() {
     document.getElementById("global-loader").classList.add("hidden");
+  },
+
+  // ── Mobile install support ──────────────────────────────────────────────
+
+  initMobileInstall() {
+    const installBtn = document.getElementById("install-app-btn");
+    if (!installBtn) return;
+
+    installBtn.addEventListener("click", async () => {
+      await UI.installApp();
+    });
+
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      _deferredInstallPrompt = event;
+      installBtn.classList.remove("hidden");
+    });
+
+    window.addEventListener("appinstalled", () => {
+      _deferredInstallPrompt = null;
+      installBtn.classList.add("hidden");
+    });
+  },
+
+  async installApp() {
+    const installBtn = document.getElementById("install-app-btn");
+    if (!_deferredInstallPrompt || !installBtn) return;
+
+    _deferredInstallPrompt.prompt();
+    const choiceResult = await _deferredInstallPrompt.userChoice;
+    if (choiceResult.outcome === "accepted") {
+      installBtn.classList.add("hidden");
+    }
+    _deferredInstallPrompt = null;
   },
 
   // ── Login ───────────────────────────────────────────────────────────────
@@ -580,6 +615,12 @@ const UI = {
 window.addEventListener("load", async () => {
   console.log("✅ GODMODE++ Frontend loaded");
   console.log("📡 Backend API: " + API_BASE);
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .catch(err => console.warn("⚠️ Service worker registration failed:", err.message));
+  }
+  UI.initMobileInstall();
 
   // Pre-fill reset token from URL query param (e.g. ?token=xxx)
   const urlParams = new URLSearchParams(window.location.search);

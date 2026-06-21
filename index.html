@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="GODMODE++ - Entertainment Prediction Engine">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.json">
   <title>GODMODE++ | Prediction Engine</title>
 
   <!-- THEME FILES -->
@@ -117,6 +121,7 @@
       <p id="home-welcome" style="font-size: 13px; color: rgba(200,200,255,0.8); margin: 4px 0 12px;"></p>
 
       <div class="grid">
+        <button id="install-app-btn" class="mobile-btn hidden" type="button">📲 Install App on Phone</button>
         <button onclick="UI.show('free')"     style="background: rgba(100,255,150,0.12); border-color: rgba(100,255,150,0.3);">🎮 Free Mode</button>
         <button id="god-mode-btn"      onclick="UI.showPremiumGate('god')"      style="background: rgba(255,200,0,0.1); border-color: rgba(255,200,0,0.25); color: #ffd700;">⚡ God Mode 🔒</button>
         <button id="universe-mode-btn" onclick="UI.showPremiumGate('universe')" style="background: rgba(200,100,255,0.1); border-color: rgba(200,100,255,0.25); color: #da70d6;">🌌 Universe Mode 🔒</button>
