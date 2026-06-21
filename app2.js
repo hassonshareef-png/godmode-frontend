@@ -17,6 +17,7 @@ const TOKEN_REFRESH_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
 // Internal state
 let _refreshInterval = null;
 let _deferredInstallPrompt = null;
+let _installUnavailable = false;
 
 // ── UI Object ──────────────────────────────────────────────────────────────
 const UI = {
@@ -56,6 +57,7 @@ const UI = {
     });
 
     window.addEventListener("beforeinstallprompt", (event) => {
+      if (_installUnavailable) return;
       event.preventDefault();
       _deferredInstallPrompt = event;
       installBtn.classList.remove("hidden");
@@ -620,6 +622,8 @@ window.addEventListener("load", async () => {
     navigator.serviceWorker.register("/service-worker.js")
       .then(() => console.log("✅ Service worker registered"))
       .catch(err => {
+        _installUnavailable = true;
+        _deferredInstallPrompt = null;
         console.warn("⚠️ Service worker registration failed:", err.message);
         const installBtn = document.getElementById("install-app-btn");
         if (installBtn) {

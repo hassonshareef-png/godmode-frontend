@@ -394,6 +394,9 @@ h2 {
     width: 95%;
   }
 
+}
+
+@media (hover: none), (pointer: coarse) {
   button:hover,
   .mobile-btn:hover {
     transform: none;
