@@ -34,6 +34,8 @@ const UI = {
     if (screen === "god")      document.body.className = "galaxy mode-god";
     if (screen === "universe") document.body.className = "galaxy mode-universe";
     if (screen === "director") document.body.className = "galaxy mode-director";
+
+    if (screen === "home") this.renderAutoTask();
   },
 
   showLoader() {
@@ -329,6 +331,7 @@ const UI = {
     }
 
     this._updatePremiumButtons(user.tier || "free");
+    this.renderAutoTask();
   },
 
   _updatePremiumButtons(tier) {
@@ -368,6 +371,79 @@ const UI = {
         universeBtn.style.borderColor = "rgba(200,100,255,0.25)";
         universeBtn.style.color       = "#da70d6";
       }
+    }
+  },
+
+  // ── Auto Task Card ───────────────────────────────────────────────────────
+
+  _autoTaskPool: [
+    { emoji: "🎯", text: "Run a Quick Pick and trust the numbers today.", action: () => { UI.show("free"); setTimeout(() => UI.quickPick(), 200); } },
+    { emoji: "🎲", text: "Try Pick 3 — enter a lucky 3-digit combo.", action: () => UI.show("pick3") },
+    { emoji: "🎰", text: "Try Pick 4 — your next big 4-digit hit awaits.", action: () => UI.show("pick4") },
+    { emoji: "🎬", text: "Use Director Mode with a custom seed today.", action: () => UI.show("director") },
+    { emoji: "⚙️", text: "Run a Free Backend Prediction now.", action: () => { UI.show("free"); setTimeout(() => UI.backendPrediction("free-output"), 200); } },
+    { emoji: "⚡", text: "Activate God Mode for a premium prediction.", action: () => UI.showPremiumGate("god") },
+    { emoji: "🌌", text: "Unlock Universe Mode for infinite possibilities.", action: () => UI.showPremiumGate("universe") },
+    { emoji: "🔢", text: "Play Pick 3 with digits from today's date.", action: () => { UI.show("pick3"); const d = new Date(); const v = String(d.getDate()).padStart(2,"0").slice(-3) || String(d.getMonth()+1).padStart(3,"0").slice(0,3); const el = document.getElementById("pick3-input"); if(el) el.value = (d.getDate() % 10) + "" + (d.getMonth()+1 % 10) + "" + (d.getFullYear() % 10); } },
+    { emoji: "🎱", text: "Pick 4 using the hour, minute, and two lucky digits.", action: () => { UI.show("pick4"); const n = new Date(); const el = document.getElementById("pick4-input"); if(el) el.value = String(n.getHours() % 10) + String(n.getMinutes() % 10) + String(Math.floor(Math.random()*10)) + String(Math.floor(Math.random()*10)); } },
+    { emoji: "🚀", text: "Run the backend prediction engine in Free Mode.", action: () => { UI.show("free"); setTimeout(() => UI.backendPrediction("free-output"), 200); } },
+    { emoji: "🌟", text: "Check your profile tier to unlock premium modes.", action: () => UI.showProfile() },
+    { emoji: "🔥", text: "Generate a lucky seed for Director Mode.", action: () => { UI.show("director"); const el = document.getElementById("director-seed"); if(el) el.value = Math.floor(Math.random()*999999); } }
+  ],
+
+  _currentAutoTask: null,
+
+  _pickAutoTask() {
+    const pool = this._autoTaskPool;
+    // Use date-seeded index for the day's default task, but allow refresh
+    const today = new Date().toDateString();
+    const stored = (() => { try { return JSON.parse(localStorage.getItem("godmode_auto_task")); } catch(e) { return null; } })();
+    if (stored && stored.date === today && stored.idx != null && !stored.refreshed) {
+      return stored.idx;
+    }
+    // Pick a random index different from the stored one
+    let idx;
+    do { idx = Math.floor(Math.random() * pool.length); } while (pool.length > 1 && stored && idx === stored.idx);
+    try { localStorage.setItem("godmode_auto_task", JSON.stringify({ date: today, idx, refreshed: false })); } catch(e) {}
+    return idx;
+  },
+
+  renderAutoTask() {
+    const idx  = this._pickAutoTask();
+    const task = this._autoTaskPool[idx];
+    if (!task) return;
+    this._currentAutoTask = task;
+    const emojiEl  = document.getElementById("auto-task-emoji");
+    const textEl   = document.getElementById("auto-task-text");
+    if (emojiEl) emojiEl.textContent = task.emoji;
+    if (textEl)  textEl.textContent  = task.text;
+  },
+
+  refreshAutoTask() {
+    // Mark as refreshed so _pickAutoTask picks a new random one
+    try {
+      const stored = JSON.parse(localStorage.getItem("godmode_auto_task")) || {};
+      localStorage.setItem("godmode_auto_task", JSON.stringify({ ...stored, refreshed: true }));
+    } catch(e) {}
+    const pool = this._autoTaskPool;
+    const old  = this._currentAutoTask;
+    let idx;
+    do { idx = Math.floor(Math.random() * pool.length); } while (pool.length > 1 && pool[idx] === old);
+    try {
+      const today = new Date().toDateString();
+      localStorage.setItem("godmode_auto_task", JSON.stringify({ date: today, idx, refreshed: false }));
+    } catch(e) {}
+    const task = pool[idx];
+    this._currentAutoTask = task;
+    const emojiEl = document.getElementById("auto-task-emoji");
+    const textEl  = document.getElementById("auto-task-text");
+    if (emojiEl) { emojiEl.style.transform = "scale(0)"; setTimeout(() => { emojiEl.textContent = task.emoji; emojiEl.style.transform = ""; }, 150); }
+    if (textEl)  { textEl.style.opacity = "0"; setTimeout(() => { textEl.textContent = task.text; textEl.style.opacity = "1"; }, 150); }
+  },
+
+  runAutoTask() {
+    if (this._currentAutoTask && typeof this._currentAutoTask.action === "function") {
+      this._currentAutoTask.action();
     }
   },
 
