@@ -17,6 +17,12 @@
   <div class="galaxy-bg">
     <div class="stars-layer"></div>
     <div class="silhouettes-layer"></div>
+    <!-- Black hole layers -->
+    <div class="black-hole-core"></div>
+    <div class="accretion-disk-layer"></div>
+    <div class="lensing-halo"></div>
+    <div class="cosmic-dust-layer"></div>
+    <div class="particle-stream"></div>
   </div>
 
   <!-- APP UI WRAPPER -->
@@ -42,17 +48,19 @@
 
     <!-- ── LOGIN ──────────────────────────────────────────────────────── -->
     <div id="login-screen" class="screen">
-      <h2 class="fade-in">🔑 Login to GODMODE++</h2>
-      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Enter your credentials</p>
-      <input id="login-user" type="text"     placeholder="Username or Email" autocomplete="username">
-      <input id="login-pass" type="password" placeholder="Password"          autocomplete="current-password">
-      <button onclick="UI.login()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">→ Login</button>
-      <p id="login-error" class="error"></p>
-      <p class="auth-links">
-        <button class="link-btn" onclick="UI.show('forgot-password')">Forgot password?</button>
-        &nbsp;·&nbsp;
-        <button class="link-btn" onclick="UI.show('signup')">Create account</button>
-      </p>
+      <div class="login-form-card">
+        <h2 class="fade-in">🔑 Login to GODMODE++</h2>
+        <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Enter your credentials</p>
+        <input id="login-user" type="text"     placeholder="Username or Email" autocomplete="username">
+        <input id="login-pass" type="password" placeholder="Password"          autocomplete="current-password">
+        <button onclick="UI.login()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">→ Login</button>
+        <p id="login-error" class="error"></p>
+        <p class="auth-links">
+          <button class="link-btn" onclick="UI.show('forgot-password')">Forgot password?</button>
+          &nbsp;·&nbsp;
+          <button class="link-btn" onclick="UI.show('signup')">Create account</button>
+        </p>
+      </div>
     </div>
 
     <!-- ── SIGNUP ─────────────────────────────────────────────────────── -->
@@ -101,6 +109,9 @@
 
     <!-- ── HOME ──────────────────────────────────────────────────────── -->
     <div id="home-screen" class="screen">
+      <!-- Decorative orbit rings -->
+      <div class="orbit-ring orbit-ring-outer"></div>
+      <div class="orbit-ring orbit-ring-inner"></div>
       <h1 class="title slide-down">GODMODE++</h1>
       <p class="disclaimer">✨ Entertainment prediction engine ✨</p>
       <p id="home-welcome" style="font-size: 13px; color: rgba(200,200,255,0.8); margin: 4px 0 12px;"></p>
