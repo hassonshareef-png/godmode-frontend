@@ -380,6 +380,120 @@ h2 {
 }
 
 /* ===========================
+   LOGIN SCREEN - BLACK HOLE THEME
+=========================== */
+#login-screen {
+  padding-top: 40px;
+  animation: fadeInScreen 0.5s ease, gravity-breathe 7s ease-in-out 0.5s infinite alternate;
+}
+
+.login-form-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+#login-screen h2 {
+  font-size: 22px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #9060ff, #e080ff, #60c0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  margin-bottom: 4px;
+}
+
+#login-screen input {
+  background: rgba(10, 0, 30, 0.75);
+  border-color: rgba(120, 50, 255, 0.45);
+  box-shadow: 0 0 14px rgba(80, 0, 180, 0.22), inset 0 0 8px rgba(0, 0, 0, 0.55);
+}
+
+#login-screen input:focus {
+  background: rgba(20, 0, 50, 0.88);
+  border-color: rgba(160, 80, 255, 0.72);
+  box-shadow: 0 0 22px rgba(120, 40, 255, 0.45), inset 0 0 8px rgba(0, 0, 0, 0.55);
+}
+
+#login-screen button:not(.back) {
+  background: rgba(80, 0, 200, 0.28);
+  border-color: rgba(140, 60, 255, 0.55);
+  box-shadow: 0 0 18px rgba(100, 20, 220, 0.32);
+}
+
+#login-screen button:not(.back):hover {
+  background: rgba(100, 20, 220, 0.42);
+  border-color: rgba(180, 100, 255, 0.72);
+  box-shadow: 0 0 28px rgba(140, 40, 255, 0.55);
+  transform: translateY(-2px);
+}
+
+@keyframes gravity-breathe {
+  from { transform: scale(1)     translateY(0); }
+  to   { transform: scale(0.984) translateY(5px); }
+}
+
+/* ===========================
+   HOME SCREEN - ORBITAL THEME
+=========================== */
+#home-screen {
+  position: relative;
+  padding-top: 50px;
+  min-height: 100vh;
+}
+
+#home-screen .title {
+  font-size: 42px;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #00ffff 0%, #a060ff 50%, #ff40ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  animation: bh-title-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes bh-title-glow {
+  from { filter: drop-shadow(0 0 10px rgba(100, 0, 255, 0.5)); }
+  to   { filter: drop-shadow(0 0 28px rgba(180, 80, 255, 0.95)); }
+}
+
+#home-screen .grid {
+  position: relative;
+  z-index: 10;
+}
+
+#home-screen .grid button,
+#home-screen .grid a {
+  backdrop-filter: blur(6px);
+}
+
+/* Staggered orbital float on home grid items */
+#home-screen .grid > *:nth-child(1) { animation: orbit-float 5.2s ease-in-out 0s    infinite; }
+#home-screen .grid > *:nth-child(2) { animation: orbit-float 5.2s ease-in-out 0.75s infinite; }
+#home-screen .grid > *:nth-child(3) { animation: orbit-float 5.2s ease-in-out 1.5s  infinite; }
+#home-screen .grid > *:nth-child(4) { animation: orbit-float 5.2s ease-in-out 2.25s infinite; }
+#home-screen .grid > *:nth-child(5) { animation: orbit-float 5.2s ease-in-out 3s    infinite; }
+#home-screen .grid > *:nth-child(6) { animation: orbit-float 5.2s ease-in-out 3.75s infinite; }
+#home-screen .grid > *:nth-child(7) { animation: orbit-float 5.2s ease-in-out 4.5s  infinite; }
+
+@keyframes orbit-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #login-screen,
+  #home-screen .title,
+  #home-screen .grid > * {
+    animation: none !important;
+  }
+}
+
+/* ===========================
    SCROLLBAR STYLING
 =========================== */
 ::-webkit-scrollbar {
