@@ -1,7 +1,7 @@
 // ── API Configuration ──────────────────────────────────────────────────────
 // To use a different backend, set window.GODMODE_API_BASE before this script
 // loads (e.g. via a <script> tag or your deployment platform config).
-const API_BASE = "https://godmode-backend2.onrender.com";
+const API_BASE = window.GODMODE_API_BASE || "https://godmode-backend2.onrender.com";
 
 // Warn if using plaintext HTTP outside of localhost (tokens would be exposed)
 if (typeof window !== "undefined" && API_BASE.startsWith("http://") &&
@@ -476,8 +476,9 @@ const UI = {
     document.getElementById("premium-overlay-title").textContent =
       "🔒 " + tierLabel + " Required";
     const link = document.getElementById("premium-stripe-link");
-    link.href        = stripeUrl;
-    link.textContent = "Unlock " + tierLabel;
+    link.href = stripeUrl;
+    const btn = link.querySelector("button");
+    if (btn) btn.textContent = "Unlock " + tierLabel;
 
     document.getElementById("premium-overlay").classList.remove("hidden");
   },
