@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GODMODE++ Numbers</title>
+
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
+
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #top {
+      padding: 15px;
+      background: #111;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    select, button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    #content {
+      padding: 15px;
+    }
+
+    .box {
+      background: #111;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+    }
+
+    .nums {
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="top">
+  <div>
+    <select id="state">
+      <option value="NJ">NJ</option>
+      <option value="NY">NY</option>
+      <option value="PA">PA</option>
+      <option value="GA">GA</option>
+      <option value="FL">FL</option>
+    </select>
+
+    <select id="game">
+      <option value="P3">Pick 3</option>
+      <option value="P4">Pick 4</option>
+    </select>
+  </div>
+
+  <button onclick="loadData()">Refresh</button>
+</div>
+
+<div id="content">
+
+  <div class="box">
+    <h3>Predictions</h3>
+    <div id="pred" class="nums">Loading...</div>
+  </div>
+
+  <div class="box">
+    <h3>Rundown</h3>
+    <div id="run" class="nums">Loading...</div>
+  </div>
+
+</div>
+
+<script>
+const API = "https://godmode-backend.onrender.com";
+
+// Redirect if no token
+if (!localStorage.getItem("token")) {
+  window.location.href = "index.html";
+}
+
+async function loadData() {
+  const state = document.getElementById("state").value;
+  const game = document.getElementById("game").value;
+
+  document.getElementById("pred").innerText = "Loading...";
+  document.getElementById("run").innerText = "Loading...";
+
+  try {
+    // Predictions
+    const p = await fetch(`${API}/predict?state=${state}&game=${game}`);
+    const pdata = await p.json();
+    document.getElementById("pred").innerText = pdata.numbers.join("  ");
+
+    // Rundown
+    const r = await fetch(`${API}/rundown?state=${state}`);
+    const rdata = await r.json();
+    document.getElementById("run").innerText =
+      rdata.rundown.map(row => row.join(" ")).join("   ");
+
+  } catch (e) {
+    document.getElementById("pred").innerText = "Error";
+    document.getElementById("run").innerText = "Error";
+  }
+}
+
+loadData();
+</script>
+
+</body>
+</html>
