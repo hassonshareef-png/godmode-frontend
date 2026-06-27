@@ -1,250 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="GODMODE++ - Entertainment Prediction Engine">
-  <title>GODMODE++ | Prediction Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GODMODE++ Login</title>
 
-  <!-- THEME FILES -->
-  <link rel="stylesheet" href="style2.css">
-  <link rel="stylesheet" href="galaxy.css">
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #card {
+      width: 90%;
+      max-width: 400px;
+      background: #111;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 18px;
+      background: #0af;
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    #msg {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #f33;
+      text-align: center;
+    }
+  </style>
 </head>
 
-<body class="galaxy mode-basic">
+<body>
 
-  <!-- GALAXY BACKGROUND -->
-  <div class="galaxy-bg">
-    <div class="stars-layer"></div>
-    <div class="silhouettes-layer"></div>
-    <!-- Black hole layers -->
-    <div class="black-hole-core"></div>
-    <div class="accretion-disk-layer"></div>
-    <div class="lensing-halo"></div>
-    <div class="cosmic-dust-layer"></div>
-    <div class="particle-stream"></div>
-  </div>
+<div id="card">
+  <h2 style="text-align:center;">GODMODE++</h2>
 
-  <!-- APP UI WRAPPER -->
-  <div class="app-ui">
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
 
-    <!-- GLOBAL LOADER -->
-    <div id="global-loader" class="loader hidden">
-      <div class="loader-ring"></div>
-      <p>⚡ Contacting engine...</p>
-    </div>
+  <button onclick="login()">Login</button>
 
-    <!-- PREMIUM OVERLAY -->
-    <div id="premium-overlay" class="overlay hidden">
-      <div class="overlay-box">
-        <h2 id="premium-overlay-title">🌟 Premium Required</h2>
-        <p style="color: rgba(255,255,255,0.8); font-size: 14px;">Upgrade your account to unlock this mode.</p>
-        <a id="premium-stripe-link" href="#" target="_blank" rel="noopener noreferrer" style="display:block; margin: 10px auto; width:80%; max-width:300px;">
-          <button style="background: rgba(0,200,255,0.2); border-color: rgba(0,200,255,0.4); width:100%; max-width:none;">Unlock Now</button>
-        </a>
-        <button onclick="UI.closePremium()" class="back">Close</button>
-      </div>
-    </div>
+  <div id="msg"></div>
+</div>
 
-    <!-- ── LOGIN ──────────────────────────────────────────────────────── -->
-    <div id="login-screen" class="screen">
-      <div class="login-form-card">
-        <h2 class="fade-in">🔑 Login to GODMODE++</h2>
-        <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Enter your credentials</p>
-        <input id="login-user" type="text"     placeholder="Username or Email" autocomplete="username">
-        <input id="login-pass" type="password" placeholder="Password"          autocomplete="current-password">
-        <button onclick="UI.login()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">→ Login</button>
-        <p id="login-error" class="error"></p>
-        <p class="auth-links">
-          <button class="link-btn" onclick="UI.show('forgot-password')">Forgot password?</button>
-          &nbsp;·&nbsp;
-          <button class="link-btn" onclick="UI.show('signup')">Create account</button>
-        </p>
-      </div>
-    </div>
+<script>
+const API = "https://godmode-backend.onrender.com";
 
-    <!-- ── SIGNUP ─────────────────────────────────────────────────────── -->
-    <div id="signup-screen" class="screen">
-      <h2 class="fade-in">📝 Create Account</h2>
-      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Join GODMODE++</p>
-      <input id="signup-username" type="text"     placeholder="Username (3–20 chars)"    autocomplete="username">
-      <input id="signup-email"    type="email"    placeholder="Email address"             autocomplete="email">
-      <input id="signup-pass"     type="password" placeholder="Password (8+ chars)"       autocomplete="new-password">
-      <input id="signup-confirm"  type="password" placeholder="Confirm Password"          autocomplete="new-password">
-      <button onclick="UI.signup()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">🚀 Sign Up</button>
-      <p id="signup-error" class="error"></p>
-      <p class="auth-links">
-        <button class="link-btn" onclick="UI.show('login')">Already have an account? Log in</button>
-      </p>
-    </div>
+async function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const msg = document.getElementById("msg");
 
-    <!-- ── FORGOT PASSWORD ────────────────────────────────────────────── -->
-    <div id="forgot-password-screen" class="screen">
-      <h2 class="fade-in">🔓 Forgot Password</h2>
-      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">We'll send you a reset link</p>
-      <input id="forgot-email" type="email" placeholder="Your email address" autocomplete="email">
-      <button onclick="UI.forgotPassword()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">📧 Send Reset Link</button>
-      <p id="forgot-error"   class="error"></p>
-      <p id="forgot-success" class="success"></p>
-      <p class="auth-links">
-        <button class="link-btn" onclick="UI.show('login')">← Back to Login</button>
-        &nbsp;·&nbsp;
-        <button class="link-btn" onclick="UI.show('reset-password')">I have a reset token →</button>
-      </p>
-    </div>
+  msg.innerText = "Checking...";
 
-    <!-- ── RESET PASSWORD ─────────────────────────────────────────────── -->
-    <div id="reset-password-screen" class="screen">
-      <h2 class="fade-in">🔒 Reset Password</h2>
-      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Enter your reset token and new password</p>
-      <input id="reset-token"   type="text"     placeholder="Reset token"           autocomplete="off">
-      <input id="reset-pass"    type="password" placeholder="New password (8+ chars)" autocomplete="new-password">
-      <input id="reset-confirm" type="password" placeholder="Confirm new password"   autocomplete="new-password">
-      <button onclick="UI.resetPassword()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">✅ Reset Password</button>
-      <p id="reset-error" class="error"></p>
-      <p class="auth-links">
-        <button class="link-btn" onclick="UI.show('login')">← Back to Login</button>
-      </p>
-    </div>
-
-    <!-- ── HOME ──────────────────────────────────────────────────────── -->
-    <div id="home-screen" class="screen">
-      <!-- Decorative orbit rings -->
-      <div class="orbit-ring orbit-ring-outer"></div>
-      <div class="orbit-ring orbit-ring-inner"></div>
-      <h1 class="title slide-down">GODMODE++</h1>
-      <p class="disclaimer">✨ Entertainment prediction engine ✨</p>
-      <p id="home-welcome" style="font-size: 13px; color: rgba(200,200,255,0.8); margin: 4px 0 12px;"></p>
-
-      <!-- MOBILE GOD MODE HERO BUTTON -->
-      <div class="god-mode-hero-wrap">
-        <button id="god-mode-hero-btn" class="god-mode-hero-btn" onclick="UI.showPremiumGate('god')">
-          <span class="god-btn-icon">⚡</span>
-          <span class="god-btn-body">
-            <span class="god-btn-title">GOD MODE</span>
-            <span class="god-btn-sub" id="god-btn-sub">Premium Prediction Engine</span>
-          </span>
-          <span class="god-btn-arrow" id="god-btn-arrow">🔒</span>
-        </button>
-      </div>
-
-      <!-- AUTO TASK CARD -->
-      <div class="auto-task-card" id="auto-task-card">
-        <div class="auto-task-header">
-          <span class="auto-task-label">⚡ Auto Task</span>
-          <button class="auto-task-refresh" onclick="UI.refreshAutoTask()" title="Generate new task">🔄</button>
-        </div>
-        <div id="auto-task-content" class="auto-task-content">
-          <span id="auto-task-emoji" class="auto-task-emoji"></span>
-          <span id="auto-task-text" class="auto-task-text"></span>
-        </div>
-        <button class="auto-task-action" id="auto-task-action-btn" onclick="UI.runAutoTask()">▶ Run Task</button>
-      </div>
-
-      <div class="grid">
-        <button onclick="UI.show('free')"     style="background: rgba(100,255,150,0.12); border-color: rgba(100,255,150,0.3);">🎮 Free Mode</button>
-        <button id="god-mode-btn"      onclick="UI.showPremiumGate('god')"      style="background: rgba(255,200,0,0.1); border-color: rgba(255,200,0,0.25); color: #ffd700;">⚡ God Mode 🔒</button>
-        <button id="universe-mode-btn" onclick="UI.showPremiumGate('universe')" style="background: rgba(200,100,255,0.1); border-color: rgba(200,100,255,0.25); color: #da70d6;">🌌 Universe Mode 🔒</button>
-        <button onclick="UI.show('director')" style="background: rgba(255,100,100,0.12); border-color: rgba(255,100,100,0.3);">🎬 Director Mode</button>
-        <button onclick="UI.show('pick3')"    style="background: rgba(100,150,255,0.12); border-color: rgba(100,150,255,0.3);">🎲 Pick 3 Engine</button>
-        <button onclick="UI.show('pick4')"    style="background: rgba(255,100,200,0.12); border-color: rgba(255,100,200,0.3);">🎰 Pick 4 Engine</button>
-        <button onclick="UI.showProfile()"   style="background: rgba(100,200,255,0.1); border-color: rgba(100,200,255,0.25);">👤 My Profile</button>
-        <button onclick="UI.logout()"        style="background: rgba(255,100,100,0.1); border-color: rgba(255,100,100,0.25);">🚪 Logout</button>
-      </div>
-    </div>
-
-    <!-- ── FREE MODE ──────────────────────────────────────────────────── -->
-    <div id="free-screen" class="screen">
-      <h2 class="fade-in">🎮 FREE MODE</h2>
-      <p style="font-size: 12px; color: rgba(255,255,255,0.6);">Quick random generation</p>
-      <button onclick="UI.quickPick()">🎯 Quick Pick</button>
-      <button onclick="UI.backendPrediction('free-output')">⚙️ Backend Prediction</button>
-      <pre id="free-output" class="output">Output will appear here...</pre>
-      <button class="back" onclick="UI.show('home')">← Back to Home</button>
-    </div>
-
-    <!-- ── GOD MODE ───────────────────────────────────────────────────── -->
-    <div id="god-screen" class="screen">
-      <h2 class="fade-in">⚡ GOD MODE</h2>
-      <p style="font-size: 12px; color: rgba(255,200,0,0.7);">Premium prediction engine</p>
-      <button onclick="UI.backendPrediction('god-output', true)" style="background: rgba(255,200,0,0.15); border-color: rgba(255,200,0,0.4);">🔥 Premium Prediction</button>
-      <pre id="god-output" class="output">Output will appear here...</pre>
-      <button class="back" onclick="UI.show('home')">← Back to Home</button>
-    </div>
-
-    <!-- ── UNIVERSE MODE ─────────────────────────────────────────────── -->
-    <div id="universe-screen" class="screen">
-      <h2 class="fade-in">🌌 UNIVERSE MODE</h2>
-      <p style="font-size: 12px; color: rgba(200,100,255,0.7);">Infinite possibilities</p>
-      <button onclick="UI.backendPrediction('universe-output', true)" style="background: rgba(200,100,255,0.15); border-color: rgba(200,100,255,0.4);">✨ Premium Prediction</button>
-      <pre id="universe-output" class="output">Output will appear here...</pre>
-      <button class="back" onclick="UI.show('home')">← Back to Home</button>
-    </div>
-
-    <!-- ── DIRECTOR ───────────────────────────────────────────────────── -->
-    <div id="director-screen" class="screen">
-      <h2 class="fade-in">🎬 DIRECTOR MODE</h2>
-      <p style="font-size: 12px; color: rgba(255,100,100,0.7);">Compile predictions with custom seed</p>
-      <input id="director-seed" placeholder="Enter seed (optional)" type="text">
-      <button onclick="UI.director()" style="background: rgba(255,100,100,0.15); border-color: rgba(255,100,100,0.3);">▶️ Compile</button>
-      <pre id="director-output" class="output">Output will appear here...</pre>
-      <button class="back" onclick="UI.show('home')">← Back to Home</button>
-    </div>
-
-    <!-- ── PICK 3 ─────────────────────────────────────────────────────── -->
-    <div id="pick3-screen" class="screen">
-      <h2 class="fade-in">🎲 PICK 3 ENGINE</h2>
-      <p style="font-size: 12px; color: rgba(100,150,255,0.7);">Enter exactly 3 digits (0-9)</p>
-      <input id="pick3-input" placeholder="123" maxlength="3" type="text" inputmode="numeric">
-      <button onclick="UI.pick3()" style="background: rgba(100,150,255,0.15); border-color: rgba(100,150,255,0.3);">✓ Submit</button>
-      <pre id="pick3-output" class="output">Output will appear here...</pre>
-      <button class="back" onclick="UI.show('home')">← Back to Home</button>
-    </div>
-
-    <!-- ── PICK 4 ─────────────────────────────────────────────────────── -->
-    <div id="pick4-screen" class="screen">
-      <h2 class="fade-in">🎰 PICK 4 ENGINE</h2>
-      <p style="font-size: 12px; color: rgba(255,100,200,0.7);">Enter exactly 4 digits (0-9)</p>
-      <input id="pick4-input" placeholder="1234" maxlength="4" type="text" inputmode="numeric">
-      <button onclick="UI.pick4()" style="background: rgba(255,100,200,0.15); border-color: rgba(255,100,200,0.3);">✓ Submit</button>
-      <pre id="pick4-output" class="output">Output will appear here...</pre>
-      <button class="back" onclick="UI.show('home')">← Back to Home</button>
-    </div>
-
-    <!-- ── PROFILE ────────────────────────────────────────────────────── -->
-    <div id="profile-screen" class="screen">
-      <h2 class="fade-in">👤 My Profile</h2>
-      <div class="profile-card">
-        <div class="profile-row"><span class="profile-label">Username</span><span id="profile-username" class="profile-value">—</span></div>
-        <div class="profile-row"><span class="profile-label">Email</span><span id="profile-email" class="profile-value">—</span></div>
-        <div class="profile-row"><span class="profile-label">Tier</span><span id="profile-tier" class="profile-value">FREE</span></div>
-      </div>
-      <button onclick="UI.logout()" style="background: rgba(255,100,100,0.1); border-color: rgba(255,100,100,0.25); margin-top: 10px;">🚪 Logout</button>
-      <button class="back" onclick="UI.show('home')">← Back to Home</button>
-    </div>
-
-  </div> <!-- END APP UI -->
-
-  <!-- keyboard shortcuts for auth screens -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      function addEnter(id, fn) {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener("keypress", function (e) {
-          if (e.key === "Enter") { e.preventDefault(); fn(); }
-        });
-      }
-      addEnter("login-pass",     function () { UI.login(); });
-      addEnter("signup-confirm", function () { UI.signup(); });
-      addEnter("forgot-email",   function () { UI.forgotPassword(); });
-      addEnter("reset-confirm",  function () { UI.resetPassword(); });
+  try {
+    const res = await fetch(`${API}/login`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({email, password})
     });
-  </script>
 
-  <!-- API base override: uncomment and set your production backend URL -->
-  <!-- <script>window.GODMODE_API_BASE = "https://your-godmode-backend.com";</script> -->
+    if (!res.ok) {
+      msg.innerText = "Invalid login.";
+      return;
+    }
 
-  <script src="auth-utils.js"></script>
-  <script src="app2.js"></script>
+    const data = await res.json();
+    localStorage.setItem("token", data.token);
+
+    msg.style.color = "#0f0";
+    msg.innerText = "Success! Redirecting...";
+
+    setTimeout(() => {
+      window.location.href = "numbers.html";
+    }, 800);
+
+  } catch (e) {
+    msg.innerText = "Network error.";
+  }
+}
+</script>
+
 </body>
 </html>
