@@ -5,493 +5,223 @@
   <title>GODMODE++ Director Mode</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      --bg: #050816;
-      --card: #0b1020;
-      --accent: #4f46e5;
-      --accent-soft: #6366f1;
-      --text: #e5e7eb;
-      --muted: #9ca3af;
-      --danger: #ef4444;
-      --success: #22c55e;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
     body {
-      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
+      margin: 0;
       padding: 16px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #05060a;
+      color: #f5f5f5;
     }
-
-    .app {
-      width: 100%;
-      max-width: 900px;
-    }
-
-    header {
-      margin-bottom: 16px;
+    h1 {
       text-align: center;
+      margin-bottom: 12px;
     }
-
-    header h1 {
-      font-size: 1.6rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    header p {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    @media (min-width: 768px) {
-      .grid {
-        grid-template-columns: 1.1fr 0.9fr;
-      }
-    }
-
-    .card {
-      background: rgba(11, 16, 32, 0.95);
-      border-radius: 12px;
+    .section {
+      border: 1px solid #333;
+      border-radius: 10px;
       padding: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+      margin-bottom: 12px;
+      background: #0b0d14;
     }
-
-    .card h2 {
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      margin-bottom: 8px;
+    .section h2 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
     }
-
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    label {
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
-
-    input, select, textarea {
-      background: #020617;
-      border-radius: 8px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: var(--text);
-      padding: 8px 10px;
-      font-size: 0.85rem;
-      width: 100%;
-    }
-
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
-
     button {
-      border: none;
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-      color: #f9fafb;
-      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.5);
-    }
-
-    button.secondary {
-      background: #020617;
-      color: var(--muted);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      box-shadow: none;
-    }
-
-    button.danger {
-      background: var(--danger);
-      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.5);
-    }
-
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+      width: 100%;
+      padding: 10px;
       margin-top: 6px;
+      border-radius: 8px;
+      border: none;
+      background: #e53935;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
     }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 0.75rem;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: var(--muted);
+    button:active {
+      transform: scale(0.98);
     }
-
-    .pill.red {
-      border-color: var(--danger);
-      color: var(--danger);
+    input, textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 6px;
+      border: 1px solid #444;
+      background: #080a10;
+      color: #f5f5f5;
+      font-size: 13px;
     }
-
-    .pill.green {
-      border-color: var(--success);
-      color: var(--success);
+    textarea {
+      min-height: 60px;
     }
-
     .output {
       margin-top: 8px;
-      padding: 8px;
-      border-radius: 8px;
-      background: #020617;
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      font-size: 0.8rem;
-      max-height: 220px;
-      overflow: auto;
+      font-size: 12px;
       white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .section-title {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .small {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    .alert-banner {
-      margin-top: 6px;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .alert-banner.red {
-      background: rgba(127, 29, 29, 0.7);
-      border: 1px solid rgba(248, 113, 113, 0.8);
-      color: #fee2e2;
-    }
-
-    .alert-banner.green {
-      background: rgba(22, 101, 52, 0.7);
-      border: 1px solid rgba(74, 222, 128, 0.8);
-      color: #dcfce7;
-    }
-
-    .passcode-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .passcode-row input {
-      max-width: 120px;
-      text-align: center;
-      letter-spacing: 0.2em;
+      word-wrap: break-word;
+      background: #11141c;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #333;
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>GODMODE++ DIRECTOR MODE</h1>
-      <p>3175 Strategy • Corner Engine • Live Rundown • Mobile‑First Control Panel</p>
-    </header>
+  <h1>GODMODE++ Director Mode</h1>
 
-    <div class="grid">
-      <!-- LEFT: Controls -->
-      <div class="card">
-        <h2>Control Panel</h2>
+  <!-- LOGIN -->
+  <div class="section">
+    <h2>Login</h2>
+    <input id="login-email" type="email" placeholder="Email (test@test.com)" />
+    <input id="login-password" type="password" placeholder="Password (1234)" />
+    <button onclick="handleLogin()">Login</button>
+    <div id="login-output" class="output"></div>
+  </div>
 
-        <div class="section-title">Backend Settings</div>
-        <div class="field-group">
-          <label for="backendUrl">Backend URL</label>
-          <input id="backendUrl" type="text" placeholder="https://your-backend.onrender.com" />
-          <span class="small">Use your Render backend URL (no trailing slash).</span>
-        </div>
+  <!-- PREDICT -->
+  <div class="section">
+    <h2>Predict</h2>
+    <input id="predict-state" type="text" placeholder="State (e.g. NJ)" />
+    <select id="predict-game">
+      <option value="P3">Pick 3 (P3)</option>
+      <option value="P4">Pick 4 (P4)</option>
+    </select>
+    <button onclick="handlePredict()">Run Predict</button>
+    <div id="predict-output" class="output"></div>
+  </div>
 
-        <div class="section-title">Game & State</div>
-        <div class="field-group">
-          <label for="state">State</label>
-          <input id="state" type="text" placeholder="NJ" />
-        </div>
-        <div class="field-group">
-          <label for="game">Game</label>
-          <select id="game">
-            <option value="P3">Pick 3</option>
-            <option value="P4">Pick 4</option>
-          </select>
-        </div>
+  <!-- RUNDOWN -->
+  <div class="section">
+    <h2>Rundown</h2>
+    <input id="rundown-state" type="text" placeholder="State (e.g. NJ)" />
+    <button onclick="handleRundown()">Run Rundown</button>
+    <div id="rundown-output" class="output"></div>
+  </div>
 
-        <div class="btn-row">
-          <button id="btnPredict">Run Prediction</button>
-          <button id="btnRundown" class="secondary">Get Rundown</button>
-        </div>
+  <!-- ANALYZE (CORNER ENGINE) -->
+  <div class="section">
+    <h2>Analyze (Corner Engine)</h2>
+    <input id="analyze-draw-id" type="text" placeholder="Draw ID (e.g. 2024-06-28-NJ-P3)" />
+    <textarea id="analyze-grid" placeholder="Rundown grid rows, comma-separated digits per row (e.g. 1 2 3,4 5 6,7 8 9)"></textarea>
+    <input id="analyze-p3-day" type="text" placeholder="Pick3 Day (optional)" />
+    <input id="analyze-p3-night" type="text" placeholder="Pick3 Night (optional)" />
+    <input id="analyze-p4" type="text" placeholder="Pick4 (optional)" />
+    <button onclick="handleAnalyze()">Run Analyze</button>
+    <div id="analyze-output" class="output"></div>
+  </div>
 
-        <hr style="margin: 10px 0; border-color: rgba(31,41,55,0.7);" />
-
-        <div class="section-title">Corner Engine (Analyze)</div>
-        <div class="field-group">
-          <label for="drawId">Draw ID / Label</label>
-          <input id="drawId" type="text" placeholder="2026-06-27-NIGHT" />
-        </div>
-
-        <div class="field-group">
-          <label for="gridInput">Rundown Grid (3x3, comma separated rows)</label>
-          <textarea id="gridInput" placeholder="1,2,3&#10;4,5,6&#10;7,8,9"></textarea>
-        </div>
-
-        <div class="field-group">
-          <label for="pick3Day">Pick 3 Day</label>
-          <input id="pick3Day" type="text" placeholder="123" />
-        </div>
-        <div class="field-group">
-          <label for="pick3Night">Pick 3 Night</label>
-          <input id="pick3Night" type="text" placeholder="317" />
-        </div>
-        <div class="field-group">
-          <label for="pick4">Pick 4</label>
-          <input id="pick4" type="text" placeholder="3175" />
-        </div>
-
-        <div class="field-group">
-          <label for="baseScore">Base Score</label>
-          <input id="baseScore" type="number" step="0.01" value="0.5" />
-        </div>
-        <div class="field-group">
-          <label for="alpha">Alpha (weight)</label>
-          <input id="alpha" type="number" step="0.01" placeholder="0.8" />
-        </div>
-
-        <div class="btn-row">
-          <button id="btnAnalyze">Run Corner Analysis</button>
-        </div>
-      </div>
-
-      <!-- RIGHT: Director Mode -->
-      <div class="card">
-        <h2>Director Mode • 3175 Strategy</h2>
-
-        <div class="section-title">Access Control</div>
-        <div class="passcode-row">
-          <input id="passcode" type="password" placeholder="••••" />
-          <button id="btnUnlock" class="secondary">Unlock (8118)</button>
-          <span class="small" id="lockStatus">Locked</span>
-        </div>
-
-        <div class="section-title">History Input</div>
-        <div class="field-group">
-          <label for="historyInput">Last Draws (comma separated)</label>
-          <textarea id="historyInput" placeholder="123,317,456,908,789"></textarea>
-        </div>
-
-        <div class="btn-row">
-          <button id="btnDirector3175">Run 3175 Director Mode</button>
-          <button id="btnAutoUpdate" class="secondary">Auto‑Update Snapshot</button>
-        </div>
-
-        <div id="alertBanner" class="alert-banner green" style="display:none;">
-          <span id="alertText"></span>
-        </div>
-
-        <div class="section-title" style="margin-top:8px;">Output</div>
-        <div id="output" class="output">
-          Ready.
-        </div>
-      </div>
-    </div>
+  <!-- DIRECTOR MODE 3175 -->
+  <div class="section">
+    <h2>Director Mode 3175</h2>
+    <textarea id="director-history" placeholder="History draws, one per line (e.g. 317, 593, 804)"></textarea>
+    <button onclick="handleDirector3175()">Run Director 3175</button>
+    <div id="director-output" class="output"></div>
   </div>
 
   <script>
-    const backendInput = document.getElementById("backendUrl");
-    const stateInput = document.getElementById("state");
-    const gameSelect = document.getElementById("game");
-    const drawIdInput = document.getElementById("drawId");
-    const gridInput = document.getElementById("gridInput");
-    const p3DayInput = document.getElementById("pick3Day");
-    const p3NightInput = document.getElementById("pick3Night");
-    const p4Input = document.getElementById("pick4");
-    const baseScoreInput = document.getElementById("baseScore");
-    const alphaInput = document.getElementById("alpha");
-    const passcodeInput = document.getElementById("passcode");
-    const lockStatus = document.getElementById("lockStatus");
-    const historyInput = document.getElementById("historyInput");
-    const outputEl = document.getElementById("output");
-    const alertBanner = document.getElementById("alertBanner");
-    const alertText = document.getElementById("alertText");
+    const BACKEND_URL = "https://godmode-backend.onrender.com"; // your backend
 
-    let directorUnlocked = false;
-
-    function getBackendUrl() {
-      const url = backendInput.value.trim();
-      return url.replace(/\/+$/, "");
+    async function safeFetch(url, options = {}) {
+      try {
+        const res = await fetch(url, options);
+        return await res.json();
+      } catch (err) {
+        return { error: String(err) };
+      }
     }
 
-    function logOutput(obj, label = "") {
-      const text = label ? `# ${label}\n` : "";
-      outputEl.textContent = text + JSON.stringify(obj, null, 2);
+    // LOGIN
+    async function handleLogin() {
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+      const out = document.getElementById("login-output");
+
+      const data = await safeFetch(`${BACKEND_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+
+      out.textContent = JSON.stringify(data, null, 2);
     }
 
-    function setAlert(level, message) {
-      if (!message) {
-        alertBanner.style.display = "none";
-        return;
-      }
-      alertBanner.style.display = "flex";
-      alertBanner.classList.remove("red", "green");
-      if (level === "RED") {
-        alertBanner.classList.add("red");
-      } else {
-        alertBanner.classList.add("green");
-      }
-      alertText.textContent = message;
+    // PREDICT
+    async function handlePredict() {
+      const state = document.getElementById("predict-state").value.trim() || "NJ";
+      const game = document.getElementById("predict-game").value;
+      const out = document.getElementById("predict-output");
+
+      const data = await safeFetch(`${BACKEND_URL}/predict?state=${state}&game=${game}`);
+      out.textContent = JSON.stringify(data, null, 2);
     }
 
-    document.getElementById("btnUnlock").addEventListener("click", () => {
-      const code = passcodeInput.value.trim();
-      if (code === "8118") {
-        directorUnlocked = true;
-        lockStatus.textContent = "Unlocked";
-        lockStatus.style.color = "#22c55e";
-        setAlert("GREEN", "Director Mode unlocked.");
-      } else {
-        directorUnlocked = false;
-        lockStatus.textContent = "Locked";
-        lockStatus.style.color = "#ef4444";
-        setAlert("RED", "Invalid passcode.");
-      }
-    });
+    // RUNDOWN
+    async function handleRundown() {
+      const state = document.getElementById("rundown-state").value.trim() || "NJ";
+      const out = document.getElementById("rundown-output");
 
-    document.getElementById("btnPredict").addEventListener("click", async () => {
-      try {
-        const backend = getBackendUrl();
-        const state = stateInput.value.trim() || "NJ";
-        const game = gameSelect.value;
+      const data = await safeFetch(`${BACKEND_URL}/rundown?state=${state}`);
+      out.textContent = JSON.stringify(data, null, 2);
+    }
 
-        const url = `${backend}/predict?state=${encodeURIComponent(state)}&game=${encodeURIComponent(game)}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        logOutput(data, "Prediction");
-        setAlert("GREEN", "Prediction fetched.");
-      } catch (e) {
-        logOutput({ error: String(e) }, "Prediction Error");
-        setAlert("RED", "Prediction request failed.");
-      }
-    });
+    // ANALYZE
+    async function handleAnalyze() {
+      const drawId = document.getElementById("analyze-draw-id").value.trim();
+      const gridRaw = document.getElementById("analyze-grid").value.trim();
+      const p3Day = document.getElementById("analyze-p3-day").value.trim() || null;
+      const p3Night = document.getElementById("analyze-p3-night").value.trim() || null;
+      const p4 = document.getElementById("analyze-p4").value.trim() || null;
+      const out = document.getElementById("analyze-output");
 
-    document.getElementById("btnRundown").addEventListener("click", async () => {
-      try {
-        const backend = getBackendUrl();
-        const state = stateInput.value.trim() || "NJ";
+      const rows = gridRaw
+        .split(/\n|;/)
+        .map(r => r.trim())
+        .filter(r => r.length > 0)
+        .map(r =>
+          r.replace(/,/g, " ")
+           .split(/\s+/)
+           .filter(x => x.length > 0)
+        );
 
-        const url = `${backend}/rundown?state=${encodeURIComponent(state)}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        logOutput(data, "Rundown");
-        setAlert("GREEN", "Rundown fetched.");
-      } catch (e) {
-        logOutput({ error: String(e) }, "Rundown Error");
-        setAlert("RED", "Rundown request failed.");
-      }
-    });
+      const payload = {
+        draw_id: drawId,
+        rundown_grid: rows,
+        pick3_day: p3Day,
+        pick3_night: p3Night,
+        pick4: p4,
+        base_score: 0.5,
+        alpha: 0.8
+      };
 
-    document.getElementById("btnAnalyze").addEventListener("click", async () => {
-      try {
-        const backend = getBackendUrl();
-        const drawId = drawIdInput.value.trim() || "draw-1";
+      const data = await safeFetch(`${BACKEND_URL}/analyze`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
 
-        const gridLines = gridInput.value
-          .split("\n")
-          .map(line => line.split(",").map(x => x.trim()))
-          .filter(row => row.length > 0);
+      out.textContent = JSON.stringify(data, null, 2);
+    }
 
-        const body = {
-          draw_id: drawId,
-          rundown_grid: gridLines,
-          pick3_day: p3DayInput.value.trim() || null,
-          pick3_night: p3NightInput.value.trim() || null,
-          pick4: p4Input.value.trim() || null,
-          base_score: parseFloat(baseScoreInput.value || "0.5"),
-          alpha: alphaInput.value ? parseFloat(alphaInput.value) : null
-        };
+    // DIRECTOR MODE 3175
+    async function handleDirector3175() {
+      const historyRaw = document.getElementById("director-history").value.trim();
+      const out = document.getElementById("director-output");
 
-        const res = await fetch(`${backend}/analyze`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        });
+      const history = historyRaw
+        .split(/\n|,/)
+        .map(h => h.trim())
+        .filter(h => h.length > 0);
 
-        const data = await res.json();
-        logOutput(data, "Corner Analysis");
-        setAlert("GREEN", "Corner analysis complete.");
-      } catch (e) {
-        logOutput({ error: String(e) }, "Analyze Error");
-        setAlert("RED", "Corner analysis request failed.");
-      }
-    });
+      const payload = { history };
 
-    document.getElementById("btnDirector3175").addEventListener("click", async () => {
-      if (!directorUnlocked) {
-        setAlert("RED", "Director Mode is locked. Enter passcode 8118.");
-        return;
-      }
-      try {
-        const backend = getBackendUrl();
-        const history = historyInput.value
-          .split(",")
-          .map(x => x.trim())
-          .filter(x => x.length > 0);
+      const data = await safeFetch(`${BACKEND_URL}/director/3175`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
 
-        const body = { history };
-
-        const res = await fetch(`${backend}/director/3175`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
-        });
-
-        const data = await res.json();
-        logOutput(data, "Director Mode 3175");
-
-        const alert = data.alert || {};
-        const level = alert.level || "GREEN";
-        const reason = alert.reason || [];
-        const msg =
-          level === "RED"
-            ? `RED ALERT — 3175 hits detected (${reason.length
+      out.textContent = JSON.stringify(data, null, 2);
+    }
+  </script>
+</body>
+</html>
