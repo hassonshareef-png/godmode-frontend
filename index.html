@@ -1,118 +1,546 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GODMODE++ Login</title>
-
-  <link rel="manifest" href="manifest.json">
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
-    }
-  </script>
-
+  <meta charset="UTF-8" />
+  <title>GODMODE++ Director Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
+    :root {
+      --bg: #050816;
+      --card: #0b1020;
+      --accent: #4f46e5;
+      --accent-soft: #6366f1;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      color: var(--text);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      padding: 16px;
     }
 
-    #card {
-      width: 90%;
-      max-width: 400px;
-      background: #111;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.1);
-    }
-
-    input {
+    .app {
       width: 100%;
-      padding: 14px;
-      margin-top: 12px;
+      max-width: 900px;
+    }
+
+    header {
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .grid {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+
+    .card {
+      background: rgba(11, 16, 32, 0.95);
+      border-radius: 12px;
+      padding: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+    }
+
+    .card h2 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    label {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    input, select, textarea {
+      background: #020617;
       border-radius: 8px;
-      border: none;
-      font-size: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--text);
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      width: 100%;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
     }
 
     button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 18px;
-      background: #0af;
       border: none;
-      border-radius: 8px;
-      color: #000;
-      font-size: 18px;
-      font-weight: bold;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+      color: #f9fafb;
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.5);
     }
 
-    #msg {
-      margin-top: 15px;
-      font-size: 14px;
-      color: #f33;
+    button.secondary {
+      background: #020617;
+      color: var(--muted);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: none;
+    }
+
+    button.danger {
+      background: var(--danger);
+      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.5);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: var(--muted);
+    }
+
+    .pill.red {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .pill.green {
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .output {
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 8px;
+      background: #020617;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      font-size: 0.8rem;
+      max-height: 220px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .section-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .small {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .alert-banner {
+      margin-top: 6px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .alert-banner.red {
+      background: rgba(127, 29, 29, 0.7);
+      border: 1px solid rgba(248, 113, 113, 0.8);
+      color: #fee2e2;
+    }
+
+    .alert-banner.green {
+      background: rgba(22, 101, 52, 0.7);
+      border: 1px solid rgba(74, 222, 128, 0.8);
+      color: #dcfce7;
+    }
+
+    .passcode-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .passcode-row input {
+      max-width: 120px;
       text-align: center;
+      letter-spacing: 0.2em;
     }
   </style>
 </head>
-
 <body>
+  <div class="app">
+    <header>
+      <h1>GODMODE++ DIRECTOR MODE</h1>
+      <p>3175 Strategy • Corner Engine • Live Rundown • Mobile‑First Control Panel</p>
+    </header>
 
-<div id="card">
-  <h2 style="text-align:center;">GODMODE++</h2>
+    <div class="grid">
+      <!-- LEFT: Controls -->
+      <div class="card">
+        <h2>Control Panel</h2>
 
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
+        <div class="section-title">Backend Settings</div>
+        <div class="field-group">
+          <label for="backendUrl">Backend URL</label>
+          <input id="backendUrl" type="text" placeholder="https://your-backend.onrender.com" />
+          <span class="small">Use your Render backend URL (no trailing slash).</span>
+        </div>
 
-  <button onclick="login()">Login</button>
+        <div class="section-title">Game & State</div>
+        <div class="field-group">
+          <label for="state">State</label>
+          <input id="state" type="text" placeholder="NJ" />
+        </div>
+        <div class="field-group">
+          <label for="game">Game</label>
+          <select id="game">
+            <option value="P3">Pick 3</option>
+            <option value="P4">Pick 4</option>
+          </select>
+        </div>
 
-  <div id="msg"></div>
-</div>
+        <div class="btn-row">
+          <button id="btnPredict">Run Prediction</button>
+          <button id="btnRundown" class="secondary">Get Rundown</button>
+        </div>
 
-<script>
-const API = "https://godmode-backend.onrender.com";
+        <hr style="margin: 10px 0; border-color: rgba(31,41,55,0.7);" />
 
-async function login() {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const msg = document.getElementById("msg");
+        <div class="section-title">Corner Engine (Analyze)</div>
+        <div class="field-group">
+          <label for="drawId">Draw ID / Label</label>
+          <input id="drawId" type="text" placeholder="2026-06-27-NIGHT" />
+        </div>
 
-  msg.innerText = "Checking...";
+        <div class="field-group">
+          <label for="gridInput">Rundown Grid (3x3, comma separated rows)</label>
+          <textarea id="gridInput" placeholder="1,2,3&#10;4,5,6&#10;7,8,9"></textarea>
+        </div>
 
-  try {
-    const res = await fetch(`${API}/login`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({email, password})
-    });
+        <div class="field-group">
+          <label for="pick3Day">Pick 3 Day</label>
+          <input id="pick3Day" type="text" placeholder="123" />
+        </div>
+        <div class="field-group">
+          <label for="pick3Night">Pick 3 Night</label>
+          <input id="pick3Night" type="text" placeholder="317" />
+        </div>
+        <div class="field-group">
+          <label for="pick4">Pick 4</label>
+          <input id="pick4" type="text" placeholder="3175" />
+        </div>
 
-    if (!res.ok) {
-      msg.innerText = "Invalid login.";
-      return;
+        <div class="field-group">
+          <label for="baseScore">Base Score</label>
+          <input id="baseScore" type="number" step="0.01" value="0.5" />
+        </div>
+        <div class="field-group">
+          <label for="alpha">Alpha (weight)</label>
+          <input id="alpha" type="number" step="0.01" placeholder="0.8" />
+        </div>
+
+        <div class="btn-row">
+          <button id="btnAnalyze">Run Corner Analysis</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: Director Mode -->
+      <div class="card">
+        <h2>Director Mode • 3175 Strategy</h2>
+
+        <div class="section-title">Access Control</div>
+        <div class="passcode-row">
+          <input id="passcode" type="password" placeholder="••••" />
+          <button id="btnUnlock" class="secondary">Unlock (8118)</button>
+          <span class="small" id="lockStatus">Locked</span>
+        </div>
+
+        <div class="section-title">History Input</div>
+        <div class="field-group">
+          <label for="historyInput">Last Draws (comma separated)</label>
+          <textarea id="historyInput" placeholder="123,317,456,908,789"></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button id="btnDirector3175">Run 3175 Director Mode</button>
+          <button id="btnAutoUpdate" class="secondary">Auto‑Update Snapshot</button>
+        </div>
+
+        <div id="alertBanner" class="alert-banner green" style="display:none;">
+          <span id="alertText"></span>
+        </div>
+
+        <div class="section-title" style="margin-top:8px;">Output</div>
+        <div id="output" class="output">
+          Ready.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const backendInput = document.getElementById("backendUrl");
+    const stateInput = document.getElementById("state");
+    const gameSelect = document.getElementById("game");
+    const drawIdInput = document.getElementById("drawId");
+    const gridInput = document.getElementById("gridInput");
+    const p3DayInput = document.getElementById("pick3Day");
+    const p3NightInput = document.getElementById("pick3Night");
+    const p4Input = document.getElementById("pick4");
+    const baseScoreInput = document.getElementById("baseScore");
+    const alphaInput = document.getElementById("alpha");
+    const passcodeInput = document.getElementById("passcode");
+    const lockStatus = document.getElementById("lockStatus");
+    const historyInput = document.getElementById("historyInput");
+    const outputEl = document.getElementById("output");
+    const alertBanner = document.getElementById("alertBanner");
+    const alertText = document.getElementById("alertText");
+
+    let directorUnlocked = false;
+
+    function getBackendUrl() {
+      const url = backendInput.value.trim();
+      return url.replace(/\/+$/, "");
     }
 
-    const data = await res.json();
-    localStorage.setItem("token", data.token);
+    function logOutput(obj, label = "") {
+      const text = label ? `# ${label}\n` : "";
+      outputEl.textContent = text + JSON.stringify(obj, null, 2);
+    }
 
-    msg.style.color = "#0f0";
-    msg.innerText = "Success! Redirecting...";
+    function setAlert(level, message) {
+      if (!message) {
+        alertBanner.style.display = "none";
+        return;
+      }
+      alertBanner.style.display = "flex";
+      alertBanner.classList.remove("red", "green");
+      if (level === "RED") {
+        alertBanner.classList.add("red");
+      } else {
+        alertBanner.classList.add("green");
+      }
+      alertText.textContent = message;
+    }
 
-    setTimeout(() => {
-      window.location.href = "numbers.html";
-    }, 800);
+    document.getElementById("btnUnlock").addEventListener("click", () => {
+      const code = passcodeInput.value.trim();
+      if (code === "8118") {
+        directorUnlocked = true;
+        lockStatus.textContent = "Unlocked";
+        lockStatus.style.color = "#22c55e";
+        setAlert("GREEN", "Director Mode unlocked.");
+      } else {
+        directorUnlocked = false;
+        lockStatus.textContent = "Locked";
+        lockStatus.style.color = "#ef4444";
+        setAlert("RED", "Invalid passcode.");
+      }
+    });
 
-  } catch (e) {
-    msg.innerText = "Network error.";
-  }
-}
-</script>
+    document.getElementById("btnPredict").addEventListener("click", async () => {
+      try {
+        const backend = getBackendUrl();
+        const state = stateInput.value.trim() || "NJ";
+        const game = gameSelect.value;
 
+        const url = `${backend}/predict?state=${encodeURIComponent(state)}&game=${encodeURIComponent(game)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        logOutput(data, "Prediction");
+        setAlert("GREEN", "Prediction fetched.");
+      } catch (e) {
+        logOutput({ error: String(e) }, "Prediction Error");
+        setAlert("RED", "Prediction request failed.");
+      }
+    });
+
+    document.getElementById("btnRundown").addEventListener("click", async () => {
+      try {
+        const backend = getBackendUrl();
+        const state = stateInput.value.trim() || "NJ";
+
+        const url = `${backend}/rundown?state=${encodeURIComponent(state)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        logOutput(data, "Rundown");
+        setAlert("GREEN", "Rundown fetched.");
+      } catch (e) {
+        logOutput({ error: String(e) }, "Rundown Error");
+        setAlert("RED", "Rundown request failed.");
+      }
+    });
+
+    document.getElementById("btnAnalyze").addEventListener("click", async () => {
+      try {
+        const backend = getBackendUrl();
+        const drawId = drawIdInput.value.trim() || "draw-1";
+
+        const gridLines = gridInput.value
+          .split("\n")
+          .map(line => line.split(",").map(x => x.trim()))
+          .filter(row => row.length > 0);
+
+        const body = {
+          draw_id: drawId,
+          rundown_grid: gridLines,
+          pick3_day: p3DayInput.value.trim() || null,
+          pick3_night: p3NightInput.value.trim() || null,
+          pick4: p4Input.value.trim() || null,
+          base_score: parseFloat(baseScoreInput.value || "0.5"),
+          alpha: alphaInput.value ? parseFloat(alphaInput.value) : null
+        };
+
+        const res = await fetch(`${backend}/analyze`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        logOutput(data, "Corner Analysis");
+        setAlert("GREEN", "Corner analysis complete.");
+      } catch (e) {
+        logOutput({ error: String(e) }, "Analyze Error");
+        setAlert("RED", "Corner analysis request failed.");
+      }
+    });
+
+    document.getElementById("btnDirector3175").addEventListener("click", async () => {
+      if (!directorUnlocked) {
+        setAlert("RED", "Director Mode is locked. Enter passcode 8118.");
+        return;
+      }
+      try {
+        const backend = getBackendUrl();
+        const history = historyInput.value
+          .split(",")
+          .map(x => x.trim())
+          .filter(x => x.length > 0);
+
+        const body = { history };
+
+        const res = await fetch(`${backend}/director/3175`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        logOutput(data, "Director Mode 3175");
+
+        const alert = data.alert || {};
+        const level = alert.level || "GREEN";
+        const reason = alert.reason || [];
+        const msg =
+          level === "RED"
+            ? `RED ALERT — 3175 hits detected (${reason.length} events).`
+            : "Director Mode stable — no 3175 hits.";
+
+        setAlert(level, msg);
+      } catch (e) {
+        logOutput({ error: String(e) }, "Director Mode Error");
+        setAlert("RED", "Director Mode request failed.");
+      }
+    });
+
+    document.getElementById("btnAutoUpdate").addEventListener("click", async () => {
+      if (!directorUnlocked) {
+        setAlert("RED", "Director Mode is locked. Enter passcode 8118.");
+        return;
+      }
+      try {
+        const backend = getBackendUrl();
+        const history = historyInput.value
+          .split(",")
+          .map(x => x.trim())
+          .filter(x => x.length > 0);
+
+        const body = { history };
+
+        const res = await fetch(`${backend}/director/3175`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+        logOutput(data, "Auto‑Update Snapshot");
+
+        const alert = data.alert || {};
+        const level = alert.level || "GREEN";
+        const reason = alert.reason || [];
+        const msg =
+          level === "RED"
+            ? `AUTO‑UPDATE RED — 3175 pattern active (${reason.length} hits).`
+            : "AUTO‑UPDATE GREEN — 3175 pattern quiet.";
+
+        setAlert(level, msg);
+      } catch (e) {
+        logOutput({ error: String(e) }, "Auto‑Update Error");
+        setAlert("RED", "Auto‑Update request failed.");
+      }
+    });
+  </script>
 </body>
 </html>
