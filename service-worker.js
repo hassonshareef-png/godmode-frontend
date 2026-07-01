@@ -2,6 +2,17 @@ const KEEP_ALIVE_URL = "https://godmode-backend2.onrender.com/health";
 const KEEP_ALIVE_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
 
 self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches.open("godmode-cache").then((cache) => {
+      return cache.addAll([
+        "index.html",
+        "numbers.html",
+        "manifest.json",
+        "icon-192.png",
+        "icon-512.png"
+      ]);
+    })
+  );
   self.skipWaiting();
 });
 
@@ -12,8 +23,11 @@ self.addEventListener("activate", (e) => {
 });
 
 self.addEventListener("fetch", (e) => {
-  // Basic passthrough fetch
-  e.respondWith(fetch(e.request));
+  e.respondWith(
+    caches.match(e.request).then((cached) => {
+      return cached || fetch(e.request);
+    })
+  );
 });
 
 // Keep the backend alive by pinging /health every 10 minutes
