@@ -38,6 +38,10 @@ const UI = {
     if (screen === "home")     this.renderAutoTask();
     if (screen === "director") this.renderDirectorWorkout();
     if (screen === "universe") this.renderUniverseWorkouts();
+
+    if (["free", "god", "universe", "director"].includes(screen)) {
+      setTimeout(() => this.renderDashboard(screen), 50);
+    }
   },
 
   showLoader() {
@@ -810,6 +814,214 @@ const UI = {
     el.style.color = type === "success" ? "#00ff96"
                    : type === "info"    ? "rgba(200,200,100,0.9)"
                    :                      "#ff6b6b"; // error
+  },
+
+  // ── Quick Pick Generator ─────────────────────────────────────────────────
+
+  _pickTypeState: { free: "p3", god: "p4", universe: "p5", director: "p3" },
+
+  _screenClass(screen) {
+    return screen === "god" ? "gold" : screen === "universe" ? "purple" : screen === "director" ? "red" : "";
+  },
+
+  setPickTab(screen, type, btn) {
+    this._pickTypeState[screen] = type;
+    const tabs = btn.parentElement.querySelectorAll(".tab-btn");
+    tabs.forEach(t => t.classList.remove("active"));
+    btn.classList.add("active");
+    const count = type === "p3" ? 3 : type === "p4" ? 4 : 5;
+    const display = document.getElementById(screen + "-qp-display");
+    if (!display) return;
+    const cls = this._screenClass(screen);
+    display.innerHTML = Array(count).fill(
+      '<span class="qp-number' + (cls ? " " + cls : "") + '">?</span>'
+    ).join("");
+  },
+
+  quickPickGen(screen) {
+    const type  = this._pickTypeState[screen] || "p3";
+    const count = type === "p3" ? 3 : type === "p4" ? 4 : 5;
+    const history = this._getPickHistory(screen);
+    const freq    = this._digitFrequency(history);
+    const digits  = [];
+    for (let i = 0; i < count; i++) digits.push(this._weightedDigit(freq));
+
+    this._savePick(digits, type, screen);
+
+    const display = document.getElementById(screen + "-qp-display");
+    if (display) {
+      const cls = this._screenClass(screen);
+      display.innerHTML = digits.map((d, idx) =>
+        '<span class="qp-number' + (cls ? " " + cls : "") + ' neon-pop" style="animation-delay:' + (idx * 0.07) + 's">' + d + "</span>"
+      ).join("");
+    }
+
+    this.renderDashboard(screen);
+  },
+
+  _weightedDigit(freq) {
+    const vals = Object.values(freq);
+    const maxF = Math.max(...vals, 1);
+    const weights = Array.from({ length: 10 }, (_, d) => 1 + Math.round((freq[d] / maxF) * 2));
+    const total   = weights.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    for (let d = 0; d <= 9; d++) { r -= weights[d]; if (r <= 0) return d; }
+    return Math.floor(Math.random() * 10);
+  },
+
+  // ── History & Storage ────────────────────────────────────────────────────
+
+  _getPickHistory(screen) {
+    try {
+      const all = JSON.parse(localStorage.getItem("godmode_picks") || "[]");
+      return screen ? all.filter(p => p.screen === screen) : all;
+    } catch(e) { return []; }
+  },
+
+  _savePick(digits, type, screen) {
+    try {
+      const all = JSON.parse(localStorage.getItem("godmode_picks") || "[]");
+      all.unshift({
+        id: Date.now(),
+        digits,
+        type,
+        screen,
+        timestamp: new Date().toISOString(),
+        result: null
+      });
+      localStorage.setItem("godmode_picks", JSON.stringify(all.slice(0, 120)));
+    } catch(e) {}
+  },
+
+  togglePickResult(id) {
+    try {
+      const all = JSON.parse(localStorage.getItem("godmode_picks") || "[]");
+      const pick = all.find(p => p.id === id);
+      if (!pick) return;
+      pick.result = pick.result === null ? "win" : pick.result === "win" ? "loss" : null;
+      localStorage.setItem("godmode_picks", JSON.stringify(all));
+      this.renderDashboard(pick.screen);
+    } catch(e) {}
+  },
+
+  _digitFrequency(history) {
+    const freq = {};
+    for (let d = 0; d <= 9; d++) freq[d] = 0;
+    history.forEach(p => {
+      if (Array.isArray(p.digits)) p.digits.forEach(d => { freq[d] = (freq[d] || 0) + 1; });
+    });
+    return freq;
+  },
+
+  // ── Dashboard Render ─────────────────────────────────────────────────────
+
+  renderDashboard(screen) {
+    this._renderHotCold(screen);
+    this._renderRecentPicks(screen);
+    this._renderPatternAnalysis(screen);
+    this._renderFreqChart(screen);
+  },
+
+  _renderHotCold(screen) {
+    const history = this._getPickHistory(screen);
+    const freq    = this._digitFrequency(history);
+    const sorted  = Object.entries(freq).sort((a, b) => b[1] - a[1]);
+    const hot  = sorted.slice(0, 4);
+    const cold = sorted.slice(-4).reverse();
+
+    const hotEl  = document.getElementById(screen + "-hot-numbers");
+    const coldEl = document.getElementById(screen + "-cold-numbers");
+
+    if (hotEl) {
+      if (!history.length) {
+        hotEl.innerHTML = '<span class="no-data">Generate to track</span>';
+      } else {
+        hotEl.innerHTML = hot.map(([d]) =>
+          '<span class="num-badge hot">' + d + "</span>"
+        ).join("");
+      }
+    }
+    if (coldEl) {
+      if (!history.length) {
+        coldEl.innerHTML = '<span class="no-data">Generate to track</span>';
+      } else {
+        coldEl.innerHTML = cold.map(([d]) =>
+          '<span class="num-badge cold">' + d + "</span>"
+        ).join("");
+      }
+    }
+  },
+
+  _renderRecentPicks(screen) {
+    const el = document.getElementById(screen + "-recent-picks");
+    if (!el) return;
+    const history = this._getPickHistory(screen).slice(0, 10);
+    if (!history.length) {
+      el.innerHTML = '<p class="no-data">No predictions yet — hit GENERATE!</p>';
+      return;
+    }
+    el.innerHTML = history.map(p => {
+      const t   = new Date(p.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const lbl = p.type === "p3" ? "Pick 3" : p.type === "p4" ? "Pick 4" : "Pick 5";
+      const digs = Array.isArray(p.digits) ? p.digits.join(" ") : "?";
+      const rc   = p.result || "pending";
+      const rl   = p.result === "win" ? "🏆 WIN" : p.result === "loss" ? "❌ LOSS" : "· · ·";
+      return '<div class="pred-card ' + rc + '" onclick="UI.togglePickResult(' + p.id + ')">' +
+        '<span class="pred-digits">' + digs + "</span>" +
+        '<span class="pred-type">'   + lbl  + "</span>" +
+        '<span class="pred-result">' + rl   + "</span>" +
+        '<span class="pred-time">'   + t    + "</span>" +
+        "</div>";
+    }).join("");
+  },
+
+  _renderPatternAnalysis(screen) {
+    const el = document.getElementById(screen + "-pattern-analysis");
+    if (!el) return;
+    const history = this._getPickHistory(screen);
+    if (history.length < 3) {
+      el.innerHTML = '<p class="no-data">Generate picks to see patterns...</p>';
+      return;
+    }
+    let odd = 0, even = 0, high = 0, low = 0, total = 0;
+    history.forEach(p => {
+      if (Array.isArray(p.digits)) p.digits.forEach(d => {
+        total++;
+        d % 2 === 0 ? even++ : odd++;
+        d >= 5 ? high++ : low++;
+      });
+    });
+    const op = total ? Math.round(odd  / total * 100) : 50;
+    const ep = 100 - op;
+    const hp = total ? Math.round(high / total * 100) : 50;
+    const lp = 100 - hp;
+
+    el.innerHTML =
+      '<div class="pattern-row">' +
+        '<span class="patt-label">Odd/Even</span>' +
+        '<div class="patt-bar-wrap"><div class="patt-bar odd" style="width:' + op + '%"></div></div>' +
+        '<span class="patt-pct">' + op + '% / ' + ep + '%</span>' +
+      '</div>' +
+      '<div class="pattern-row">' +
+        '<span class="patt-label">High/Low</span>' +
+        '<div class="patt-bar-wrap"><div class="patt-bar high" style="width:' + hp + '%"></div></div>' +
+        '<span class="patt-pct">' + hp + '% / ' + lp + '%</span>' +
+      '</div>';
+  },
+
+  _renderFreqChart(screen) {
+    const el = document.getElementById(screen + "-chart");
+    if (!el) return;
+    const history = this._getPickHistory(screen);
+    const freq    = this._digitFrequency(history);
+    const maxF    = Math.max(...Object.values(freq), 1);
+    el.innerHTML  = Array.from({ length: 10 }, (_, d) => {
+      const h = history.length ? Math.round((freq[d] / maxF) * 100) : 0;
+      return '<div class="chart-bar-wrap">' +
+        '<div class="chart-bar" style="height:' + Math.max(h, 2) + '%"></div>' +
+        '<div class="chart-label">' + d + "</div>" +
+        "</div>";
+    }).join("");
   }
 };
 

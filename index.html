@@ -154,42 +154,237 @@
     </div>
 
     <!-- ── FREE MODE ──────────────────────────────────────────────────── -->
-    <div id="free-screen" class="screen">
+    <div id="free-screen" class="screen dashboard-screen">
       <h2 class="fade-in">🎮 FREE MODE</h2>
-      <p style="font-size: 12px; color: rgba(255,255,255,0.6);">Quick random generation</p>
-      <button onclick="UI.quickPick()">🎯 Quick Pick</button>
-      <button onclick="UI.backendPrediction('free-output')">⚙️ Backend Prediction</button>
-      <pre id="free-output" class="output">Output will appear here...</pre>
+      <p class="mode-sub" style="color:rgba(255,80,80,0.88);">Quick generation &amp; pattern tracking</p>
+
+      <!-- Quick Pick Generator -->
+      <div class="panel panel-red">
+        <div class="panel-title">🎰 Quick Pick Generator</div>
+        <div class="quick-pick-display" id="free-qp-display">
+          <span class="qp-number">?</span>
+          <span class="qp-number">?</span>
+          <span class="qp-number">?</span>
+        </div>
+        <div class="pick-type-tabs">
+          <button class="tab-btn active" onclick="UI.setPickTab('free','p3',this)">Pick 3</button>
+          <button class="tab-btn"        onclick="UI.setPickTab('free','p4',this)">Pick 4</button>
+        </div>
+        <button class="generate-btn" onclick="UI.quickPickGen('free')">⚡ GENERATE</button>
+      </div>
+
+      <!-- Hot & Cold -->
+      <div class="panels-row">
+        <div class="panel panel-hot">
+          <div class="panel-title">🔥 Hot Numbers</div>
+          <div id="free-hot-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+        <div class="panel panel-cold">
+          <div class="panel-title">❄️ Cold Numbers</div>
+          <div id="free-cold-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+      </div>
+
+      <!-- AI Pattern Analysis -->
+      <div class="panel panel-analysis">
+        <div class="panel-title">🧠 AI Pattern Analysis</div>
+        <div id="free-pattern-analysis" class="pattern-grid"><p class="no-data">Generate picks to see patterns...</p></div>
+      </div>
+
+      <!-- Frequency Chart -->
+      <div class="panel panel-chart">
+        <div class="panel-title">📊 Digit Frequency</div>
+        <div id="free-chart" class="bar-chart"></div>
+      </div>
+
+      <!-- Recent Predictions -->
+      <div class="panel panel-recent">
+        <div class="panel-title">📋 Recent Predictions <span style="font-size:10px;opacity:0.45;font-weight:400;text-transform:none;letter-spacing:0;">(tap card to mark WIN/LOSS)</span></div>
+        <div id="free-recent-picks" class="prediction-list"><p class="no-data">No predictions yet — hit GENERATE!</p></div>
+      </div>
+
+      <!-- Backend Engine -->
+      <div class="panel" style="text-align:center;">
+        <div class="panel-title">⚙️ Backend Engine</div>
+        <button onclick="UI.backendPrediction('free-output')" style="background:rgba(100,200,255,0.12);border-color:rgba(100,200,255,0.3);margin:6px auto;">⚙️ Run Prediction</button>
+        <pre id="free-output" class="output">Output will appear here...</pre>
+      </div>
+
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
     <!-- ── GOD MODE ───────────────────────────────────────────────────── -->
-    <div id="god-screen" class="screen">
+    <div id="god-screen" class="screen dashboard-screen">
       <h2 class="fade-in">⚡ GOD MODE</h2>
-      <p style="font-size: 12px; color: rgba(255,200,0,0.7);">Premium prediction engine</p>
-      <button onclick="UI.backendPrediction('god-output', true)" style="background: rgba(255,200,0,0.15); border-color: rgba(255,200,0,0.4);">🔥 Premium Prediction</button>
-      <pre id="god-output" class="output">Output will appear here...</pre>
+      <p class="mode-sub" style="color:rgba(255,200,0,0.88);">Premium prediction engine</p>
+
+      <!-- Quick Pick Generator -->
+      <div class="panel panel-gold">
+        <div class="panel-title" style="color:rgba(255,200,0,0.85);">🎰 Premium Quick Pick</div>
+        <div class="quick-pick-display" id="god-qp-display">
+          <span class="qp-number gold">?</span>
+          <span class="qp-number gold">?</span>
+          <span class="qp-number gold">?</span>
+          <span class="qp-number gold">?</span>
+        </div>
+        <div class="pick-type-tabs">
+          <button class="tab-btn"        onclick="UI.setPickTab('god','p3',this)">Pick 3</button>
+          <button class="tab-btn active" onclick="UI.setPickTab('god','p4',this)">Pick 4</button>
+          <button class="tab-btn"        onclick="UI.setPickTab('god','p5',this)">Pick 5</button>
+        </div>
+        <button class="generate-btn" onclick="UI.quickPickGen('god')">🔥 GENERATE</button>
+        <button onclick="UI.backendPrediction('god-output', true)" style="background:rgba(255,200,0,0.12);border-color:rgba(255,200,0,0.35);margin:6px auto;">🔥 Premium Prediction</button>
+        <pre id="god-output" class="output">Output will appear here...</pre>
+      </div>
+
+      <!-- Hot & Cold -->
+      <div class="panels-row">
+        <div class="panel panel-hot">
+          <div class="panel-title">🔥 Hot Numbers</div>
+          <div id="god-hot-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+        <div class="panel panel-cold">
+          <div class="panel-title">❄️ Cold Numbers</div>
+          <div id="god-cold-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+      </div>
+
+      <!-- AI Pattern Analysis -->
+      <div class="panel panel-analysis">
+        <div class="panel-title">🧠 AI Pattern Analysis</div>
+        <div id="god-pattern-analysis" class="pattern-grid"><p class="no-data">Generate picks to see patterns...</p></div>
+      </div>
+
+      <!-- Frequency Chart -->
+      <div class="panel panel-chart">
+        <div class="panel-title">📊 Digit Frequency</div>
+        <div id="god-chart" class="bar-chart"></div>
+      </div>
+
+      <!-- Recent Predictions -->
+      <div class="panel panel-recent">
+        <div class="panel-title">📋 Recent Predictions <span style="font-size:10px;opacity:0.45;font-weight:400;text-transform:none;letter-spacing:0;">(tap card to mark WIN/LOSS)</span></div>
+        <div id="god-recent-picks" class="prediction-list"><p class="no-data">No predictions yet — hit GENERATE!</p></div>
+      </div>
+
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
     <!-- ── UNIVERSE MODE ─────────────────────────────────────────────── -->
-    <div id="universe-screen" class="screen">
+    <div id="universe-screen" class="screen dashboard-screen">
       <h2 class="fade-in">🌌 UNIVERSE MODE</h2>
-      <p style="font-size: 12px; color: rgba(200,100,255,0.7);">Infinite possibilities</p>
-      <div id="universe-workout-suggest" style="margin: 6px 0 10px; padding: 8px 12px; background: rgba(200,100,255,0.1); border: 1px solid rgba(200,100,255,0.3); border-radius: 8px; font-size: 13px; color: rgba(220,180,255,0.95); line-height: 1.8;"></div>
-      <button onclick="UI.backendPrediction('universe-output', true)" style="background: rgba(200,100,255,0.15); border-color: rgba(200,100,255,0.4);">✨ Premium Prediction</button>
-      <pre id="universe-output" class="output">Output will appear here...</pre>
+      <p class="mode-sub" style="color:rgba(200,100,255,0.88);">Infinite cosmic predictions</p>
+      <div id="universe-workout-suggest" style="margin:0 auto 14px;padding:10px 14px;background:rgba(200,100,255,0.1);border:1px solid rgba(200,100,255,0.3);border-radius:10px;font-size:13px;color:rgba(220,180,255,0.95);line-height:1.8;width:100%;max-width:500px;box-sizing:border-box;"></div>
+
+      <!-- Quick Pick Generator -->
+      <div class="panel panel-purple">
+        <div class="panel-title" style="color:rgba(200,100,255,0.85);">🌌 Universe Pick Generator</div>
+        <div class="quick-pick-display" id="universe-qp-display">
+          <span class="qp-number purple">?</span>
+          <span class="qp-number purple">?</span>
+          <span class="qp-number purple">?</span>
+          <span class="qp-number purple">?</span>
+          <span class="qp-number purple">?</span>
+        </div>
+        <div class="pick-type-tabs">
+          <button class="tab-btn"        onclick="UI.setPickTab('universe','p3',this)">Pick 3</button>
+          <button class="tab-btn"        onclick="UI.setPickTab('universe','p4',this)">Pick 4</button>
+          <button class="tab-btn active" onclick="UI.setPickTab('universe','p5',this)">Pick 5</button>
+        </div>
+        <button class="generate-btn" onclick="UI.quickPickGen('universe')">✨ GENERATE</button>
+        <button onclick="UI.backendPrediction('universe-output', true)" style="background:rgba(200,100,255,0.12);border-color:rgba(200,100,255,0.35);margin:6px auto;">✨ Premium Prediction</button>
+        <pre id="universe-output" class="output">Output will appear here...</pre>
+      </div>
+
+      <!-- Hot & Cold -->
+      <div class="panels-row">
+        <div class="panel panel-hot">
+          <div class="panel-title">🔥 Hot Numbers</div>
+          <div id="universe-hot-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+        <div class="panel panel-cold">
+          <div class="panel-title">❄️ Cold Numbers</div>
+          <div id="universe-cold-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+      </div>
+
+      <!-- AI Pattern Analysis -->
+      <div class="panel panel-analysis">
+        <div class="panel-title">🧠 AI Pattern Analysis</div>
+        <div id="universe-pattern-analysis" class="pattern-grid"><p class="no-data">Generate picks to see patterns...</p></div>
+      </div>
+
+      <!-- Frequency Chart -->
+      <div class="panel panel-chart">
+        <div class="panel-title">📊 Digit Frequency</div>
+        <div id="universe-chart" class="bar-chart"></div>
+      </div>
+
+      <!-- Recent Predictions -->
+      <div class="panel panel-recent">
+        <div class="panel-title">📋 Recent Predictions <span style="font-size:10px;opacity:0.45;font-weight:400;text-transform:none;letter-spacing:0;">(tap card to mark WIN/LOSS)</span></div>
+        <div id="universe-recent-picks" class="prediction-list"><p class="no-data">No predictions yet — hit GENERATE!</p></div>
+      </div>
+
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
     <!-- ── DIRECTOR ───────────────────────────────────────────────────── -->
-    <div id="director-screen" class="screen">
+    <div id="director-screen" class="screen dashboard-screen">
       <h2 class="fade-in">🎬 DIRECTOR MODE</h2>
-      <p style="font-size: 12px; color: rgba(255,100,100,0.7);">Compile predictions with custom seed</p>
-      <div id="director-workout-suggest" style="margin: 6px 0 10px; padding: 8px 12px; background: rgba(255,100,100,0.1); border: 1px solid rgba(255,100,100,0.3); border-radius: 8px; font-size: 13px; color: rgba(255,200,180,0.95); line-height: 1.6;"></div>
-      <input id="director-seed" placeholder="Enter seed (optional)" type="text">
-      <button onclick="UI.director()" style="background: rgba(255,100,100,0.15); border-color: rgba(255,100,100,0.3);">▶️ Compile</button>
-      <pre id="director-output" class="output">Output will appear here...</pre>
+      <p class="mode-sub" style="color:rgba(255,100,100,0.88);">Compile with custom strategy</p>
+      <div id="director-workout-suggest" style="margin:0 auto 14px;padding:10px 14px;background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);border-radius:10px;font-size:13px;color:rgba(255,200,180,0.95);line-height:1.6;width:100%;max-width:500px;box-sizing:border-box;"></div>
+
+      <!-- Quick Pick + Seed -->
+      <div class="panel panel-director">
+        <div class="panel-title" style="color:rgba(255,100,100,0.85);">🎬 Director Quick Pick</div>
+        <div class="quick-pick-display" id="director-qp-display">
+          <span class="qp-number red">?</span>
+          <span class="qp-number red">?</span>
+          <span class="qp-number red">?</span>
+        </div>
+        <div class="pick-type-tabs">
+          <button class="tab-btn active" onclick="UI.setPickTab('director','p3',this)">Pick 3</button>
+          <button class="tab-btn"        onclick="UI.setPickTab('director','p4',this)">Pick 4</button>
+        </div>
+        <button class="generate-btn" onclick="UI.quickPickGen('director')">🎬 GENERATE</button>
+        <div class="seed-row">
+          <input id="director-seed" placeholder="Custom seed (optional)" type="text">
+          <button onclick="UI.director()" style="background:rgba(255,100,100,0.15);border-color:rgba(255,100,100,0.3);margin:6px auto 0;">▶️ Compile with Seed</button>
+        </div>
+        <pre id="director-output" class="output">Output will appear here...</pre>
+      </div>
+
+      <!-- Hot & Cold -->
+      <div class="panels-row">
+        <div class="panel panel-hot">
+          <div class="panel-title">🔥 Hot Numbers</div>
+          <div id="director-hot-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+        <div class="panel panel-cold">
+          <div class="panel-title">❄️ Cold Numbers</div>
+          <div id="director-cold-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+      </div>
+
+      <!-- AI Pattern Analysis -->
+      <div class="panel panel-analysis">
+        <div class="panel-title">🧠 AI Pattern Analysis</div>
+        <div id="director-pattern-analysis" class="pattern-grid"><p class="no-data">Generate picks to see patterns...</p></div>
+      </div>
+
+      <!-- Frequency Chart -->
+      <div class="panel panel-chart">
+        <div class="panel-title">📊 Digit Frequency</div>
+        <div id="director-chart" class="bar-chart"></div>
+      </div>
+
+      <!-- Recent Predictions -->
+      <div class="panel panel-recent">
+        <div class="panel-title">📋 Recent Predictions <span style="font-size:10px;opacity:0.45;font-weight:400;text-transform:none;letter-spacing:0;">(tap card to mark WIN/LOSS)</span></div>
+        <div id="director-recent-picks" class="prediction-list"><p class="no-data">No predictions yet — hit GENERATE!</p></div>
+      </div>
+
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
