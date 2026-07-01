@@ -2,226 +2,226 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>GODMODE++ Director Mode</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body {
-      margin: 0;
-      padding: 16px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #05060a;
-      color: #f5f5f5;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 12px;
-    }
-    .section {
-      border: 1px solid #333;
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 12px;
-      background: #0b0d14;
-    }
-    .section h2 {
-      margin: 0 0 8px 0;
-      font-size: 16px;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border-radius: 8px;
-      border: none;
-      background: #e53935;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-    }
-    button:active {
-      transform: scale(0.98);
-    }
-    input, textarea, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      border-radius: 6px;
-      border: 1px solid #444;
-      background: #080a10;
-      color: #f5f5f5;
-      font-size: 13px;
-    }
-    textarea {
-      min-height: 60px;
-    }
-    .output {
-      margin-top: 8px;
-      font-size: 12px;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      background: #11141c;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #333;
-    }
-  </style>
-</head>
-<body>
-  <h1>GODMODE++ Director Mode</h1>
-
-  <!-- LOGIN -->
-  <div class="section">
-    <h2>Login</h2>
-    <input id="login-email" type="email" placeholder="Email (test@test.com)" />
-    <input id="login-password" type="password" placeholder="Password (1234)" />
-    <button onclick="handleLogin()">Login</button>
-    <div id="login-output" class="output"></div>
-  </div>
-
-  <!-- PREDICT -->
-  <div class="section">
-    <h2>Predict</h2>
-    <input id="predict-state" type="text" placeholder="State (e.g. NJ)" />
-    <select id="predict-game">
-      <option value="P3">Pick 3 (P3)</option>
-      <option value="P4">Pick 4 (P4)</option>
-    </select>
-    <button onclick="handlePredict()">Run Predict</button>
-    <div id="predict-output" class="output"></div>
-  </div>
-
-  <!-- RUNDOWN -->
-  <div class="section">
-    <h2>Rundown</h2>
-    <input id="rundown-state" type="text" placeholder="State (e.g. NJ)" />
-    <button onclick="handleRundown()">Run Rundown</button>
-    <div id="rundown-output" class="output"></div>
-  </div>
-
-  <!-- ANALYZE (CORNER ENGINE) -->
-  <div class="section">
-    <h2>Analyze (Corner Engine)</h2>
-    <input id="analyze-draw-id" type="text" placeholder="Draw ID (e.g. 2024-06-28-NJ-P3)" />
-    <textarea id="analyze-grid" placeholder="Rundown grid rows, comma-separated digits per row (e.g. 1 2 3,4 5 6,7 8 9)"></textarea>
-    <input id="analyze-p3-day" type="text" placeholder="Pick3 Day (optional)" />
-    <input id="analyze-p3-night" type="text" placeholder="Pick3 Night (optional)" />
-    <input id="analyze-p4" type="text" placeholder="Pick4 (optional)" />
-    <button onclick="handleAnalyze()">Run Analyze</button>
-    <div id="analyze-output" class="output"></div>
-  </div>
-
-  <!-- DIRECTOR MODE 3175 -->
-  <div class="section">
-    <h2>Director Mode 3175</h2>
-    <textarea id="director-history" placeholder="History draws, one per line (e.g. 317, 593, 804)"></textarea>
-    <button onclick="handleDirector3175()">Run Director 3175</button>
-    <div id="director-output" class="output"></div>
-  </div>
-
+  <title>GODMODE++</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="galaxy.css" />
+  <link rel="stylesheet" href="style2.css" />
   <script>
-    const BACKEND_URL = "https://godmode-backend.onrender.com"; // your backend
-
-    async function safeFetch(url, options = {}) {
-      try {
-        const res = await fetch(url, options);
-        return await res.json();
-      } catch (err) {
-        return { error: String(err) };
-      }
-    }
-
-    // LOGIN
-    async function handleLogin() {
-      const email = document.getElementById("login-email").value.trim();
-      const password = document.getElementById("login-password").value.trim();
-      const out = document.getElementById("login-output");
-
-      const data = await safeFetch(`${BACKEND_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-
-      out.textContent = JSON.stringify(data, null, 2);
-    }
-
-    // PREDICT
-    async function handlePredict() {
-      const state = document.getElementById("predict-state").value.trim() || "NJ";
-      const game = document.getElementById("predict-game").value;
-      const out = document.getElementById("predict-output");
-
-      const data = await safeFetch(`${BACKEND_URL}/predict?state=${state}&game=${game}`);
-      out.textContent = JSON.stringify(data, null, 2);
-    }
-
-    // RUNDOWN
-    async function handleRundown() {
-      const state = document.getElementById("rundown-state").value.trim() || "NJ";
-      const out = document.getElementById("rundown-output");
-
-      const data = await safeFetch(`${BACKEND_URL}/rundown?state=${state}`);
-      out.textContent = JSON.stringify(data, null, 2);
-    }
-
-    // ANALYZE
-    async function handleAnalyze() {
-      const drawId = document.getElementById("analyze-draw-id").value.trim();
-      const gridRaw = document.getElementById("analyze-grid").value.trim();
-      const p3Day = document.getElementById("analyze-p3-day").value.trim() || null;
-      const p3Night = document.getElementById("analyze-p3-night").value.trim() || null;
-      const p4 = document.getElementById("analyze-p4").value.trim() || null;
-      const out = document.getElementById("analyze-output");
-
-      const rows = gridRaw
-        .split(/\n|;/)
-        .map(r => r.trim())
-        .filter(r => r.length > 0)
-        .map(r =>
-          r.replace(/,/g, " ")
-           .split(/\s+/)
-           .filter(x => x.length > 0)
-        );
-
-      const payload = {
-        draw_id: drawId,
-        rundown_grid: rows,
-        pick3_day: p3Day,
-        pick3_night: p3Night,
-        pick4: p4,
-        base_score: 0.5,
-        alpha: 0.8
-      };
-
-      const data = await safeFetch(`${BACKEND_URL}/analyze`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      out.textContent = JSON.stringify(data, null, 2);
-    }
-
-    // DIRECTOR MODE 3175
-    async function handleDirector3175() {
-      const historyRaw = document.getElementById("director-history").value.trim();
-      const out = document.getElementById("director-output");
-
-      const history = historyRaw
-        .split(/\n|,/)
-        .map(h => h.trim())
-        .filter(h => h.length > 0);
-
-      const payload = { history };
-
-      const data = await safeFetch(`${BACKEND_URL}/director/3175`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      out.textContent = JSON.stringify(data, null, 2);
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
     }
   </script>
+</head>
+<body class="galaxy mode-basic">
+
+  <!-- Galaxy Background -->
+  <div class="galaxy-bg">
+    <div class="stars-layer"></div>
+    <div class="silhouettes-layer"></div>
+  </div>
+
+  <!-- App UI -->
+  <div class="app-ui">
+
+    <!-- Global Loader (fix #5) -->
+    <div id="global-loader" class="hidden" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;font-size:28px;">⏳</div>
+
+    <!-- Premium Overlay -->
+    <div id="premium-overlay" class="overlay hidden">
+      <div class="overlay-box">
+        <h2 id="premium-overlay-title">🔒 Premium Required</h2>
+        <p style="color:rgba(255,255,255,0.7);font-size:14px;">Upgrade to unlock this feature and access advanced predictions.</p>
+        <a id="premium-stripe-link" href="#" target="_blank" rel="noopener noreferrer">
+          <button>Unlock</button>
+        </a>
+        <button onclick="UI.closePremium()" class="back">✕ Close</button>
+      </div>
+    </div>
+
+    <!-- ── LOGIN SCREEN (fix #1: active class) ──────────────────────── -->
+    <div id="login-screen" class="screen active">
+      <div class="black-hole-core"></div>
+      <div class="accretion-disk-layer"></div>
+      <div class="lensing-halo"></div>
+      <div class="cosmic-dust-layer"></div>
+      <div class="particle-stream"></div>
+
+      <div class="login-form-card">
+        <h1 class="title">GODMODE++</h1>
+        <p class="disclaimer">⚠️ For entertainment purposes only</p>
+        <h2>SIGN IN</h2>
+        <input id="login-user" type="text" placeholder="Username or Email" autocomplete="username" />
+        <input id="login-pass" type="password" placeholder="Password" autocomplete="current-password" />
+        <p id="login-error" class="error"></p>
+        <button onclick="UI.login()">🔐 Login</button>
+        <div class="auth-links">
+          <button class="link-btn" onclick="UI.show('signup')">Create account</button>
+          &nbsp;·&nbsp;
+          <button class="link-btn" onclick="UI.show('forgot-password')">Forgot password?</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SIGNUP SCREEN ─────────────────────────────────────────────── -->
+    <div id="signup-screen" class="screen">
+      <h2>CREATE ACCOUNT</h2>
+      <input id="signup-username" type="text" placeholder="Username" autocomplete="username" />
+      <input id="signup-email" type="email" placeholder="Email" autocomplete="email" />
+      <input id="signup-pass" type="password" placeholder="Password" autocomplete="new-password" />
+      <input id="signup-confirm" type="password" placeholder="Confirm Password" autocomplete="new-password" />
+      <p id="signup-error" class="error"></p>
+      <button onclick="UI.signup()">🚀 Sign Up</button>
+      <button onclick="UI.show('login')" class="back">← Back to Login</button>
+    </div>
+
+    <!-- ── FORGOT PASSWORD SCREEN ────────────────────────────────────── -->
+    <div id="forgot-password-screen" class="screen">
+      <h2>FORGOT PASSWORD</h2>
+      <input id="forgot-email" type="email" placeholder="Your email address" autocomplete="email" />
+      <p id="forgot-error" class="error"></p>
+      <p id="forgot-success" class="success"></p>
+      <button onclick="UI.forgotPassword()">📧 Send Reset Link</button>
+      <button onclick="UI.show('login')" class="back">← Back to Login</button>
+    </div>
+
+    <!-- ── RESET PASSWORD SCREEN ─────────────────────────────────────── -->
+    <div id="reset-password-screen" class="screen">
+      <h2>RESET PASSWORD</h2>
+      <input id="reset-token" type="text" placeholder="Reset token" />
+      <input id="reset-pass" type="password" placeholder="New password" autocomplete="new-password" />
+      <input id="reset-confirm" type="password" placeholder="Confirm new password" autocomplete="new-password" />
+      <p id="reset-error" class="error"></p>
+      <button onclick="UI.resetPassword()">🔒 Reset Password</button>
+      <button onclick="UI.show('login')" class="back">← Back to Login</button>
+    </div>
+
+    <!-- ── HOME SCREEN ───────────────────────────────────────────────── -->
+    <div id="home-screen" class="screen">
+      <div class="orbit-ring orbit-ring-outer"></div>
+      <div class="orbit-ring orbit-ring-inner"></div>
+
+      <h1 class="title">GODMODE++</h1>
+      <p id="home-welcome" style="color:rgba(255,255,255,0.7);font-size:14px;margin:0 0 16px;">👋 Welcome</p>
+      <p class="disclaimer">⚠️ For entertainment purposes only</p>
+
+      <!-- God Mode Hero Button -->
+      <div class="god-mode-hero-wrap">
+        <button id="god-mode-hero-btn" class="god-mode-hero-btn" onclick="UI.showPremiumGate('god')">
+          <span class="god-btn-icon">⚡</span>
+          <span class="god-btn-body">
+            <span class="god-btn-title">GOD MODE</span>
+            <span id="god-btn-sub" class="god-btn-sub">Upgrade to unlock</span>
+          </span>
+          <span id="god-btn-arrow" class="god-btn-arrow">🔒</span>
+        </button>
+      </div>
+
+      <div class="grid">
+        <button onclick="UI.show('free')">🎮 Free Prediction</button>
+        <button id="god-mode-btn" onclick="UI.showPremiumGate('god')" style="background:rgba(255,200,0,0.1);border-color:rgba(255,200,0,0.25);color:#ffd700;">⚡ God Mode 🔒</button>
+        <button id="universe-mode-btn" onclick="UI.showPremiumGate('universe')" style="background:rgba(200,100,255,0.1);border-color:rgba(200,100,255,0.25);color:#da70d6;">🌌 Universe Mode 🔒</button>
+        <button onclick="UI.show('pick3')">🎲 Pick 3</button>
+        <button onclick="UI.show('pick4')">🎰 Pick 4</button>
+        <button onclick="UI.show('director')">🎬 Director Mode</button>
+        <button onclick="UI.showProfile()">👤 Profile</button>
+        <button onclick="UI.logout()" class="back">🚪 Logout</button>
+      </div>
+
+      <!-- Auto-task card (fix #8) -->
+      <div class="auto-task-card">
+        <div class="auto-task-header">
+          <span class="auto-task-label">⚡ TODAY'S TASK</span>
+          <button class="auto-task-refresh" onclick="UI.refreshAutoTask()" title="New task">🔄</button>
+        </div>
+        <div class="auto-task-content">
+          <span id="auto-task-emoji" class="auto-task-emoji">🎯</span>
+          <span id="auto-task-text" class="auto-task-text">Loading today's task...</span>
+        </div>
+        <button class="auto-task-action" onclick="UI.runAutoTask()">▶ Do It</button>
+      </div>
+    </div>
+
+    <!-- ── FREE MODE SCREEN ──────────────────────────────────────────── -->
+    <div id="free-screen" class="screen">
+      <h2>🎮 FREE PREDICTION</h2>
+      <p class="disclaimer">Free engine — basic predictions</p>
+      <button onclick="UI.quickPick()">🎯 Quick Pick</button>
+      <button onclick="UI.backendPrediction('free-output')">⚡ Engine Predict</button>
+      <div id="free-output" class="output">Results appear here...</div>
+      <button onclick="UI.show('home')" class="back">← Home</button>
+    </div>
+
+    <!-- ── GOD MODE SCREEN ───────────────────────────────────────────── -->
+    <div id="god-screen" class="screen">
+      <h2>⚡ GOD MODE</h2>
+      <p class="disclaimer">Premium engine — enhanced predictions</p>
+      <button onclick="UI.backendPrediction('god-output', true)">⚡ God Predict</button>
+      <div id="god-output" class="output">Results appear here...</div>
+      <button onclick="UI.show('home')" class="back">← Home</button>
+    </div>
+
+    <!-- ── UNIVERSE MODE SCREEN ──────────────────────────────────────── -->
+    <div id="universe-screen" class="screen">
+      <h2>🌌 UNIVERSE MODE</h2>
+      <p class="disclaimer">Ultimate engine — maximum predictions</p>
+      <button onclick="UI.backendPrediction('universe-output', true)">🌌 Universe Predict</button>
+      <div id="universe-output" class="output">Results appear here...</div>
+      <button onclick="UI.show('home')" class="back">← Home</button>
+    </div>
+
+    <!-- ── PICK 3 SCREEN ─────────────────────────────────────────────── -->
+    <div id="pick3-screen" class="screen">
+      <h2>🎲 PICK 3</h2>
+      <input id="pick3-input" type="text" maxlength="3" placeholder="Enter 3 digits (e.g. 317)" inputmode="numeric" />
+      <button onclick="UI.pick3()">🎲 Analyze Pick 3</button>
+      <div id="pick3-output" class="output">Results appear here...</div>
+      <button onclick="UI.show('home')" class="back">← Home</button>
+    </div>
+
+    <!-- ── PICK 4 SCREEN ─────────────────────────────────────────────── -->
+    <div id="pick4-screen" class="screen">
+      <h2>🎰 PICK 4</h2>
+      <input id="pick4-input" type="text" maxlength="4" placeholder="Enter 4 digits (e.g. 3175)" inputmode="numeric" />
+      <button onclick="UI.pick4()">🎰 Analyze Pick 4</button>
+      <div id="pick4-output" class="output">Results appear here...</div>
+      <button onclick="UI.show('home')" class="back">← Home</button>
+    </div>
+
+    <!-- ── DIRECTOR MODE SCREEN ──────────────────────────────────────── -->
+    <div id="director-screen" class="screen">
+      <h2>🎬 DIRECTOR MODE</h2>
+      <input id="director-seed" type="text" placeholder="Enter seed (optional)" />
+      <button onclick="UI.director()">🎬 Run Director</button>
+      <div id="director-output" class="output">Results appear here...</div>
+      <button onclick="UI.show('home')" class="back">← Home</button>
+    </div>
+
+    <!-- ── PROFILE SCREEN ───────────────────────────────────────────── -->
+    <div id="profile-screen" class="screen">
+      <h2>👤 PROFILE</h2>
+      <div class="profile-card">
+        <div class="profile-row">
+          <span class="profile-label">Username</span>
+          <span id="profile-username" class="profile-value">—</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-label">Email</span>
+          <span id="profile-email" class="profile-value">—</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-label">Tier</span>
+          <span id="profile-tier" class="profile-value">FREE</span>
+        </div>
+      </div>
+      <button onclick="UI.show('home')" class="back">← Home</button>
+    </div>
+
+  </div><!-- end .app-ui -->
+
+  <!-- API base override — must appear before auth-utils.js and app2.js (fix #7) -->
+  <script>window.GODMODE_API_BASE = "https://godmode-backend2.onrender.com";</script>
+  <script src="auth-utils.js"></script>
+  <script src="app2.js"></script>
 </body>
 </html>

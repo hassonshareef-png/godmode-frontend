@@ -1,7 +1,7 @@
 // ── API Configuration ──────────────────────────────────────────────────────
 // To use a different backend, set window.GODMODE_API_BASE before this script
 // loads (e.g. via a <script> tag or your deployment platform config).
-const API_BASE = "https://godmode-backend.onrender.com";
+const API_BASE = window.GODMODE_API_BASE || "https://godmode-backend2.onrender.com";
 
 
 
@@ -67,7 +67,7 @@ const UI = {
   const response = await fetch(API_BASE + "/auth/login", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email: identifier, password })
+  body: JSON.stringify({ identifier, password })
 });
 
 
@@ -479,7 +479,8 @@ const UI = {
       "🔒 " + tierLabel + " Required";
     const link = document.getElementById("premium-stripe-link");
     link.href        = stripeUrl;
-    link.textContent = "Unlock " + tierLabel;
+    const btn = link.querySelector("button");
+    if (btn) btn.textContent = "Unlock " + tierLabel;
 
     document.getElementById("premium-overlay").classList.remove("hidden");
   },
