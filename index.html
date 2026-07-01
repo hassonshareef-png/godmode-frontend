@@ -6,6 +6,9 @@
   <meta name="description" content="GODMODE++ - Entertainment Prediction Engine">
   <title>GODMODE++ | Prediction Engine</title>
 
+  <!-- PWA MANIFEST -->
+  <link rel="manifest" href="manifest.json">
+
   <!-- THEME FILES -->
   <link rel="stylesheet" href="style2.css">
   <link rel="stylesheet" href="galaxy.css">
@@ -443,5 +446,15 @@
 
   <script src="auth-utils.js"></script>
   <script src="app2.js"></script>
+
+  <!-- SERVICE WORKER REGISTRATION -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("service-worker.js")
+          .catch(function (err) { console.warn("SW registration failed:", err); });
+      });
+    }
+  </script>
 </body>
 </html>
