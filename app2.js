@@ -1055,9 +1055,13 @@ window.addEventListener("load", async () => {
     UI.show("login");
   }
 
-  // Health check (non-blocking)
-  fetch(API_BASE + "/health")
-    .then(r => r.json())
-    .then(data => console.log("✅ Backend health:", data))
-    .catch(err => console.warn("⚠️ Backend connection warning:", err.message));
+  // Health check (non-blocking) + keep-alive ping every 10 minutes
+  const pingBackend = () =>
+    fetch(API_BASE + "/health")
+      .then(r => r.json())
+      .then(data => console.log("✅ Backend health:", data))
+      .catch(err => console.warn("⚠️ Backend connection warning:", err.message));
+
+  pingBackend();
+  setInterval(pingBackend, 10 * 60 * 1000);
 });
