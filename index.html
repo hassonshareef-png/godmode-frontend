@@ -176,6 +176,7 @@
     <div id="universe-screen" class="screen">
       <h2 class="fade-in">🌌 UNIVERSE MODE</h2>
       <p style="font-size: 12px; color: rgba(200,100,255,0.7);">Infinite possibilities</p>
+      <div id="universe-workout-suggest" style="margin: 6px 0 10px; padding: 8px 12px; background: rgba(200,100,255,0.1); border: 1px solid rgba(200,100,255,0.3); border-radius: 8px; font-size: 13px; color: rgba(220,180,255,0.95); line-height: 1.8;"></div>
       <button onclick="UI.backendPrediction('universe-output', true)" style="background: rgba(200,100,255,0.15); border-color: rgba(200,100,255,0.4);">✨ Premium Prediction</button>
       <pre id="universe-output" class="output">Output will appear here...</pre>
       <button class="back" onclick="UI.show('home')">← Back to Home</button>
@@ -185,6 +186,7 @@
     <div id="director-screen" class="screen">
       <h2 class="fade-in">🎬 DIRECTOR MODE</h2>
       <p style="font-size: 12px; color: rgba(255,100,100,0.7);">Compile predictions with custom seed</p>
+      <div id="director-workout-suggest" style="margin: 6px 0 10px; padding: 8px 12px; background: rgba(255,100,100,0.1); border: 1px solid rgba(255,100,100,0.3); border-radius: 8px; font-size: 13px; color: rgba(255,200,180,0.95); line-height: 1.6;"></div>
       <input id="director-seed" placeholder="Enter seed (optional)" type="text">
       <button onclick="UI.director()" style="background: rgba(255,100,100,0.15); border-color: rgba(255,100,100,0.3);">▶️ Compile</button>
       <pre id="director-output" class="output">Output will appear here...</pre>

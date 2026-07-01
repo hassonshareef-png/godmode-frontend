@@ -35,7 +35,9 @@ const UI = {
     if (screen === "universe") document.body.className = "galaxy mode-universe";
     if (screen === "director") document.body.className = "galaxy mode-director";
 
-    if (screen === "home") this.renderAutoTask();
+    if (screen === "home")     this.renderAutoTask();
+    if (screen === "director") this.renderDirectorWorkout();
+    if (screen === "universe") this.renderUniverseWorkouts();
   },
 
   showLoader() {
@@ -463,6 +465,146 @@ const UI = {
     if (this._currentAutoTask && typeof this._currentAutoTask.action === "function") {
       this._currentAutoTask.action();
     }
+  },
+
+
+  // ── Workout Auto-Select Engine ──────────────────────────────────────────
+  // Scores each workout by digit overlap with root energy digits.
+  // Tier 1 (8, 3) = 2 pts each  |  Tier 2 (6, 9, 4, 5) = 1 pt each
+  // Director Mode → single best Pick 4 workout
+  // Universe Mode → top 3 Pick 4 workouts (rotating display)
+
+  _workouts: [
+    // ── Pick 3 ──
+    { name: "111 Rundown",          type: "p3", key: "111"  },
+    { name: "123 Math Rundown",     type: "p3", key: "123"  },
+    { name: "123 Rundown",          type: "p3", key: "123"  },
+    { name: "137 Math Rundown",     type: "p3", key: "137"  },
+    { name: "182 Rundown",          type: "p3", key: "182"  },
+    { name: "222 Rundown",          type: "p3", key: "222"  },
+    { name: "234 Rundown",          type: "p3", key: "234"  },
+    { name: "235 Rundown",          type: "p3", key: "235"  },
+    { name: "246 Rundown",          type: "p3", key: "246"  },
+    { name: "257 Math Rundown",     type: "p3", key: "257"  },
+    { name: "284 Rundown",          type: "p3", key: "284"  },
+    { name: "317 Rundown",          type: "p3", key: "317"  },
+    { name: "333 Rundown",          type: "p3", key: "333"  },
+    { name: "345 Rundown",          type: "p3", key: "345"  },
+    { name: "369 Math Rundown",     type: "p3", key: "369"  },
+    { name: "369 Rundown",          type: "p3", key: "369"  },
+    { name: "397 Rundown",          type: "p3", key: "397"  },
+    { name: "421 Rundown",          type: "p3", key: "421"  },
+    { name: "444 Rundown",          type: "p3", key: "444"  },
+    { name: "456 Rundown",          type: "p3", key: "456"  },
+    { name: "471 Rundown",          type: "p3", key: "471"  },
+    { name: "513 Rundown",          type: "p3", key: "513"  },
+    { name: "654 Rundown",          type: "p3", key: "654"  },
+    { name: "666 Rundown",          type: "p3", key: "666"  },
+    { name: "678 Rundown",          type: "p3", key: "678"  },
+    { name: "693 Rundown",          type: "p3", key: "693"  },
+    { name: "713 Rundown",          type: "p3", key: "713"  },
+    { name: "777 Rundown",          type: "p3", key: "777"  },
+    { name: "789 Rundown",          type: "p3", key: "789"  },
+    { name: "793 Rundown",          type: "p3", key: "793"  },
+    { name: "815 Rundown",          type: "p3", key: "815"  },
+    { name: "842 Rundown",          type: "p3", key: "842"  },
+    { name: "862 Rundown",          type: "p3", key: "862"  },
+    { name: "873 Rundown",          type: "p3", key: "873"  },
+    { name: "888 Rundown",          type: "p3", key: "888"  },
+    { name: "973 Rundown",          type: "p3", key: "973"  },
+    { name: "999 Rundown",          type: "p3", key: "999"  },
+    // ── Pick 4 ──
+    { name: "1111 Rundown",         type: "p4", key: "1111" },
+    { name: "1212 Rundown",         type: "p4", key: "1212" },
+    { name: "1234 Math Rundown",    type: "p4", key: "1234" },
+    { name: "1234 Rundown",         type: "p4", key: "1234" },
+    { name: "1379 Math Rundown",    type: "p4", key: "1379" },
+    { name: "1412 Rundown",         type: "p4", key: "1412" },
+    { name: "1919 Rundown",         type: "p4", key: "1919" },
+    { name: "2121 Rundown",         type: "p4", key: "2121" },
+    { name: "2222 Rundown",         type: "p4", key: "2222" },
+    { name: "2345 Rundown",         type: "p4", key: "2345" },
+    { name: "2367 Math Rundown",    type: "p4", key: "2367" },
+    { name: "3173 Rundown",         type: "p4", key: "3173" },
+    { name: "3175 Rundown",         type: "p4", key: "3175" },
+    { name: "3197 Rundown",         type: "p4", key: "3197" },
+    { name: "3317 Rundown",         type: "p4", key: "3317" },
+    { name: "3333 Rundown",         type: "p4", key: "3333" },
+    { name: "3456 Rundown",         type: "p4", key: "3456" },
+    { name: "3567 Math Rundown",    type: "p4", key: "3567" },
+    { name: "3737 Rundown",         type: "p4", key: "3737" },
+    { name: "3842 Rundown",         type: "p4", key: "3842" },
+    { name: "3917 Rundown",         type: "p4", key: "3917" },
+    { name: "4444 Rundown",         type: "p4", key: "4444" },
+    { name: "4567 Rundown",         type: "p4", key: "4567" },
+    { name: "5678 Rundown",         type: "p4", key: "5678" },
+    { name: "5713 Rundown",         type: "p4", key: "5713" },
+    { name: "6317 Rundown",         type: "p4", key: "6317" },
+    { name: "6412 Rundown",         type: "p4", key: "6412" },
+    { name: "6666 Rundown",         type: "p4", key: "6666" },
+    { name: "6789 Rundown",         type: "p4", key: "6789" },
+    { name: "7193 Rundown",         type: "p4", key: "7193" },
+    { name: "7319 Rundown",         type: "p4", key: "7319" },
+    { name: "7777 Rundown",         type: "p4", key: "7777" },
+    { name: "7913 Rundown",         type: "p4", key: "7913" },
+    { name: "8113 Rundown",         type: "p4", key: "8113" },
+    { name: "8347 Rundown",         type: "p4", key: "8347" },
+    { name: "8888 Rundown",         type: "p4", key: "8888" },
+    { name: "9999 Rundown",         type: "p4", key: "9999" },
+  ],
+
+  _scoreWorkout(w) {
+    const t1 = new Set(["8", "3"]);
+    const t2 = new Set(["6", "9", "4", "5"]);
+    let score = 0;
+    for (const ch of w.key) {
+      if (t1.has(ch))      score += 2;
+      else if (t2.has(ch)) score += 1;
+    }
+    return score;
+  },
+
+  bestDirectorWorkout() {
+    const p4 = this._workouts.filter(w => w.type === "p4");
+    if (!p4.length) return null;
+    return p4.reduce((best, w) =>
+      this._scoreWorkout(w) >= this._scoreWorkout(best) ? w : best, p4[0]);
+  },
+
+  topUniverseWorkouts(n = 3) {
+    return this._workouts
+      .filter(w => w.type === "p4")
+      .map(w => ({ ...w, score: this._scoreWorkout(w) }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, n);
+  },
+
+  renderDirectorWorkout() {
+    const el = document.getElementById("director-workout-suggest");
+    if (!el) return;
+    const best = this.bestDirectorWorkout();
+    if (!best) return;
+    const score = this._scoreWorkout(best);
+    el.innerHTML =
+      '<span class="workout-label">🎯 Best Workout Auto-Selected:</span>' +
+      '<strong class="workout-name">' + best.name + '</strong>' +
+      ' <span class="workout-score">⚡ score ' + score + '</span>';
+  },
+
+  renderUniverseWorkouts() {
+    const el = document.getElementById("universe-workout-suggest");
+    if (!el) return;
+    const top = this.topUniverseWorkouts(3);
+    if (!top.length) return;
+    const medals = ["🥇", "🥈", "🥉"];
+    el.innerHTML = '<div class="workout-label">🌌 Top Workouts (Root Engine):</div>' +
+      top.map((w, i) =>
+        '<div class="workout-row">' +
+        '<span class="workout-rank">' + medals[i] + '</span> ' +
+        '<strong class="workout-name">' + w.name + '</strong>' +
+        ' <span class="workout-score">⚡ ' + w.score + '</span>' +
+        '</div>'
+      ).join("");
   },
 
   // ── Premium Gate ────────────────────────────────────────────────────────
