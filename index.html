@@ -279,7 +279,7 @@
     <div id="universe-screen" class="screen dashboard-screen">
       <h2 class="fade-in">🌌 UNIVERSE MODE</h2>
       <p class="mode-sub" style="color:rgba(200,100,255,0.88);">Infinite cosmic predictions</p>
-      <div id="universe-workout-suggest" style="margin:0 auto 14px;padding:10px 14px;background:rgba(200,100,255,0.1);border:1px solid rgba(200,100,255,0.3);border-radius:10px;font-size:13px;color:rgba(220,180,255,0.95);line-height:1.8;width:100%;max-width:500px;box-sizing:border-box;"></div>
+      <div id="universe-workout-suggest" style="margin:0 auto 14px;padding:10px 14px;background:rgba(200,100,255,0.1);border:1px solid rgba(200,100,255,0.3);border-radius:10px;font-size:13px;color:rgba(200,100,255,0.9);display:none;"></div>
 
       <!-- Quick Pick Generator -->
       <div class="panel panel-purple">
@@ -338,7 +338,7 @@
     <div id="director-screen" class="screen dashboard-screen">
       <h2 class="fade-in">🎬 DIRECTOR MODE</h2>
       <p class="mode-sub" style="color:rgba(255,100,100,0.88);">Compile with custom strategy</p>
-      <div id="director-workout-suggest" style="margin:0 auto 14px;padding:10px 14px;background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);border-radius:10px;font-size:13px;color:rgba(255,200,180,0.95);line-height:1.6;width:100%;max-width:500px;box-sizing:border-box;"></div>
+      <div id="director-workout-suggest" style="margin:0 auto 14px;padding:10px 14px;background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);border-radius:10px;font-size:13px;color:rgba(255,100,100,0.9);display:none;"></div>
 
       <!-- Quick Pick + Seed -->
       <div class="panel panel-director">
@@ -443,8 +443,8 @@
     });
   </script>
 
-  <!-- API base override: uncomment and set your production backend URL -->
-  <!-- <script>window.GODMODE_API_BASE = "https://your-godmode-backend.com";</script> -->
+  <!-- Production backend URL -->
+  <script>window.GODMODE_API_BASE = "https://godmode-backend2.onrender.com";</script>
 
   <script>
     if ("serviceWorker" in navigator) {
