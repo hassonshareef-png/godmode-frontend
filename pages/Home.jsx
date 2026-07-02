@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 export default function Home() {
     const navigate = useNavigate();
 
-    return (
+      return (
         <div className="home-container">
             <h1>GODMODE++</h1>
 
