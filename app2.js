@@ -431,7 +431,7 @@ const UI = {
   // ── Auto Task Card ───────────────────────────────────────────────────────
 
   _autoTaskPool: [
-    { emoji: "🎯", text: "Run a Quick Pick and trust the numbers today.", action: () => { UI.show("free"); setTimeout(() => UI.quickPick(), 200); } },
+    { emoji: "🎯", text: "Run a Quick Pick and trust the numbers today.", action: () => { UI.show("free"); setTimeout(() => UI.quickPickGen("free"), 200); } },
     { emoji: "🎲", text: "Try Pick 3 — enter a lucky 3-digit combo.", action: () => UI.show("pick3") },
     { emoji: "🎰", text: "Try Pick 4 — your next big 4-digit hit awaits.", action: () => UI.show("pick4") },
     { emoji: "🎬", text: "Use Director Mode with a custom seed today.", action: () => UI.show("director") },
@@ -681,11 +681,6 @@ const UI = {
 
   // ── Predictions ─────────────────────────────────────────────────────────
 
-  quickPick() {
-    const n = Math.floor(Math.random() * 1000);
-    document.getElementById("free-output").textContent = "🎯 Quick Pick: " + n;
-  },
-
   async backendPrediction(out, premium = false) {
     const outputEl = document.getElementById(out);
     outputEl.textContent = premium ? "⚡ Premium Engine Activated..."
@@ -708,10 +703,12 @@ const UI = {
       }
     }
 
+    const isUniverse = (out === "universe-output");
+
     try {
       const response = await this._authenticatedFetch(API_BASE + "/predict", {
         method: "POST",
-        body: JSON.stringify({ god: premium, universe: false })
+        body: JSON.stringify({ god: premium && !isUniverse, universe: isUniverse })
       });
       if (!response) return;
       const data = await response.json();
