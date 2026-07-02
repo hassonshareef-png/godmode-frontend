@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const DIRECTOR_PASSWORD = "8118118";   // your new director password
 
-export default function DirectorAuth() {
+export default function DirectorAuth() 
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
