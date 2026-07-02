@@ -1,10 +1,11 @@
 {
   "name": "GODMODE++",
   "short_name": "GODMODE",
-  "start_url": "index.html",
+  "start_url": "/godmode-frontend/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
+  "description": "GODMODE++ Lottery Engine",
   "icons": [
     {
       "src": "icon-192.png",
@@ -18,4 +19,3 @@
     }
   ]
 }
-

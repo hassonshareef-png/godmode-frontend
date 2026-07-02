@@ -1,227 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GODMODE++</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="galaxy.css" />
-  <link rel="stylesheet" href="style2.css" />
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
-    }
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="GODMODE++ - Entertainment Prediction Engine">
+  <title>GODMODE++ | Prediction Engine</title>
+
+  <!-- PWA MANIFEST -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- THEME FILES -->
+  <link rel="stylesheet" href="style2.css">
+  <link rel="stylesheet" href="galaxy.css">
 </head>
+
 <body class="galaxy mode-basic">
 
-  <!-- Galaxy Background -->
+  <!-- GALAXY BACKGROUND -->
   <div class="galaxy-bg">
     <div class="stars-layer"></div>
     <div class="silhouettes-layer"></div>
+    <!-- Black hole layers -->
+    <div class="black-hole-core"></div>
+    <div class="accretion-disk-layer"></div>
+    <div class="lensing-halo"></div>
+    <div class="cosmic-dust-layer"></div>
+    <div class="particle-stream"></div>
   </div>
 
-  <!-- App UI -->
+  <!-- APP UI WRAPPER -->
   <div class="app-ui">
 
-    <!-- Global Loader (fix #5) -->
-    <div id="global-loader" class="hidden" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;font-size:28px;">⏳</div>
+    <!-- GLOBAL LOADER -->
+    <div id="global-loader" class="loader hidden">
+      <div class="loader-ring"></div>
+      <p>⚡ Contacting engine...</p>
+    </div>
 
-    <!-- Premium Overlay -->
+    <!-- PREMIUM OVERLAY -->
     <div id="premium-overlay" class="overlay hidden">
       <div class="overlay-box">
-        <h2 id="premium-overlay-title">🔒 Premium Required</h2>
-        <p style="color:rgba(255,255,255,0.7);font-size:14px;">Upgrade to unlock this feature and access advanced predictions.</p>
-        <a id="premium-stripe-link" href="#" target="_blank" rel="noopener noreferrer">
-          <button>Unlock</button>
+        <h2 id="premium-overlay-title">🌟 Premium Required</h2>
+        <p style="color: rgba(255,255,255,0.8); font-size: 14px;">Upgrade your account to unlock this mode.</p>
+        <a id="premium-stripe-link" href="#" target="_blank" rel="noopener noreferrer" style="display:block; margin: 10px auto; width:80%; max-width:300px;">
+          <button style="background: rgba(0,200,255,0.2); border-color: rgba(0,200,255,0.4); width:100%; max-width:none;">Unlock Now</button>
         </a>
-        <button onclick="UI.closePremium()" class="back">✕ Close</button>
+        <button onclick="UI.closePremium()" class="back">Close</button>
       </div>
     </div>
 
-    <!-- ── LOGIN SCREEN (fix #1: active class) ──────────────────────── -->
+    <!-- ── LOGIN ──────────────────────────────────────────────────────── -->
     <div id="login-screen" class="screen active">
-      <div class="black-hole-core"></div>
-      <div class="accretion-disk-layer"></div>
-      <div class="lensing-halo"></div>
-      <div class="cosmic-dust-layer"></div>
-      <div class="particle-stream"></div>
-
       <div class="login-form-card">
-        <h1 class="title">GODMODE++</h1>
-        <p class="disclaimer">⚠️ For entertainment purposes only</p>
-        <h2>SIGN IN</h2>
-        <input id="login-user" type="text" placeholder="Username or Email" autocomplete="username" />
-        <input id="login-pass" type="password" placeholder="Password" autocomplete="current-password" />
+        <h2 class="fade-in">🔑 Login to GODMODE++</h2>
+        <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Enter your credentials</p>
+        <input id="login-user" type="text"     placeholder="Username or Email" autocomplete="username">
+        <input id="login-pass" type="password" placeholder="Password"          autocomplete="current-password">
+        <button onclick="UI.login()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">→ Login</button>
         <p id="login-error" class="error"></p>
-        <button onclick="UI.login()">🔐 Login</button>
-        <div class="auth-links">
-          <button class="link-btn" onclick="UI.show('signup')">Create account</button>
-          &nbsp;·&nbsp;
+        <p class="auth-links">
           <button class="link-btn" onclick="UI.show('forgot-password')">Forgot password?</button>
-        </div>
+          &nbsp;·&nbsp;
+          <button class="link-btn" onclick="UI.show('signup')">Create account</button>
+        </p>
       </div>
     </div>
 
-    <!-- ── SIGNUP SCREEN ─────────────────────────────────────────────── -->
+    <!-- ── SIGNUP ─────────────────────────────────────────────────────── -->
     <div id="signup-screen" class="screen">
-      <h2>CREATE ACCOUNT</h2>
-      <input id="signup-username" type="text" placeholder="Username" autocomplete="username" />
-      <input id="signup-email" type="email" placeholder="Email" autocomplete="email" />
-      <input id="signup-pass" type="password" placeholder="Password" autocomplete="new-password" />
-      <input id="signup-confirm" type="password" placeholder="Confirm Password" autocomplete="new-password" />
+      <h2 class="fade-in">📝 Create Account</h2>
+      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Join GODMODE++</p>
+      <input id="signup-username" type="text"     placeholder="Username (3–20 chars)"    autocomplete="username">
+      <input id="signup-email"    type="email"    placeholder="Email address"             autocomplete="email">
+      <input id="signup-pass"     type="password" placeholder="Password (8+ chars)"       autocomplete="new-password">
+      <input id="signup-confirm"  type="password" placeholder="Confirm Password"          autocomplete="new-password">
+      <button onclick="UI.signup()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">🚀 Sign Up</button>
       <p id="signup-error" class="error"></p>
-      <button onclick="UI.signup()">🚀 Sign Up</button>
-      <button onclick="UI.show('login')" class="back">← Back to Login</button>
+      <p class="auth-links">
+        <button class="link-btn" onclick="UI.show('login')">Already have an account? Log in</button>
+      </p>
     </div>
 
-    <!-- ── FORGOT PASSWORD SCREEN ────────────────────────────────────── -->
+    <!-- ── FORGOT PASSWORD ────────────────────────────────────────────── -->
     <div id="forgot-password-screen" class="screen">
-      <h2>FORGOT PASSWORD</h2>
-      <input id="forgot-email" type="email" placeholder="Your email address" autocomplete="email" />
-      <p id="forgot-error" class="error"></p>
+      <h2 class="fade-in">🔓 Forgot Password</h2>
+      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">We'll send you a reset link</p>
+      <input id="forgot-email" type="email" placeholder="Your email address" autocomplete="email">
+      <button onclick="UI.forgotPassword()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">📧 Send Reset Link</button>
+      <p id="forgot-error"   class="error"></p>
       <p id="forgot-success" class="success"></p>
-      <button onclick="UI.forgotPassword()">📧 Send Reset Link</button>
-      <button onclick="UI.show('login')" class="back">← Back to Login</button>
+      <p class="auth-links">
+        <button class="link-btn" onclick="UI.show('login')">← Back to Login</button>
+        &nbsp;·&nbsp;
+        <button class="link-btn" onclick="UI.show('reset-password')">I have a reset token →</button>
+      </p>
     </div>
 
-    <!-- ── RESET PASSWORD SCREEN ─────────────────────────────────────── -->
+    <!-- ── RESET PASSWORD ─────────────────────────────────────────────── -->
     <div id="reset-password-screen" class="screen">
-      <h2>RESET PASSWORD</h2>
-      <input id="reset-token" type="text" placeholder="Reset token" />
-      <input id="reset-pass" type="password" placeholder="New password" autocomplete="new-password" />
-      <input id="reset-confirm" type="password" placeholder="Confirm new password" autocomplete="new-password" />
+      <h2 class="fade-in">🔒 Reset Password</h2>
+      <p style="font-size: 12px; color: rgba(200,200,100,0.7);">Enter your reset token and new password</p>
+      <input id="reset-token"   type="text"     placeholder="Reset token"           autocomplete="off">
+      <input id="reset-pass"    type="password" placeholder="New password (8+ chars)" autocomplete="new-password">
+      <input id="reset-confirm" type="password" placeholder="Confirm new password"   autocomplete="new-password">
+      <button onclick="UI.resetPassword()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">✅ Reset Password</button>
       <p id="reset-error" class="error"></p>
-      <button onclick="UI.resetPassword()">🔒 Reset Password</button>
-      <button onclick="UI.show('login')" class="back">← Back to Login</button>
+      <p class="auth-links">
+        <button class="link-btn" onclick="UI.show('login')">← Back to Login</button>
+      </p>
     </div>
 
-    <!-- ── HOME SCREEN ───────────────────────────────────────────────── -->
+    <!-- ── HOME ──────────────────────────────────────────────────────── -->
     <div id="home-screen" class="screen">
+      <!-- Decorative orbit rings -->
       <div class="orbit-ring orbit-ring-outer"></div>
       <div class="orbit-ring orbit-ring-inner"></div>
+      <h1 class="title slide-down">GODMODE++</h1>
+      <p class="disclaimer">✨ Entertainment prediction engine ✨</p>
+      <p id="home-welcome" style="font-size: 13px; color: rgba(200,200,255,0.8); margin: 4px 0 12px;"></p>
 
-      <h1 class="title">GODMODE++</h1>
-      <p id="home-welcome" style="color:rgba(255,255,255,0.7);font-size:14px;margin:0 0 16px;">👋 Welcome</p>
-      <p class="disclaimer">⚠️ For entertainment purposes only</p>
-
-      <!-- God Mode Hero Button -->
+      <!-- MOBILE GOD MODE HERO BUTTON -->
       <div class="god-mode-hero-wrap">
         <button id="god-mode-hero-btn" class="god-mode-hero-btn" onclick="UI.showPremiumGate('god')">
           <span class="god-btn-icon">⚡</span>
           <span class="god-btn-body">
             <span class="god-btn-title">GOD MODE</span>
-            <span id="god-btn-sub" class="god-btn-sub">Upgrade to unlock</span>
+            <span class="god-btn-sub" id="god-btn-sub">Premium Prediction Engine</span>
           </span>
-          <span id="god-btn-arrow" class="god-btn-arrow">🔒</span>
+          <span class="god-btn-arrow" id="god-btn-arrow">🔒</span>
         </button>
       </div>
 
-      <div class="grid">
-        <button onclick="UI.show('free')">🎮 Free Prediction</button>
-        <button id="god-mode-btn" onclick="UI.showPremiumGate('god')" style="background:rgba(255,200,0,0.1);border-color:rgba(255,200,0,0.25);color:#ffd700;">⚡ God Mode 🔒</button>
-        <button id="universe-mode-btn" onclick="UI.showPremiumGate('universe')" style="background:rgba(200,100,255,0.1);border-color:rgba(200,100,255,0.25);color:#da70d6;">🌌 Universe Mode 🔒</button>
-        <button onclick="UI.show('pick3')">🎲 Pick 3</button>
-        <button onclick="UI.show('pick4')">🎰 Pick 4</button>
-        <button onclick="UI.show('director')">🎬 Director Mode</button>
-        <button onclick="UI.showProfile()">👤 Profile</button>
-        <button onclick="UI.logout()" class="back">🚪 Logout</button>
-      </div>
-
-      <!-- Auto-task card (fix #8) -->
-      <div class="auto-task-card">
+      <!-- AUTO TASK CARD -->
+      <div class="auto-task-card" id="auto-task-card">
         <div class="auto-task-header">
-          <span class="auto-task-label">⚡ TODAY'S TASK</span>
-          <button class="auto-task-refresh" onclick="UI.refreshAutoTask()" title="New task">🔄</button>
+          <span class="auto-task-label">⚡ Auto Task</span>
+          <button class="auto-task-refresh" onclick="UI.refreshAutoTask()" title="Generate new task">🔄</button>
         </div>
-        <div class="auto-task-content">
-          <span id="auto-task-emoji" class="auto-task-emoji">🎯</span>
-          <span id="auto-task-text" class="auto-task-text">Loading today's task...</span>
+        <div id="auto-task-content" class="auto-task-content">
+          <span id="auto-task-emoji" class="auto-task-emoji"></span>
+          <span id="auto-task-text" class="auto-task-text"></span>
         </div>
-        <button class="auto-task-action" onclick="UI.runAutoTask()">▶ Do It</button>
+        <button class="auto-task-action" id="auto-task-action-btn" onclick="UI.runAutoTask()">▶ Run Task</button>
+      </div>
+
+      <div class="grid">
+        <button onclick="UI.show('free')"     style="background: rgba(100,255,150,0.12); border-color: rgba(100,255,150,0.3);">🎮 Free Mode</button>
+        <button id="god-mode-btn"      onclick="UI.showPremiumGate('god')"      style="background: rgba(255,200,0,0.1); border-color: rgba(255,200,0,0.25); color: #ffd700;">⚡ God Mode 🔒</button>
+        <button id="universe-mode-btn" onclick="UI.showPremiumGate('universe')" style="background: rgba(200,100,255,0.1); border-color: rgba(200,100,255,0.25); color: #da70d6;">🌌 Universe Mode 🔒</button>
+        <button onclick="UI.show('director')" style="background: rgba(255,100,100,0.12); border-color: rgba(255,100,100,0.3);">🎬 Director Mode</button>
+        <button onclick="UI.show('pick3')"    style="background: rgba(100,150,255,0.12); border-color: rgba(100,150,255,0.3);">🎲 Pick 3 Engine</button>
+        <button onclick="UI.show('pick4')"    style="background: rgba(255,100,200,0.12); border-color: rgba(255,100,200,0.3);">🎰 Pick 4 Engine</button>
+        <button onclick="UI.showProfile()"   style="background: rgba(100,200,255,0.1); border-color: rgba(100,200,255,0.25);">👤 My Profile</button>
+        <button onclick="UI.logout()"        style="background: rgba(255,100,100,0.1); border-color: rgba(255,100,100,0.25);">🚪 Logout</button>
       </div>
     </div>
 
-    <!-- ── FREE MODE SCREEN ──────────────────────────────────────────── -->
-    <div id="free-screen" class="screen">
-      <h2>🎮 FREE PREDICTION</h2>
-      <p class="disclaimer">Free engine — basic predictions</p>
-      <button onclick="UI.quickPick()">🎯 Quick Pick</button>
-      <button onclick="UI.backendPrediction('free-output')">⚡ Engine Predict</button>
-      <div id="free-output" class="output">Results appear here...</div>
-      <button onclick="UI.show('home')" class="back">← Home</button>
+    <!-- ── FREE MODE ──────────────────────────────────────────────────── -->
+    <div id="free-screen" class="screen dashboard-screen">
+      <h2 class="fade-in">🎮 FREE MODE</h2>
+      <p class="mode-sub" style="color:rgba(255,80,80,0.88);">Quick generation &amp; pattern tracking</p>
+
+      <!-- Quick Pick Generator -->
+      <div class="panel panel-red">
+        <div class="panel-title">🎰 Quick Pick Generator</div>
+        <div class="quick-pick-display" id="free-qp-display">
+          <span class="qp-number">?</span>
+          <span class="qp-number">?</span>
+          <span class="qp-number">?</span>
+        </div>
+        <div class="pick-type-tabs">
+          <button class="tab-btn active" onclick="UI.setPickTab('free','p3',this)">Pick 3</button>
+          <button class="tab-btn"        onclick="UI.setPickTab('free','p4',this)">Pick 4</button>
+        </div>
+        <button class="generate-btn" onclick="UI.quickPickGen('free')">⚡ GENERATE</button>
+      </div>
+
+      <!-- Hot & Cold -->
+      <div class="panels-row">
+        <div class="panel panel-hot">
+          <div class="panel-title">🔥 Hot Numbers</div>
+          <div id="free-hot-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+        <div class="panel panel-cold">
+          <div class="panel-title">❄️ Cold Numbers</div>
+          <div id="free-cold-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+      </div>
+
+      <!-- AI Pattern Analysis -->
+      <div class="panel panel-analysis">
+        <div class="panel-title">🧠 AI Pattern Analysis</div>
+        <div id="free-pattern-analysis" class="pattern-grid"><p class="no-data">Generate picks to see patterns...</p></div>
+      </div>
+
+      <!-- Frequency Chart -->
+      <div class="panel panel-chart">
+        <div class="panel-title">📊 Digit Frequency</div>
+        <div id="free-chart" class="bar-chart"></div>
+      </div>
+
+      <!-- Recent Predictions -->
+      <div class="panel panel-recent">
+        <div class="panel-title">📋 Recent Predictions <span style="font-size:10px;opacity:0.45;font-weight:400;text-transform:none;letter-spacing:0;">(tap card to mark WIN/LOSS)</span></div>
+        <div id="free-recent-picks" class="prediction-list"><p class="no-data">No predictions yet — hit GENERATE!</p></div>
+      </div>
+
+      <!-- Backend Engine -->
+      <div class="panel" style="text-align:center;">
+        <div class="panel-title">⚙️ Backend Engine</div>
+        <button onclick="UI.backendPrediction('free-output')" style="background:rgba(100,200,255,0.12);border-color:rgba(100,200,255,0.3);margin:6px auto;">⚙️ Run Prediction</button>
+        <pre id="free-output" class="output">Output will appear here...</pre>
+      </div>
+
+      <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- ── GOD MODE SCREEN ───────────────────────────────────────────── -->
-    <div id="god-screen" class="screen">
-      <h2>⚡ GOD MODE</h2>
-      <p class="disclaimer">Premium engine — enhanced predictions</p>
-      <button onclick="UI.backendPrediction('god-output', true)">⚡ God Predict</button>
-      <div id="god-output" class="output">Results appear here...</div>
-      <button onclick="UI.show('home')" class="back">← Home</button>
+    <!-- ── GOD MODE ───────────────────────────────────────────────────── -->
+    <div id="god-screen" class="screen dashboard-screen">
+      <h2 class="fade-in">⚡ GOD MODE</h2>
+      <p class="mode-sub" style="color:rgba(255,200,0,0.88);">Premium prediction engine</p>
+
+      <!-- Quick Pick Generator -->
+      <div class="panel panel-gold">
+        <div class="panel-title" style="color:rgba(255,200,0,0.85);">🎰 Premium Quick Pick</div>
+        <div class="quick-pick-display" id="god-qp-display">
+          <span class="qp-number gold">?</span>
+          <span class="qp-number gold">?</span>
+          <span class="qp-number gold">?</span>
+          <span class="qp-number gold">?</span>
+        </div>
+        <div class="pick-type-tabs">
+          <button class="tab-btn"        onclick="UI.setPickTab('god','p3',this)">Pick 3</button>
+          <button class="tab-btn active" onclick="UI.setPickTab('god','p4',this)">Pick 4</button>
+          <button class="tab-btn"        onclick="UI.setPickTab('god','p5',this)">Pick 5</button>
+        </div>
+        <button class="generate-btn" onclick="UI.quickPickGen('god')">🔥 GENERATE</button>
+        <button onclick="UI.backendPrediction('god-output', true)" style="background:rgba(255,200,0,0.12);border-color:rgba(255,200,0,0.35);margin:6px auto;">🔥 Premium Prediction</button>
+        <pre id="god-output" class="output">Output will appear here...</pre>
+      </div>
+
+      <!-- Hot & Cold -->
+      <div class="panels-row">
+        <div class="panel panel-hot">
+          <div class="panel-title">🔥 Hot Numbers</div>
+          <div id="god-hot-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+        <div class="panel panel-cold">
+          <div class="panel-title">❄️ Cold Numbers</div>
+          <div id="god-cold-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+      </div>
+
+      <!-- AI Pattern Analysis -->
+      <div class="panel panel-analysis">
+        <div class="panel-title">🧠 AI Pattern Analysis</div>
+        <div id="god-pattern-analysis" class="pattern-grid"><p class="no-data">Generate picks to see patterns...</p></div>
+      </div>
+
+      <!-- Frequency Chart -->
+      <div class="panel panel-chart">
+        <div class="panel-title">📊 Digit Frequency</div>
+        <div id="god-chart" class="bar-chart"></div>
+      </div>
+
+      <!-- Recent Predictions -->
+      <div class="panel panel-recent">
+        <div class="panel-title">📋 Recent Predictions <span style="font-size:10px;opacity:0.45;font-weight:400;text-transform:none;letter-spacing:0;">(tap card to mark WIN/LOSS)</span></div>
+        <div id="god-recent-picks" class="prediction-list"><p class="no-data">No predictions yet — hit GENERATE!</p></div>
+      </div>
+
+      <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- ── UNIVERSE MODE SCREEN ──────────────────────────────────────── -->
-    <div id="universe-screen" class="screen">
-      <h2>🌌 UNIVERSE MODE</h2>
-      <p class="disclaimer">Ultimate engine — maximum predictions</p>
-      <button onclick="UI.backendPrediction('universe-output', true)">🌌 Universe Predict</button>
-      <div id="universe-output" class="output">Results appear here...</div>
-      <button onclick="UI.show('home')" class="back">← Home</button>
+    <!-- ── UNIVERSE MODE ─────────────────────────────────────────────── -->
+    <div id="universe-screen" class="screen dashboard-screen">
+      <h2 class="fade-in">🌌 UNIVERSE MODE</h2>
+      <p class="mode-sub" style="color:rgba(200,100,255,0.88);">Infinite cosmic predictions</p>
+      <div id="universe-workout-suggest" style="margin:0 auto 14px;padding:10px 14px;background:rgba(200,100,255,0.1);border:1px solid rgba(200,100,255,0.3);border-radius:10px;font-size:13px;color:rgba(220,180,255,0.95);line-height:1.8;width:100%;max-width:500px;box-sizing:border-box;"></div>
+
+      <!-- Quick Pick Generator -->
+      <div class="panel panel-purple">
+        <div class="panel-title" style="color:rgba(200,100,255,0.85);">🌌 Universe Pick Generator</div>
+        <div class="quick-pick-display" id="universe-qp-display">
+          <span class="qp-number purple">?</span>
+          <span class="qp-number purple">?</span>
+          <span class="qp-number purple">?</span>
+          <span class="qp-number purple">?</span>
+          <span class="qp-number purple">?</span>
+        </div>
+        <div class="pick-type-tabs">
+          <button class="tab-btn"        onclick="UI.setPickTab('universe','p3',this)">Pick 3</button>
+          <button class="tab-btn"        onclick="UI.setPickTab('universe','p4',this)">Pick 4</button>
+          <button class="tab-btn active" onclick="UI.setPickTab('universe','p5',this)">Pick 5</button>
+        </div>
+        <button class="generate-btn" onclick="UI.quickPickGen('universe')">✨ GENERATE</button>
+        <button onclick="UI.backendPrediction('universe-output', true)" style="background:rgba(200,100,255,0.12);border-color:rgba(200,100,255,0.35);margin:6px auto;">✨ Premium Prediction</button>
+        <pre id="universe-output" class="output">Output will appear here...</pre>
+      </div>
+
+      <!-- Hot & Cold -->
+      <div class="panels-row">
+        <div class="panel panel-hot">
+          <div class="panel-title">🔥 Hot Numbers</div>
+          <div id="universe-hot-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+        <div class="panel panel-cold">
+          <div class="panel-title">❄️ Cold Numbers</div>
+          <div id="universe-cold-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+      </div>
+
+      <!-- AI Pattern Analysis -->
+      <div class="panel panel-analysis">
+        <div class="panel-title">🧠 AI Pattern Analysis</div>
+        <div id="universe-pattern-analysis" class="pattern-grid"><p class="no-data">Generate picks to see patterns...</p></div>
+      </div>
+
+      <!-- Frequency Chart -->
+      <div class="panel panel-chart">
+        <div class="panel-title">📊 Digit Frequency</div>
+        <div id="universe-chart" class="bar-chart"></div>
+      </div>
+
+      <!-- Recent Predictions -->
+      <div class="panel panel-recent">
+        <div class="panel-title">📋 Recent Predictions <span style="font-size:10px;opacity:0.45;font-weight:400;text-transform:none;letter-spacing:0;">(tap card to mark WIN/LOSS)</span></div>
+        <div id="universe-recent-picks" class="prediction-list"><p class="no-data">No predictions yet — hit GENERATE!</p></div>
+      </div>
+
+      <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- ── PICK 3 SCREEN ─────────────────────────────────────────────── -->
+    <!-- ── DIRECTOR ───────────────────────────────────────────────────── -->
+    <div id="director-screen" class="screen dashboard-screen">
+      <h2 class="fade-in">🎬 DIRECTOR MODE</h2>
+      <p class="mode-sub" style="color:rgba(255,100,100,0.88);">Compile with custom strategy</p>
+      <div id="director-workout-suggest" style="margin:0 auto 14px;padding:10px 14px;background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);border-radius:10px;font-size:13px;color:rgba(255,200,180,0.95);line-height:1.6;width:100%;max-width:500px;box-sizing:border-box;"></div>
+
+      <!-- Quick Pick + Seed -->
+      <div class="panel panel-director">
+        <div class="panel-title" style="color:rgba(255,100,100,0.85);">🎬 Director Quick Pick</div>
+        <div class="quick-pick-display" id="director-qp-display">
+          <span class="qp-number red">?</span>
+          <span class="qp-number red">?</span>
+          <span class="qp-number red">?</span>
+        </div>
+        <div class="pick-type-tabs">
+          <button class="tab-btn active" onclick="UI.setPickTab('director','p3',this)">Pick 3</button>
+          <button class="tab-btn"        onclick="UI.setPickTab('director','p4',this)">Pick 4</button>
+        </div>
+        <button class="generate-btn" onclick="UI.quickPickGen('director')">🎬 GENERATE</button>
+        <div class="seed-row">
+          <input id="director-seed" placeholder="Custom seed (optional)" type="text">
+          <button onclick="UI.director()" style="background:rgba(255,100,100,0.15);border-color:rgba(255,100,100,0.3);margin:6px auto 0;">▶️ Compile with Seed</button>
+        </div>
+        <pre id="director-output" class="output">Output will appear here...</pre>
+      </div>
+
+      <!-- Hot & Cold -->
+      <div class="panels-row">
+        <div class="panel panel-hot">
+          <div class="panel-title">🔥 Hot Numbers</div>
+          <div id="director-hot-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+        <div class="panel panel-cold">
+          <div class="panel-title">❄️ Cold Numbers</div>
+          <div id="director-cold-numbers" class="number-badges"><span class="no-data">Generate to track</span></div>
+        </div>
+      </div>
+
+      <!-- AI Pattern Analysis -->
+      <div class="panel panel-analysis">
+        <div class="panel-title">🧠 AI Pattern Analysis</div>
+        <div id="director-pattern-analysis" class="pattern-grid"><p class="no-data">Generate picks to see patterns...</p></div>
+      </div>
+
+      <!-- Frequency Chart -->
+      <div class="panel panel-chart">
+        <div class="panel-title">📊 Digit Frequency</div>
+        <div id="director-chart" class="bar-chart"></div>
+      </div>
+
+      <!-- Recent Predictions -->
+      <div class="panel panel-recent">
+        <div class="panel-title">📋 Recent Predictions <span style="font-size:10px;opacity:0.45;font-weight:400;text-transform:none;letter-spacing:0;">(tap card to mark WIN/LOSS)</span></div>
+        <div id="director-recent-picks" class="prediction-list"><p class="no-data">No predictions yet — hit GENERATE!</p></div>
+      </div>
+
+      <button class="back" onclick="UI.show('home')">← Back to Home</button>
+    </div>
+
+    <!-- ── PICK 3 ─────────────────────────────────────────────────────── -->
     <div id="pick3-screen" class="screen">
-      <h2>🎲 PICK 3</h2>
-      <input id="pick3-input" type="text" maxlength="3" placeholder="Enter 3 digits (e.g. 317)" inputmode="numeric" />
-      <button onclick="UI.pick3()">🎲 Analyze Pick 3</button>
-      <div id="pick3-output" class="output">Results appear here...</div>
-      <button onclick="UI.show('home')" class="back">← Home</button>
+      <h2 class="fade-in">🎲 PICK 3 ENGINE</h2>
+      <p style="font-size: 12px; color: rgba(100,150,255,0.7);">Enter exactly 3 digits (0-9)</p>
+      <input id="pick3-input" placeholder="123" maxlength="3" type="text" inputmode="numeric">
+      <button onclick="UI.pick3()" style="background: rgba(100,150,255,0.15); border-color: rgba(100,150,255,0.3);">✓ Submit</button>
+      <pre id="pick3-output" class="output">Output will appear here...</pre>
+      <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- ── PICK 4 SCREEN ─────────────────────────────────────────────── -->
+    <!-- ── PICK 4 ─────────────────────────────────────────────────────── -->
     <div id="pick4-screen" class="screen">
-      <h2>🎰 PICK 4</h2>
-      <input id="pick4-input" type="text" maxlength="4" placeholder="Enter 4 digits (e.g. 3175)" inputmode="numeric" />
-      <button onclick="UI.pick4()">🎰 Analyze Pick 4</button>
-      <div id="pick4-output" class="output">Results appear here...</div>
-      <button onclick="UI.show('home')" class="back">← Home</button>
+      <h2 class="fade-in">🎰 PICK 4 ENGINE</h2>
+      <p style="font-size: 12px; color: rgba(255,100,200,0.7);">Enter exactly 4 digits (0-9)</p>
+      <input id="pick4-input" placeholder="1234" maxlength="4" type="text" inputmode="numeric">
+      <button onclick="UI.pick4()" style="background: rgba(255,100,200,0.15); border-color: rgba(255,100,200,0.3);">✓ Submit</button>
+      <pre id="pick4-output" class="output">Output will appear here...</pre>
+      <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-    <!-- ── DIRECTOR MODE SCREEN ──────────────────────────────────────── -->
-    <div id="director-screen" class="screen">
-      <h2>🎬 DIRECTOR MODE</h2>
-      <input id="director-seed" type="text" placeholder="Enter seed (optional)" />
-      <button onclick="UI.director()">🎬 Run Director</button>
-      <div id="director-output" class="output">Results appear here...</div>
-      <button onclick="UI.show('home')" class="back">← Home</button>
-    </div>
-
-    <!-- ── PROFILE SCREEN ───────────────────────────────────────────── -->
+    <!-- ── PROFILE ────────────────────────────────────────────────────── -->
     <div id="profile-screen" class="screen">
-      <h2>👤 PROFILE</h2>
+      <h2 class="fade-in">👤 My Profile</h2>
       <div class="profile-card">
-        <div class="profile-row">
-          <span class="profile-label">Username</span>
-          <span id="profile-username" class="profile-value">—</span>
-        </div>
-        <div class="profile-row">
-          <span class="profile-label">Email</span>
-          <span id="profile-email" class="profile-value">—</span>
-        </div>
-        <div class="profile-row">
-          <span class="profile-label">Tier</span>
-          <span id="profile-tier" class="profile-value">FREE</span>
-        </div>
+        <div class="profile-row"><span class="profile-label">Username</span><span id="profile-username" class="profile-value">—</span></div>
+        <div class="profile-row"><span class="profile-label">Email</span><span id="profile-email" class="profile-value">—</span></div>
+        <div class="profile-row"><span class="profile-label">Tier</span><span id="profile-tier" class="profile-value">FREE</span></div>
       </div>
-      <button onclick="UI.show('home')" class="back">← Home</button>
+      <button onclick="UI.logout()" style="background: rgba(255,100,100,0.1); border-color: rgba(255,100,100,0.25); margin-top: 10px;">🚪 Logout</button>
+      <button class="back" onclick="UI.show('home')">← Back to Home</button>
     </div>
 
-  </div><!-- end .app-ui -->
+  </div> <!-- END APP UI -->
 
-  <!-- API base override — must appear before auth-utils.js and app2.js (fix #7) -->
-  <script>window.GODMODE_API_BASE = "https://godmode-backend2.onrender.com";</script>
+  <!-- keyboard shortcuts for auth screens -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      function addEnter(id, fn) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") { e.preventDefault(); fn(); }
+        });
+      }
+      addEnter("login-pass",     function () { UI.login(); });
+      addEnter("signup-confirm", function () { UI.signup(); });
+      addEnter("forgot-email",   function () { UI.forgotPassword(); });
+      addEnter("reset-confirm",  function () { UI.resetPassword(); });
+    });
+  </script>
+
+  <!-- API base override: uncomment and set your production backend URL -->
+  <!-- <script>window.GODMODE_API_BASE = "https://your-godmode-backend.com";</script> -->
+
   <script src="auth-utils.js"></script>
   <script src="app2.js"></script>
+
+  <!-- SERVICE WORKER REGISTRATION -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("service-worker.js")
+          .catch(function (err) { console.warn("SW registration failed:", err); });
+      });
+    }
+  </script>
 </body>
 </html>

@@ -1,4 +1,6 @@
-// Install and cache core files
+const KEEP_ALIVE_URL = "https://godmode-backend2.onrender.com/health";
+const KEEP_ALIVE_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
+
 self.addEventListener("install", (e) => {
   e.waitUntil(
     caches.open("godmode-cache").then((cache) => {
@@ -14,12 +16,12 @@ self.addEventListener("install", (e) => {
   self.skipWaiting();
 });
 
-// Activate immediately
 self.addEventListener("activate", (e) => {
   clients.claim();
+  // Start keep-alive pings immediately when service worker activates
+  startKeepAlive();
 });
 
-// Serve from cache first, then network
 self.addEventListener("fetch", (e) => {
   e.respondWith(
     caches.match(e.request).then((cached) => {
@@ -27,3 +29,11 @@ self.addEventListener("fetch", (e) => {
     })
   );
 });
+
+// Keep the backend alive by pinging /health every 10 minutes
+function startKeepAlive() {
+  setInterval(() => {
+    fetch(KEEP_ALIVE_URL, { mode: "no-cors" })
+      .catch(() => {}); // Silently ignore errors
+  }, KEEP_ALIVE_INTERVAL_MS);
+}
