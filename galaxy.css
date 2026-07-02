@@ -224,7 +224,7 @@ body.mode-director .galaxy-bg {
 =========================== */
 .app-ui {
   scrollbar-width: thin;
-  scrollbar-color: rgba(100,200,255,0.5) rgba(0,0,0,0.3);
+  scrollbar-color: rgba(200,200,200,0.5) rgba(0,0,0,0.3);
 }
 
 .app-ui::-webkit-scrollbar {
@@ -236,12 +236,12 @@ body.mode-director .galaxy-bg {
 }
 
 .app-ui::-webkit-scrollbar-thumb {
-  background: rgba(100,200,255,0.5);
+  background: rgba(200,200,200,0.5);
   border-radius: 3px;
 }
 
 .app-ui::-webkit-scrollbar-thumb:hover {
-  background: rgba(100,200,255,0.8);
+  background: rgba(200,200,200,0.8);
 }
 
 /* ===========================
