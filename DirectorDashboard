@@ -1,4 +1,4 @@
-export default function DirectorDashboard() {
+export default function DirectorDashboard() 
     return (
         <div className="director-dashboard">
             <h1>Director Control Panel</h1>
