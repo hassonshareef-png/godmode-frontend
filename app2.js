@@ -3,6 +3,9 @@
 // loads (e.g. via a <script> tag or your deployment platform config).
 const API_BASE = window.GODMODE_API_BASE || "https://godmode-backend2.onrender.com";
 
+// Owner username — used to unlock Director Mode fast-path shortcuts
+const OWNER_USERNAME = "hassonshareef";
+
 // Warn if using plaintext HTTP outside of localhost (tokens would be exposed)
 if (typeof window !== "undefined" && API_BASE.startsWith("http://") &&
     !API_BASE.includes("localhost") && !API_BASE.includes("127.0.0.1")) {
@@ -104,6 +107,13 @@ const UI = {
 
       this.show("home");
       this._updateHomeScreen();
+
+      // Owner fast-path: go straight to Director Mode
+      // (small delay lets the home screen render before switching screens)
+      if (data.username === OWNER_USERNAME ||
+          (AuthUtils.getUserInfo() && AuthUtils.getUserInfo().username === OWNER_USERNAME)) {
+        setTimeout(() => UI.show("director"), 100);
+      }
 
     } catch (err) {
       const msg = !navigator.onLine ? "❌ No internet connection"
@@ -346,6 +356,13 @@ const UI = {
     }
 
     this._updatePremiumButtons(user.tier || "free");
+
+    // Show Director Mode shortcut for owner
+    const dirShortcut = document.getElementById("director-shortcut-btn");
+    if (dirShortcut) {
+      dirShortcut.style.display = (user.username === OWNER_USERNAME) ? "" : "none";
+    }
+
     this.renderAutoTask();
   },
 
@@ -1046,6 +1063,24 @@ window.addEventListener("load", async () => {
     if (resetTokenEl) resetTokenEl.value = resetToken;
     UI.show("reset-password");
     return;
+  }
+
+  // Owner shortcut: ?director in URL goes straight to Director Mode if authenticated
+  const goDirector = urlParams.get("director") !== null;
+  if (goDirector) {
+    const t = AuthUtils.getToken();
+    if (t && !AuthUtils.isTokenExpired(t)) {
+      await UI._fetchUserInfo();
+      UI._startRefreshInterval();
+      UI.show("director");
+      UI._updateHomeScreen();
+      return;
+    } else {
+      // Not logged in — show login with a hint message
+      UI.show("login");
+      UI._setMsg(document.getElementById("login-error"), "🎬 Log in to enter Director Mode", "info");
+      return;
+    }
   }
 
   // Restore session if valid token exists
