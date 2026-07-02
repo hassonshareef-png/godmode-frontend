@@ -265,9 +265,14 @@ const UI = {
       ["reset-token", "reset-pass", "reset-confirm"]
         .forEach(id => { document.getElementById(id).value = ""; });
 
-      UI._setMsg(document.getElementById("login-error"),
-                 "✅ Password reset! Please log in.", "success");
-      this.show("login");
+      const successEl = document.getElementById("reset-success");
+      UI._setMsg(successEl, "✅ Password reset! Redirecting to login...", "success");
+      setTimeout(() => {
+        UI._setMsg(successEl, "", "success");
+        UI._setMsg(document.getElementById("login-error"),
+                   "✅ Password reset! Please log in.", "success");
+        this.show("login");
+      }, 1500);
 
     } catch (err) {
       const msg = !navigator.onLine ? "❌ No internet connection"

@@ -107,6 +107,7 @@
       <input id="reset-confirm" type="password" placeholder="Confirm new password"   autocomplete="new-password">
       <button onclick="UI.resetPassword()" style="background: rgba(100,200,255,0.15); border-color: rgba(100,200,255,0.3); margin-top: 5px;">✅ Reset Password</button>
       <p id="reset-error" class="error"></p>
+      <p id="reset-success" class="success"></p>
       <p class="auth-links">
         <button class="link-btn" onclick="UI.show('login')">← Back to Login</button>
       </p>
@@ -437,10 +438,19 @@
           if (e.key === "Enter") { e.preventDefault(); fn(); }
         });
       }
-      addEnter("login-pass",     function () { UI.login(); });
-      addEnter("signup-confirm", function () { UI.signup(); });
-      addEnter("forgot-email",   function () { UI.forgotPassword(); });
-      addEnter("reset-confirm",  function () { UI.resetPassword(); });
+      addEnter("login-pass",       function () { UI.login(); });
+      addEnter("login-user",       function () { UI.login(); });
+      addEnter("signup-username",  function () { UI.signup(); });
+      addEnter("signup-email",     function () { UI.signup(); });
+      addEnter("signup-pass",      function () { UI.signup(); });
+      addEnter("signup-confirm",   function () { UI.signup(); });
+      addEnter("forgot-email",     function () { UI.forgotPassword(); });
+      addEnter("reset-token",      function () { UI.resetPassword(); });
+      addEnter("reset-pass",       function () { UI.resetPassword(); });
+      addEnter("reset-confirm",    function () { UI.resetPassword(); });
+      addEnter("pick3-input",      function () { UI.pick3(); });
+      addEnter("pick4-input",      function () { UI.pick4(); });
+      addEnter("director-seed",    function () { UI.director(); });
     });
   </script>
 
