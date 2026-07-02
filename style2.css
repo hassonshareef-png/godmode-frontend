@@ -392,6 +392,20 @@ h2 {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 28px 22px 24px;
+  border: 1px solid rgba(145, 95, 255, 0.5);
+  border-radius: 24px;
+  background:
+    linear-gradient(160deg, rgba(18, 10, 45, 0.82) 0%, rgba(8, 10, 34, 0.72) 100%);
+  box-shadow:
+    0 0 0 1px rgba(185, 150, 255, 0.12) inset,
+    0 0 34px rgba(110, 50, 255, 0.42),
+    0 0 78px rgba(45, 100, 255, 0.22),
+    0 18px 48px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 #login-screen h2 {
@@ -419,15 +433,21 @@ h2 {
 }
 
 #login-screen button:not(.back) {
-  background: rgba(80, 0, 200, 0.28);
-  border-color: rgba(140, 60, 255, 0.55);
-  box-shadow: 0 0 18px rgba(100, 20, 220, 0.32);
+  background: linear-gradient(135deg, rgba(120, 30, 255, 0.88), rgba(80, 40, 255, 0.78)) !important;
+  border-color: rgba(195, 120, 255, 0.82) !important;
+  color: #f9f4ff;
+  text-shadow: 0 0 14px rgba(225, 210, 255, 0.42);
+  box-shadow:
+    0 0 22px rgba(120, 40, 255, 0.44),
+    0 0 52px rgba(90, 40, 255, 0.24);
 }
 
 #login-screen button:not(.back):hover {
-  background: rgba(100, 20, 220, 0.42);
-  border-color: rgba(180, 100, 255, 0.72);
-  box-shadow: 0 0 28px rgba(140, 40, 255, 0.55);
+  background: linear-gradient(135deg, rgba(150, 50, 255, 0.98), rgba(95, 55, 255, 0.9)) !important;
+  border-color: rgba(220, 150, 255, 0.92) !important;
+  box-shadow:
+    0 0 34px rgba(165, 70, 255, 0.68),
+    0 0 78px rgba(105, 60, 255, 0.36);
   transform: translateY(-2px);
 }
 
@@ -448,7 +468,8 @@ h2 {
 #home-screen .title {
   font-size: 42px;
   letter-spacing: 4px;
-  background: linear-gradient(135deg, #00ffff 0%, #a060ff 50%, #ff40ff 100%);
+  background: linear-gradient(135deg, #f8fbff 0%, #74f1ff 18%, #c38bff 56%, #ff86ff 100%);
+  background-size: 180% 180%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -457,8 +478,19 @@ h2 {
 }
 
 @keyframes bh-title-glow {
-  from { filter: drop-shadow(0 0 10px rgba(100, 0, 255, 0.5)); }
-  to   { filter: drop-shadow(0 0 28px rgba(180, 80, 255, 0.95)); }
+  from {
+    filter:
+      drop-shadow(0 0 14px rgba(115, 245, 255, 0.42))
+      drop-shadow(0 0 22px rgba(130, 70, 255, 0.42));
+    transform: translateY(0) scale(1);
+  }
+  to {
+    filter:
+      drop-shadow(0 0 24px rgba(140, 255, 255, 0.78))
+      drop-shadow(0 0 54px rgba(195, 95, 255, 0.98))
+      drop-shadow(0 0 88px rgba(255, 105, 255, 0.48));
+    transform: translateY(-1px) scale(1.03);
+  }
 }
 
 #home-screen .grid {
@@ -469,6 +501,22 @@ h2 {
 #home-screen .grid button,
 #home-screen .grid a {
   backdrop-filter: blur(6px);
+}
+
+#home-screen .grid button {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 0 16px rgba(100, 200, 255, 0.12),
+    0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+#home-screen .grid button:hover,
+#home-screen .grid a:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 0 28px rgba(120, 210, 255, 0.28),
+    0 0 56px rgba(170, 90, 255, 0.22),
+    0 14px 32px rgba(0, 0, 0, 0.42);
 }
 
 /* Staggered orbital float on home grid items */
