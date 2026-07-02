@@ -23,6 +23,14 @@ const UI = {
   // ── Navigation ─────────────────────────────────────────────────────────
 
   show(screen) {
+    if (screen === "director") {
+      const token = AuthUtils.getToken();
+      if (!token || AuthUtils.isTokenExpired(token)) {
+        UI._setMsg(document.getElementById("login-error"), "🔒 Please log in to access Director Mode", "error");
+        screen = "login";
+      }
+    }
+
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById(screen + "-screen").classList.add("active");
 
