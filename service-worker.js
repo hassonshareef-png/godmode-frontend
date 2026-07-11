@@ -1,4 +1,4 @@
-const KEEP_ALIVE_URL = "https://godmode-backend2.onrender.com/health";
+const KEEP_ALIVE_URL = "https://godmode-backend.onrender.com/health";
 const KEEP_ALIVE_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
 
 self.addEventListener("install", (e) => {

@@ -1,7 +1,7 @@
 // ── API Configuration ──────────────────────────────────────────────────────
 // To use a different backend, set window.GODMODE_API_BASE before this script
 // loads (e.g. via a <script> tag or your deployment platform config).
-const API_BASE = window.GODMODE_API_BASE || "https://godmode-backend2.onrender.com";
+const API_BASE = window.GODMODE_API_BASE || "https://godmode-backend.onrender.com";
 
 // Owner username — used to unlock Director Mode fast-path shortcuts
 const OWNER_USERNAME = "hassonshareef";
