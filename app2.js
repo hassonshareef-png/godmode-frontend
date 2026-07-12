@@ -154,7 +154,7 @@ const UI = {
       const response = await fetch(API_BASE + "/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, password })
+        body: JSON.stringify({ email, password })
       });
 
       const data = await response.json();
@@ -315,6 +315,8 @@ const UI = {
     if (!refreshToken) return false;
 
     try {
+      // TODO: Backend /auth/refresh endpoint needs to be implemented
+      // For now, token refresh is not available. Sessions will expire without renewal.
       const response = await fetch(API_BASE + "/auth/refresh", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -327,7 +329,7 @@ const UI = {
         return true;
       }
     } catch (err) {
-      console.warn("⚠️ Token refresh failed:", err.message);
+      console.warn("⚠️ Token refresh failed (endpoint may not be implemented):", err.message);
     }
     return false;
   },
@@ -706,9 +708,10 @@ const UI = {
     const isUniverse = (out === "universe-output");
 
     try {
-      const response = await this._authenticatedFetch(API_BASE + "/predict", {
-        method: "POST",
-        body: JSON.stringify({ god: premium && !isUniverse, universe: isUniverse })
+      // Determine which endpoint to call based on tier
+      const endpoint = isUniverse ? "/universe/predict" : (premium ? "/god/predict" : "/basic/predict");
+      const response = await this._authenticatedFetch(API_BASE + endpoint, {
+        method: "GET"
       });
       if (!response) return;
       const data = await response.json();
@@ -726,9 +729,14 @@ const UI = {
     outputEl.textContent = "🎬 Director compiling...";
 
     try {
-      const response = await this._authenticatedFetch(API_BASE + "/director", {
+      // Use the /director/3175 endpoint with multipart/form-data
+      const formData = new FormData();
+      formData.append('history', JSON.stringify(seed ? [seed] : []));
+      
+      const response = await this._authenticatedFetch(API_BASE + "/director/3175", {
         method: "POST",
-        body: JSON.stringify({ seed: seed || null })
+        body: formData,
+        headers: {} // FormData sets Content-Type automatically
       });
       if (!response) return;
       const data = await response.json();
@@ -741,55 +749,13 @@ const UI = {
   },
 
   async pick3() {
-    const v        = document.getElementById("pick3-input").value.trim();
     const outputEl = document.getElementById("pick3-output");
-
-    if (v.length !== 3 || !/^\d{3}$/.test(v)) {
-      outputEl.textContent = "❌ Error: Enter exactly 3 digits (0-9)";
-      return;
-    }
-
-    outputEl.textContent = "🎲 Processing Pick 3...";
-
-    try {
-      const response = await this._authenticatedFetch(API_BASE + "/pick3", {
-        method: "POST",
-        body: JSON.stringify({ number: v })
-      });
-      if (!response) return;
-      const data = await response.json();
-      outputEl.textContent = data.result || JSON.stringify(data, null, 2);
-    } catch (err) {
-      outputEl.textContent = !navigator.onLine
-        ? "❌ No internet connection"
-        : "❌ Error: " + err.message;
-    }
+    outputEl.textContent = "⚠️ Pick 3 feature is currently under maintenance. Please try again later.";
   },
 
   async pick4() {
-    const v        = document.getElementById("pick4-input").value.trim();
     const outputEl = document.getElementById("pick4-output");
-
-    if (v.length !== 4 || !/^\d{4}$/.test(v)) {
-      outputEl.textContent = "❌ Error: Enter exactly 4 digits (0-9)";
-      return;
-    }
-
-    outputEl.textContent = "🎰 Processing Pick 4...";
-
-    try {
-      const response = await this._authenticatedFetch(API_BASE + "/pick4", {
-        method: "POST",
-        body: JSON.stringify({ number: v })
-      });
-      if (!response) return;
-      const data = await response.json();
-      outputEl.textContent = data.result || JSON.stringify(data, null, 2);
-    } catch (err) {
-      outputEl.textContent = !navigator.onLine
-        ? "❌ No internet connection"
-        : "❌ Error: " + err.message;
-    }
+    outputEl.textContent = "⚠️ Pick 4 feature is currently under maintenance. Please try again later.";
   },
 
   // ── Authenticated Fetch (with auto-refresh) ──────────────────────────────
@@ -805,14 +771,20 @@ const UI = {
       token = AuthUtils.getToken();
     }
 
-    const headers = { ...AuthUtils.getAuthHeaders(), ...(options.headers || {}) };
+    // Don't override Content-Type if body is FormData (it sets its own)
+    const headers = options.body instanceof FormData 
+      ? { 'Authorization': 'Bearer ' + token, ...(options.headers || {}) }
+      : { ...AuthUtils.getAuthHeaders(), ...(options.headers || {}) };
     const response = await fetch(url, { ...options, headers });
 
     // Retry once after token refresh on 401
     if (response.status === 401) {
       const refreshed = await this._refreshToken();
       if (refreshed) {
-        const retryHeaders = { ...AuthUtils.getAuthHeaders(), ...(options.headers || {}) };
+        const retryToken = AuthUtils.getToken();
+        const retryHeaders = options.body instanceof FormData
+          ? { 'Authorization': 'Bearer ' + retryToken, ...(options.headers || {}) }
+          : { ...AuthUtils.getAuthHeaders(), ...(options.headers || {}) };
         return fetch(url, { ...options, headers: retryHeaders });
       }
       this._forceLogout();
