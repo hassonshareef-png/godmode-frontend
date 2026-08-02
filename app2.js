@@ -154,7 +154,7 @@ const UI = {
       const response = await fetch(API_BASE + "/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ username, email, password })
       });
 
       const data = await response.json();
@@ -315,8 +315,6 @@ const UI = {
     if (!refreshToken) return false;
 
     try {
-      // TODO: Backend /auth/refresh endpoint needs to be implemented
-      // For now, token refresh is not available. Sessions will expire without renewal.
       const response = await fetch(API_BASE + "/auth/refresh", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -329,7 +327,7 @@ const UI = {
         return true;
       }
     } catch (err) {
-      console.warn("⚠️ Token refresh failed (endpoint may not be implemented):", err.message);
+      console.warn("⚠️ Token refresh failed:", err.message);
     }
     return false;
   },
@@ -749,13 +747,69 @@ const UI = {
   },
 
   async pick3() {
+    const inputEl  = document.getElementById("pick3-input");
     const outputEl = document.getElementById("pick3-output");
-    outputEl.textContent = "⚠️ Pick 3 feature is currently under maintenance. Please try again later.";
+    const number   = inputEl ? inputEl.value.trim() : "";
+
+    if (!/^\d{3}$/.test(number)) {
+      outputEl.textContent = "❌ Please enter exactly 3 digits (0–9).";
+      return;
+    }
+
+    outputEl.textContent = "🔮 Analyzing Pick 3...";
+
+    try {
+      const response = await this._authenticatedFetch(API_BASE + "/pick3/predict", {
+        method: "POST",
+        body: JSON.stringify({ number })
+      });
+      if (!response) return;
+
+      if (!response.ok) {
+        outputEl.textContent = "⚠️ Pick 3 is temporarily unavailable. Please try again later.";
+        return;
+      }
+
+      const data = await response.json();
+      outputEl.textContent = data.prediction || JSON.stringify(data, null, 2);
+    } catch (err) {
+      outputEl.textContent = !navigator.onLine
+        ? "❌ No internet connection"
+        : "❌ Error: " + err.message;
+    }
   },
 
   async pick4() {
+    const inputEl  = document.getElementById("pick4-input");
     const outputEl = document.getElementById("pick4-output");
-    outputEl.textContent = "⚠️ Pick 4 feature is currently under maintenance. Please try again later.";
+    const number   = inputEl ? inputEl.value.trim() : "";
+
+    if (!/^\d{4}$/.test(number)) {
+      outputEl.textContent = "❌ Please enter exactly 4 digits (0–9).";
+      return;
+    }
+
+    outputEl.textContent = "🔮 Analyzing Pick 4...";
+
+    try {
+      const response = await this._authenticatedFetch(API_BASE + "/pick4/predict", {
+        method: "POST",
+        body: JSON.stringify({ number })
+      });
+      if (!response) return;
+
+      if (!response.ok) {
+        outputEl.textContent = "⚠️ Pick 4 is temporarily unavailable. Please try again later.";
+        return;
+      }
+
+      const data = await response.json();
+      outputEl.textContent = data.prediction || JSON.stringify(data, null, 2);
+    } catch (err) {
+      outputEl.textContent = !navigator.onLine
+        ? "❌ No internet connection"
+        : "❌ Error: " + err.message;
+    }
   },
 
   // ── Authenticated Fetch (with auto-refresh) ──────────────────────────────
