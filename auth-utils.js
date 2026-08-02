@@ -11,6 +11,8 @@ const AuthUtils = {
     localStorage.setItem(AUTH_TOKEN_KEY, accessToken);
     if (refreshToken) {
       localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    } else {
+      localStorage.removeItem(REFRESH_TOKEN_KEY);
     }
   },
 
@@ -49,7 +51,10 @@ const AuthUtils = {
     try {
       const base64Url = token.split('.')[1];
       if (!base64Url) return null;
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const base64 = base64Url
+        .replace(/-/g, '+')
+        .replace(/_/g, '/')
+        .padEnd(Math.ceil(base64Url.length / 4) * 4, '=');
       const jsonPayload = decodeURIComponent(
         atob(base64)
           .split('')
@@ -95,7 +100,13 @@ const AuthUtils = {
     const info = this.getUserInfo();
     if (!info) return false;
     const order = ['free', 'god', 'universe'];
-    return order.indexOf(info.tier || 'free') >= order.indexOf(required);
+    const normalizedRequired = (required || '').toLowerCase();
+    const normalizedTier = (info.tier || 'free').toLowerCase();
+    const reqIdx = order.indexOf(normalizedRequired);
+    const tierIdx = order.indexOf(normalizedTier);
+    if (reqIdx === -1) return false;
+    if (tierIdx === -1) return false;
+    return tierIdx >= reqIdx;
   },
 
   // ── Validation Helpers ─────────────────────────────────────────────────────
