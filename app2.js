@@ -79,12 +79,11 @@ const UI = {
     this.showLoader();
 
     try {
-  const response = await fetch(API_BASE + "/auth/login", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email: identifier, password })
-});
-
+      const response = await fetch(API_BASE + "/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: identifier, password })
+      });
 
       const data = await response.json();
 
@@ -746,27 +745,28 @@ const UI = {
     }
   },
 
-  async pick3() {
-    const inputEl  = document.getElementById("pick3-input");
-    const outputEl = document.getElementById("pick3-output");
+  async _pickPredict({ inputId, outputId, endpoint, label, digits }) {
+    const inputEl  = document.getElementById(inputId);
+    const outputEl = document.getElementById(outputId);
     const number   = inputEl ? inputEl.value.trim() : "";
+    const re       = new RegExp("^\\d{" + digits + "}$");
 
-    if (!/^\d{3}$/.test(number)) {
-      outputEl.textContent = "❌ Please enter exactly 3 digits (0–9).";
+    if (!re.test(number)) {
+      outputEl.textContent = "❌ Please enter exactly " + digits + " digits (0–9).";
       return;
     }
 
-    outputEl.textContent = "🔮 Analyzing Pick 3...";
+    outputEl.textContent = "🔮 Analyzing " + label + "...";
 
     try {
-      const response = await this._authenticatedFetch(API_BASE + "/pick3/predict", {
+      const response = await this._authenticatedFetch(API_BASE + endpoint, {
         method: "POST",
         body: JSON.stringify({ number })
       });
       if (!response) return;
 
       if (!response.ok) {
-        outputEl.textContent = "⚠️ Pick 3 is temporarily unavailable. Please try again later.";
+        outputEl.textContent = "⚠️ " + label + " is temporarily unavailable. Please try again later.";
         return;
       }
 
@@ -779,37 +779,14 @@ const UI = {
     }
   },
 
+  async pick3() {
+    return this._pickPredict({ inputId: "pick3-input", outputId: "pick3-output",
+                               endpoint: "/pick3/predict", label: "Pick 3", digits: 3 });
+  },
+
   async pick4() {
-    const inputEl  = document.getElementById("pick4-input");
-    const outputEl = document.getElementById("pick4-output");
-    const number   = inputEl ? inputEl.value.trim() : "";
-
-    if (!/^\d{4}$/.test(number)) {
-      outputEl.textContent = "❌ Please enter exactly 4 digits (0–9).";
-      return;
-    }
-
-    outputEl.textContent = "🔮 Analyzing Pick 4...";
-
-    try {
-      const response = await this._authenticatedFetch(API_BASE + "/pick4/predict", {
-        method: "POST",
-        body: JSON.stringify({ number })
-      });
-      if (!response) return;
-
-      if (!response.ok) {
-        outputEl.textContent = "⚠️ Pick 4 is temporarily unavailable. Please try again later.";
-        return;
-      }
-
-      const data = await response.json();
-      outputEl.textContent = data.prediction || JSON.stringify(data, null, 2);
-    } catch (err) {
-      outputEl.textContent = !navigator.onLine
-        ? "❌ No internet connection"
-        : "❌ Error: " + err.message;
-    }
+    return this._pickPredict({ inputId: "pick4-input", outputId: "pick4-output",
+                               endpoint: "/pick4/predict", label: "Pick 4", digits: 4 });
   },
 
   // ── Authenticated Fetch (with auto-refresh) ──────────────────────────────
