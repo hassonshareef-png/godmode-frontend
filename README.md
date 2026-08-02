@@ -17,8 +17,10 @@ Open `index.html` with a local static server and keep backend at `http://localho
 ## Go-live checklist
 
 - [ ] Backend URL in `index.html` points to production HTTPS API
-- [ ] Login/signup/forgot/reset flows work end-to-end
+- [ ] Login/signup/forgot/reset flows work end-to-end (signup now sends `username`, `email`, and `password`)
 - [ ] `/health`, prediction, and pick endpoints respond from production
+- [x] Pick 3 and Pick 4 prediction implemented via `POST /pick3/predict` and `POST /pick4/predict`
+- [x] Token refresh implemented via `POST /auth/refresh`
 - [ ] Stripe upgrade links open and premium gating behaves correctly
 - [ ] PWA install prompt appears and app icon loads
 - [ ] HTTPS and valid TLS certificate enabled
