@@ -1,4 +1,5 @@
 // DirectorUI.js
+import React from "react";
 import { RUNDOWNS } from "./director_rundowns";
 import {
   generate_rundown,
@@ -7,10 +8,24 @@ import {
   compare_rundowns
 } from "./director_engine";
 
+// 🔥 BACKEND URL — THIS CONNECTS FRONTEND → BACKEND FOREVER
+const API = "https://godmode-backend2.onrender.com";
+
 export default function DirectorUI() {
   const [base, setBase] = React.useState("");
   const [selected, setSelected] = React.useState("");
   const [output, setOutput] = React.useState(null);
+
+  // 🔥 CALL BACKEND /predict
+  const callBackend = async () => {
+    try {
+      const res = await fetch(`${API}/predict?state=NJ&game=P3`);
+      const data = await res.json();
+      setOutput(data);
+    } catch (err) {
+      setOutput({ error: "Backend not reachable", details: err.toString() });
+    }
+  };
 
   const run = () => {
     if (!base || !selected) return;
@@ -55,6 +70,9 @@ export default function DirectorUI() {
       <button onClick={run}>Run Rundown</button>
       <button onClick={runTTT}>Tic-Tac-Toe</button>
       <button onClick={runPlusMinus}>Plus/Minus Workout</button>
+
+      {/* 🔥 NEW BUTTON — CALLS YOUR BACKEND */}
+      <button onClick={callBackend}>Backend Predict</button>
 
       {output && (
         <div className="output">
