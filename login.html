@@ -77,12 +77,14 @@
         localStorage.setItem("godmode_token", data.access_token);
 
         status.innerText = "Login successful!";
+       
         window.location.href = "dashboard.html"; // redirect after login
 
       } catch (err) {
         status.innerText = "Network error";
       }
     }
+localStorage.setItem("godmode_email", email);
 
     // If already logged in, redirect
     const token = localStorage.getItem("godmode_token");
