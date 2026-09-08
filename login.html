@@ -1,3 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    .login-box {
+      max-width: 350px;
+      margin: auto;
+      padding: 20px;
+      background: #111;
+      border-radius: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+    <h2>Login</h2>
+
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <p id="login-status"></p>
+  </div>
+
+  <script>
+    async function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const status = document.getElementById("login-status");
+
+      status.innerText = "Logging in...";
+
+      try {
+        const response = await fetch("https://godmode-backend2.onrender.com/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          status.innerText = data.detail || "Login failed";
+          return;
+        }
+
+        // Save token for premium modes
+        localStorage.setItem("godmode_token", data.access_token);
+
+        status.innerText = "Login successful!";
+        window.location.href = "dashboard.html"; // redirect after login
+
+      } catch (err) {
+        status.innerText = "Network error";
+      }
+    }
+
+    // If already logged in, redirect
+    const token = localStorage.getItem("godmode_token");
+    if (token) {
+      window.location.href = "dashboard.html";
+    }
+  </script>
+
+</body>
+</html>
+
 async function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
