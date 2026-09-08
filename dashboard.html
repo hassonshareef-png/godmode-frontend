@@ -68,6 +68,11 @@
     <h2>Director Mode</h2>
     <button onclick="goDirector()">Enter Director Mode</button>
   </div>
+const userEmail = localStorage.getItem("godmode_email");
+
+if (userEmail === hassonshasreef@gmail.com) {
+  document.getElementById("directorBox").style.display = "block";
+}
 
   <button class="logout-btn" onclick="logout()">Logout</button>
 
