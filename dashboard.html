@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .box {
+      background: #111;
+      padding: 20px;
+      margin: 15px auto;
+      border-radius: 10px;
+      max-width: 400px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+    }
+
+    .premium {
+      background: #222;
+      border: 1px solid #444;
+    }
+
+    .logout-btn {
+      background: #d9534f;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Welcome to GODMODE++</h1>
+  <p id="user-status">Checking login...</p>
+
+  <div class="box">
+    <h2>Basic Mode</h2>
+    <button onclick="goBasic()">Enter Basic Mode</button>
+  </div>
+
+  <div class="box premium">
+    <h2>God Mode</h2>
+    <button onclick="goGod()">Enter God Mode</button>
+  </div>
+
+  <div class="box premium">
+    <h2>Universe Mode</h2>
+    <button onclick="goUniverse()">Enter Universe Mode</button>
+  </div>
+
+  <div class="box premium">
+    <h2>Director Mode</h2>
+    <button onclick="goDirector()">Enter Director Mode</button>
+  </div>
+
+  <button class="logout-btn" onclick="logout()">Logout</button>
+
+  <script>
+    // Check login token
+    const token = localStorage.getItem("godmode_token");
+
+    if (!token) {
+      // Not logged in → redirect to login page
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("user-status").innerText = "Logged in ✔";
+    }
+
+    // Navigation functions
+    function goBasic() {
+      window.location.href = "basic.html";
+    }
+
+    function goGod() {
+      window.location.href = "godmode.html";
+    }
+
+    function goUniverse() {
+      window.location.href = "universe.html";
+    }
+
+    function goDirector() {
+      window.location.href = "director.html";
+    }
+
+    // Logout
+    function logout() {
+      localStorage.removeItem("godmode_token");
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
