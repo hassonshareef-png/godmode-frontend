@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .box {
+      background: #111;
+      padding: 20px;
+      margin: 15px auto;
+      border-radius: 10px;
+      max-width: 400px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+    }
+
+    .back-btn {
+      background: #555;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Basic Mode</h1>
+  <p id="status">Checking login...</p>
+
+  <div class="box">
+    <h2>Enter Your Number</h2>
+    <input id="userNumber" type="text" placeholder="Enter number">
+    <button onclick="runBasic()">Predict</button>
+
+    <p id="result"></p>
+  </div>
+
+  <button class="back-btn" onclick="goBack()">Back to Dashboard</button>
+
+  <script>
+    // Check login token
+    const token = localStorage.getItem("godmode_token");
+
+    if (!token) {
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("status").innerText = "Logged in ✔";
+    }
+
+    async function runBasic() {
+      const num = document.getElementById("userNumber").value.trim();
+      const resultBox = document.getElementById("result");
+
+      if (!num) {
+        resultBox.innerText = "Enter a number first.";
+        return;
+      }
+
+      resultBox.innerText = "Processing...";
+
+      try {
+        const response = await fetch("https://godmode-backend2.onrender.com/basic/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ number: num })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          resultBox.innerText = data.detail || "Error running prediction.";
+          return;
+        }
+
+        resultBox.innerText = "Prediction: " + data.prediction;
+
+      } catch (err) {
+        resultBox.innerText = "Network error.";
+      }
+    }
+
+    function goBack() {
+      window.location.href = "dashboard.html";
+    }
+  </script>
+
+</body>
+</html>
